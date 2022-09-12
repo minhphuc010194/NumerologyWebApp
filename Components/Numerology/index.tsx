@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Box, Heading } from "../";
-import { Numerology as NumerologyTxt } from "../../Utils/Constaints";
+import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 
 export const Numerology: FC = () => {
    return (
