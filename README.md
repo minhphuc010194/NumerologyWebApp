@@ -1,2 +1,2 @@
-#ThầnSốHọc
-#Numerology
+# ThầnSốHọc
+# Numerology
