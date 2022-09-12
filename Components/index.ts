@@ -78,6 +78,8 @@ export {
    Th,
    Thead,
    Tr,
+   VStack,
+   StackDivider,
    UnorderedList,
    Wrap,
    WrapItem,
