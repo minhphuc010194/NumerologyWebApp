@@ -1,14 +1,14 @@
 import { useMemo } from "react";
-import { getWalksOfLife } from "../Functions";
+import { getMission, getWalksOfLife } from "../Functions";
 
 export const useProcessNumerology = (fullName: string, birthDay: string) => {
-   //    console.log(fullName, birthDay);
    const data = useMemo(() => {
       const txtName = fullName.trim();
       const walksOfLife = getWalksOfLife(birthDay);
-
+      const mission = getMission(txtName);
       return {
          walksOfLife,
+         mission,
       };
    }, [fullName, birthDay]);
    return data;

@@ -1,1 +1,1 @@
-export { getWalksOfLife, sumAdjacent } from "./Numerology";
+export { getWalksOfLife, sumAdjacent, getMission } from "./Numerology";

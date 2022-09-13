@@ -9,7 +9,7 @@ type PropTypes = BoxProps & {
 export const DisplayCard: FC<PropTypes> = ({ title, content, ...rest }) => {
    return (
       <HStack spacing={4}>
-         <Box p={3} shadow="md" borderWidth="1px" {...rest}>
+         <Box p={3} shadow="base" borderWidth="1px" {...rest}>
             <Heading fontSize="md">{title}</Heading>
             <Text mt={2} fontSize="3xl" color="red.400" fontWeight={600}>
                {content}
