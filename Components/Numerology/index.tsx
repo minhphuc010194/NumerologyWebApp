@@ -8,7 +8,7 @@ export const Numerology: FC = () => {
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
-   const data = useProcessNumerology(name, birth);
+   const data = useProcessNumerology(deferredName, deferredBirth);
 
    console.log(data);
    return (
