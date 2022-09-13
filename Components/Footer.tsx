@@ -5,7 +5,7 @@ import { Box } from "./";
 export const Footer: FC = () => {
    return (
       <footer>
-         <a href="#" target="_blank" rel="noopener noreferrer">
+         <a href="/" target="_blank" rel="noopener noreferrer">
             <Box textAlign="center">
                <Image
                   src="/Images/numerologyPNG.png"

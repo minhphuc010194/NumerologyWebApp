@@ -1,0 +1,1 @@
+export { getWalksOfLife } from "./getWalksOfLife";
