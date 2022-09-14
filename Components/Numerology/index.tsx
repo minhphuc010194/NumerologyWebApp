@@ -5,12 +5,11 @@ import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 import { RenderItem } from "./RenderItem";
 
 export const Numerology: FC = () => {
-   const [name, setName] = useState<string>("");
+   const [name, setName] = useState<string>("Nguyễn Văn A");
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
 
-   //test husky auto build after push
    return (
       <Box h="90vh">
          <Heading textAlign="center" fontFamily="fantasy" pt={4}>
@@ -21,6 +20,7 @@ export const Numerology: FC = () => {
             <Box h="40px" bg="gray.50">
                <Input
                   autoFocus
+                  defaultValue={deferredName}
                   placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van A'"
                   w={{ md: "50%", xs: "100%" }}
                   onChange={(e) => setName(e.target.value)}
