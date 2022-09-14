@@ -12,6 +12,8 @@ export const Footer: FC = () => {
                   alt="numerology logo"
                   width="50%"
                   height="50%"
+                  placeholder="blur"
+                  blurDataURL="/Images/numerologyPNG.png"
                />
             </Box>
          </a>
