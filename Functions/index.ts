@@ -6,5 +6,6 @@ export {
    getValueInAlphabets,
    getPersonality,
    getPassion,
+   getBalance,
 } from "./Numerology";
 export { removeAccents } from "./removeAccents";
