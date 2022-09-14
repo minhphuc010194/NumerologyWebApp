@@ -4,4 +4,6 @@
 # yarn eslint .
 yarn lint
 yarn lint-staged
+yarn build
+
 # yarn ts-check

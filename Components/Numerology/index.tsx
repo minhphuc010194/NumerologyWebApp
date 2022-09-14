@@ -9,6 +9,8 @@ export const Numerology: FC = () => {
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
+
+   //test husky auto build after push
    return (
       <Box h="90vh">
          <Heading textAlign="center" fontFamily="fantasy" pt={4}>
