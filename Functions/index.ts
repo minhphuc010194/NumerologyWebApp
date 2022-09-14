@@ -1,2 +1,8 @@
-export { getWalksOfLife, sumAdjacent, getMission } from "./Numerology";
+export {
+   getWalksOfLife,
+   sumAdjacent,
+   getMission,
+   getSoul,
+   getValueInAlphabets,
+} from "./Numerology";
 export { removeAccents } from "./removeAccents";

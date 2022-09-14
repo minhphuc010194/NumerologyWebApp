@@ -36,3 +36,28 @@ export const Data_numbers_Alphabets = [
       value: 9,
    },
 ];
+
+export const DataVowels = ["A", "E", "I", "O", "U"];
+export const DataConsonants = [
+   "B",
+   "C",
+   "D",
+   "F",
+   "G",
+   "H",
+   "J",
+   "K",
+   "L",
+   "M",
+   "N",
+   "P",
+   "Q",
+   "R",
+   "S",
+   "T",
+   "V",
+   "W",
+   "X",
+   "Y",
+   "Z",
+];

@@ -1,4 +1,4 @@
-import { FC, useDeferredValue, useState } from "react";
+import { FC, useDeferredValue, useState, ChangeEvent } from "react";
 import moment from "moment";
 import { Box, Heading, Input, VStack } from "../";
 import { Numerology as NumerologyTxt } from "../../Utils/constaints";
@@ -23,7 +23,10 @@ export const Numerology: FC = () => {
                   defaultValue={deferredName}
                   placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van A'"
                   w={{ md: "50%", xs: "100%" }}
-                  onChange={(e) => setName(e.target.value)}
+                  textAlign="center"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                     setName(e.target.value)
+                  }
                />
             </Box>
             <Box bg="gray.50">
@@ -33,7 +36,10 @@ export const Numerology: FC = () => {
                   placeholder="Ngày tháng năm sinh"
                   w={{ md: "50%", xs: "100%" }}
                   defaultValue={moment().format("YYYY-MM-DD")}
-                  onChange={(e) => setBirth(e.target.value)}
+                  textAlign="center"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                     setBirth(e.target.value)
+                  }
                />
             </Box>
          </VStack>

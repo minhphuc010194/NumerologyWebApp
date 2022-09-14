@@ -23,6 +23,12 @@ export const RenderItem: FC<PropTypes> = ({ name, birth }) => {
             <WrapItem>
                <DisplayCard title="Sứ mệnh" content={data.mission} />
             </WrapItem>
+            <WrapItem>
+               <DisplayCard title="Linh hồn" content={data.soul} />
+            </WrapItem>
+            <WrapItem>
+               <DisplayCard title="Kết nối" content={data.connect} />
+            </WrapItem>
          </Wrap>
       </Box>
    );
