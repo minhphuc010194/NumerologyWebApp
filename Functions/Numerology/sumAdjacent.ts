@@ -6,7 +6,12 @@ export function sumAdjacent(
    const sumDate = Number(strFirst) + Number(strNext);
    if (sumDate >= 10) {
       const strSumDate = String(sumDate).split("");
-      return sumAdjacent(strSumDate[0], strSumDate?.[1]);
+      const str1 = strSumDate[0];
+      const str2 = strSumDate
+         .splice(1, strSumDate.length - 1)
+         .toString()
+         .replace(/\,/g, "");
+      return sumAdjacent(str1, str2);
    }
    return sumDate;
 }

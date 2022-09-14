@@ -4,5 +4,7 @@ export {
    getMission,
    getSoul,
    getValueInAlphabets,
+   getPersonality,
+   getPassion,
 } from "./Numerology";
 export { removeAccents } from "./removeAccents";

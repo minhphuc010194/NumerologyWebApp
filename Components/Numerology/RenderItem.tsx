@@ -1,35 +1,15 @@
 import { FC } from "react";
-import { Box, Wrap, WrapItem } from "../";
-import { useProcessNumerology } from "../../Hooks";
+import { WrapItem } from "../";
+import { NumerologyHookType } from "../../Utils/types";
 import { DisplayCard } from "./DisplayCard";
 
 type PropTypes = {
-   name: string;
-   birth: string;
+   item: NumerologyHookType;
 };
-export const RenderItem: FC<PropTypes> = ({ name, birth }) => {
-   const data = useProcessNumerology(name, birth);
-   console.log(data);
+export const RenderItem: FC<PropTypes> = ({ item }) => {
    return (
-      <Box>
-         <Wrap spacing="10px" justify="center">
-            <WrapItem>
-               <DisplayCard
-                  title="Đường đời"
-                  content={data.walksOfLife}
-                  borderRadius={3}
-               />
-            </WrapItem>
-            <WrapItem>
-               <DisplayCard title="Sứ mệnh" content={data.mission} />
-            </WrapItem>
-            <WrapItem>
-               <DisplayCard title="Linh hồn" content={data.soul} />
-            </WrapItem>
-            <WrapItem>
-               <DisplayCard title="Kết nối" content={data.connect} />
-            </WrapItem>
-         </Wrap>
-      </Box>
+      <WrapItem>
+         <DisplayCard title={item.name} content={item.value} borderRadius={5} />
+      </WrapItem>
    );
 };
