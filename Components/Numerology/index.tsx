@@ -1,14 +1,17 @@
-import { FC, useDeferredValue, useState, ChangeEvent } from "react";
+import { FC, useDeferredValue, useState, ChangeEvent, useId } from "react";
 import moment from "moment";
-import { Box, Heading, Input, VStack } from "../";
+import { Box, Heading, Input, VStack, Wrap } from "../";
 import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 import { RenderItem } from "./RenderItem";
+import { useProcessNumerology } from "../../Hooks";
 
 export const Numerology: FC = () => {
+   const id = useId();
    const [name, setName] = useState<string>("Nguyễn Văn A");
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
+   const data = useProcessNumerology(deferredName, deferredBirth);
 
    return (
       <Box h="90vh">
@@ -51,12 +54,17 @@ export const Numerology: FC = () => {
                textAlign="center"
                py={4}
                px={2}
-               borderRadius={3}
+               borderRadius={5}
             >
                <Box as="legend" fontSize={20} fontWeight={800} color="red.400">
                   Chỉ Số
                </Box>
-               <RenderItem name={deferredName} birth={deferredBirth} />
+
+               <Wrap spacing="10px" justify="center" pb={2}>
+                  {data.map((item, index: number) => (
+                     <RenderItem key={id + index} item={item} />
+                  ))}
+               </Wrap>
             </Box>
          </Box>
       </Box>

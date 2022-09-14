@@ -5,9 +5,13 @@ export const getMission = (strArray: string[]): number => {
    for (const name of strArray) {
       sum += getValueInAlphabets(name);
    }
-   const strSum = sum.toString().split("");
-   const str1 = strSum[0];
-   const str2 = strSum.splice(1, strSum.length - 1).toString();
 
+   const strSum = sum.toString().split("");
+
+   const str1 = strSum[0];
+   const str2 = strSum
+      .splice(1, strSum.length - 1)
+      .toString()
+      .replace(/\,/g, "");
    return sumAdjacent(str1, str2);
 };
