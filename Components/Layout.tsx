@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Box, Header, Footer, Container } from "./";
+import { Header, Footer, Container } from "./";
 
 type PropTypes = {
    children: JSX.Element;
