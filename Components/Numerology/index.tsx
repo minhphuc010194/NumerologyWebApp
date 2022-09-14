@@ -23,6 +23,7 @@ export const Numerology: FC = () => {
                   defaultValue={deferredName}
                   placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van A'"
                   w={{ md: "50%", xs: "100%" }}
+                  textAlign="center"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                      setName(e.target.value)
                   }
@@ -35,6 +36,7 @@ export const Numerology: FC = () => {
                   placeholder="Ngày tháng năm sinh"
                   w={{ md: "50%", xs: "100%" }}
                   defaultValue={moment().format("YYYY-MM-DD")}
+                  textAlign="center"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                      setBirth(e.target.value)
                   }
