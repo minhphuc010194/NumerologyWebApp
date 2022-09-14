@@ -9,7 +9,7 @@ export const Numerology: FC = () => {
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
-
+   const a = 0;
    return (
       <Box h="90vh">
          <Heading textAlign="center" fontFamily="fantasy" pt={4}>
