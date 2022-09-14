@@ -20,9 +20,9 @@ export const RenderItem: FC<PropTypes> = ({ name, birth }) => {
                   borderRadius={3}
                />
             </WrapItem>
-            {/* <WrapItem>
-               <DisplayCard title="Đường đời" content={data.walksOfLife} />
-            </WrapItem> */}
+            <WrapItem>
+               <DisplayCard title="Sứ mệnh" content={data.mission} />
+            </WrapItem>
          </Wrap>
       </Box>
    );

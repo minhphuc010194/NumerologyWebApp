@@ -5,7 +5,7 @@ import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 import { RenderItem } from "./RenderItem";
 
 export const Numerology: FC = () => {
-   const [name, setName] = useState<string>("");
+   const [name, setName] = useState<string>("Nguyễn Văn A");
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
@@ -20,7 +20,8 @@ export const Numerology: FC = () => {
             <Box h="40px" bg="gray.50">
                <Input
                   autoFocus
-                  placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van An'"
+                  defaultValue={deferredName}
+                  placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van A'"
                   w={{ md: "50%", xs: "100%" }}
                   onChange={(e) => setName(e.target.value)}
                />
