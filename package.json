@@ -36,7 +36,7 @@
     "typescript": "4.8.3"
   },
   "lint-staged": {
-    "**/*.{js,ts,jsx,tsx}": [
+    "/**/*.{js,ts,jsx,tsx}": [
       "eslint --fix",
       "npm run lint",
       "npm run format",
