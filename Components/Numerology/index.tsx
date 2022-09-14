@@ -1,4 +1,11 @@
-import { FC, useDeferredValue, useState, ChangeEvent, useId } from "react";
+import {
+   FC,
+   useDeferredValue,
+   useState,
+   ChangeEvent,
+   useId,
+   useRef,
+} from "react";
 import moment from "moment";
 import { Box, Heading, Input, VStack, Wrap } from "../";
 import { Numerology as NumerologyTxt } from "../../Utils/constaints";
@@ -7,6 +14,7 @@ import { useProcessNumerology } from "../../Hooks";
 
 export const Numerology: FC = () => {
    const id = useId();
+   const refInputName = useRef<HTMLInputElement>(null);
    const [name, setName] = useState<string>("Nguyễn Văn A");
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
@@ -23,6 +31,8 @@ export const Numerology: FC = () => {
             <Box h="40px" bg="gray.50">
                <Input
                   autoFocus
+                  onClick={() => refInputName.current?.select()}
+                  ref={refInputName}
                   defaultValue={deferredName}
                   placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van A'"
                   w={{ md: "50%", xs: "100%" }}

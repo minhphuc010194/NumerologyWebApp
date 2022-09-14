@@ -5,3 +5,4 @@ export { getSoul } from "./getSoul";
 export { getValueInAlphabets } from "./getValueInAlphabets";
 export { getPersonality } from "./getPersonality";
 export { getPassion } from "./getPassion";
+export { getBalance } from "./getBalance";
