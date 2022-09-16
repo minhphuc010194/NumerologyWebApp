@@ -7,7 +7,7 @@ export {
    getPersonality,
    getPassion,
    getBalance,
-   getSubconsciousPower,
-   getValueNotInAlphabets,
+   getMissingNumbers,
+   getRationalThinking,
 } from "./Numerology";
 export { removeAccents } from "./removeAccents";

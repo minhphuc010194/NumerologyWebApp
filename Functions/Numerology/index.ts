@@ -6,5 +6,5 @@ export { getValueInAlphabets } from "./getValueInAlphabets";
 export { getPersonality } from "./getPersonality";
 export { getPassion } from "./getPassion";
 export { getBalance } from "./getBalance";
-export { getSubconsciousPower } from "./getSubconsciousPower";
-export { getValueNotInAlphabets } from "./getValueNotInAlphabets";
+export { getMissingNumbers } from "./getMissingNumbers";
+export { getRationalThinking } from "./getRationalThinking";
