@@ -48,6 +48,20 @@ export const useProcessNumerology = (
          completedName,
          moment(birthDay).format("DD")
       );
+      const way1 = sumAdjacent(
+            moment(birthDay).format("MM"),
+            moment(birthDay).format("DD")
+         ),
+         way2 = sumAdjacent(
+            moment(birthDay).format("YYYY"),
+            moment(birthDay).format("DD")
+         );
+      const way3 = sumAdjacent(way1, way2),
+         way4 = sumAdjacent(
+            moment(birthDay).format("MM"),
+            moment(birthDay).format("YYYY")
+         );
+      const way = ` ${way1} ${way2} ${way3} ${way4}`;
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -71,6 +85,11 @@ export const useProcessNumerology = (
             key: "rationalThinking",
             value: rationalThinking,
             name: "Tư duy lý trí",
+         },
+         {
+            key: "way",
+            value: way,
+            name: "Chặng",
          },
       ];
    }, [fullName, birthDay]);

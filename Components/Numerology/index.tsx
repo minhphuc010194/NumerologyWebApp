@@ -16,13 +16,13 @@ export const Numerology: FC = () => {
    const id = useId();
    const refInputName = useRef<HTMLInputElement>(null);
    const [name, setName] = useState<string>("Lê Phạm Thanh Nga");
-   const [birth, setBirth] = useState<string>(new Date().toISOString());
+   const [birth, setBirth] = useState<string>("1982-10-12");
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
    const data = useProcessNumerology(deferredName, deferredBirth);
 
    return (
-      <Box h="90vh">
+      <Box>
          <Heading textAlign="center" fontFamily="fantasy" pt={4}>
             {NumerologyTxt}
          </Heading>
@@ -48,7 +48,7 @@ export const Numerology: FC = () => {
                   type="date"
                   placeholder="Ngày tháng năm sinh"
                   w={{ md: "50%", xs: "100%" }}
-                  defaultValue={moment().format("YYYY-MM-DD")}
+                  defaultValue={moment(birth).format("YYYY-MM-DD")}
                   textAlign="center"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                      setBirth(e.target.value)
