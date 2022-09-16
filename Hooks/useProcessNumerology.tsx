@@ -9,6 +9,7 @@ import {
    getPassion,
    sumAdjacent,
    getBalance,
+   getSubconsciousPower,
 } from "../Functions";
 
 export const useProcessNumerology = (
@@ -39,7 +40,7 @@ export const useProcessNumerology = (
       const passion = getPassion(arrName);
       const mature = sumAdjacent(walksOfLife, mission); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
       const balance = getBalance(completedName);
-
+      const subconsciousPower = getSubconsciousPower(arrName);
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -49,6 +50,11 @@ export const useProcessNumerology = (
          { key: "passion", value: passion, name: "Đam mê" },
          { key: "mature", value: mature, name: "Trưởng thành" },
          { key: "balance", value: balance, name: "Cân bằng" },
+         {
+            key: "subconsciousPower",
+            value: subconsciousPower,
+            name: "Sức mạnh tiềm thức",
+         },
       ];
    }, [fullName, birthDay]);
    return data;

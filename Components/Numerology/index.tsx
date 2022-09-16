@@ -15,7 +15,7 @@ import { useProcessNumerology } from "../../Hooks";
 export const Numerology: FC = () => {
    const id = useId();
    const refInputName = useRef<HTMLInputElement>(null);
-   const [name, setName] = useState<string>("Nguyễn Văn A");
+   const [name, setName] = useState<string>("Lê Phạm Thanh Nga");
    const [birth, setBirth] = useState<string>(new Date().toISOString());
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);

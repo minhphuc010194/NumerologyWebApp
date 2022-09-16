@@ -1,48 +1,38 @@
+import _ from "lodash";
 import { getValueInAlphabets } from "./getValueInAlphabets";
 
-type GroupType = { [key: string]: number };
+type GroupType = { [key: string]: number[] };
 export const getPassion = (strArray: string[]): number | string => {
-   const group: GroupType = {};
+   const arrNum: number[] = [];
    strArray.map((a) => {
-      if (a in group) group[a]++;
-      else group[a] = 1;
+      arrNum.push(getValueInAlphabets(a));
    });
-
+   const group: GroupType = _.groupBy(arrNum);
    return getMax(group);
 };
 
 type ItemMaxType = {
    name: string;
    value: number;
-   maxNumber: number;
 };
 function getMax(group: GroupType): string | number {
    let max = 0;
+   let arrMax: ItemMaxType[] = [];
 
-   const arrMax: ItemMaxType[] = [];
-   Object.keys(group).map((fieldName) => {
-      const count = group[fieldName];
-      if (count >= max) {
-         max = count;
-         const valueMax: ItemMaxType = {
-            name: "",
-            value: 0,
-            maxNumber: 0,
-         };
-         valueMax.maxNumber = count;
-         valueMax.name = fieldName;
-         valueMax.value = getValueInAlphabets(fieldName);
-         arrMax.push(valueMax);
+   Object.keys(group).map((num) => {
+      if (group[num].length >= max) {
+         max = group[num].length;
+         arrMax.push({ name: num, value: Number(group[num].length) });
       }
    });
 
    if (max === 1) return 0;
    let strPassion = "";
+
    arrMax.map((item) => {
-      if (item.maxNumber === max) {
-         strPassion += ` ${item.value} `;
+      if (item.value === max) {
+         strPassion += ` ${item.name} `;
       }
    });
-   // console.log(arrMax);
    return strPassion;
 }
