@@ -9,8 +9,10 @@ import {
    getPassion,
    sumAdjacent,
    getBalance,
-   getSubconsciousPower,
+   getMissingNumbers,
+   getRationalThinking,
 } from "../Functions";
+import moment from "moment";
 
 export const useProcessNumerology = (
    fullName: string,
@@ -40,7 +42,12 @@ export const useProcessNumerology = (
       const passion = getPassion(arrName);
       const mature = sumAdjacent(walksOfLife, mission); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
       const balance = getBalance(completedName);
-      const subconsciousPower = getSubconsciousPower(arrName);
+      const missingNumber = getMissingNumbers(arrName);
+      const subconsciousPower = 9 - missingNumber.length;
+      const rationalThinking = getRationalThinking(
+         completedName,
+         moment(birthDay).format("DD")
+      );
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -54,6 +61,16 @@ export const useProcessNumerology = (
             key: "subconsciousPower",
             value: subconsciousPower,
             name: "Sức mạnh tiềm thức",
+         },
+         {
+            key: "missingNumbers",
+            value: missingNumber.map((item) => item.value + " "),
+            name: "Số thiếu",
+         },
+         {
+            key: "rationalThinking",
+            value: rationalThinking,
+            name: "Tư duy lý trí",
          },
       ];
    }, [fullName, birthDay]);
