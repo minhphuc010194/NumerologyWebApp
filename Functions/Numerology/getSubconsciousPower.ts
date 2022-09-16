@@ -14,7 +14,7 @@ export const getSubconsciousPower = (arrString: string[]) => {
       }
    }
    //    console.log(value);
-   return value;
+   return "";
    //    arrString.map((str) => {
    //       value += getValueNotInAlphabets(str).toString();
    //    });
