@@ -1,6 +1,7 @@
 export {
    getWalksOfLife,
    sumAdjacent,
+   substractAdjacent,
    getMission,
    getSoul,
    getValueInAlphabets,

@@ -11,6 +11,7 @@ import {
    getBalance,
    getMissingNumbers,
    getRationalThinking,
+   substractAdjacent,
 } from "../Functions";
 import moment from "moment";
 
@@ -19,6 +20,11 @@ export const useProcessNumerology = (
    birthDay: string
 ): NumerologyHookType[] => {
    const data = useMemo(() => {
+      const date = moment(birthDay).format("DD");
+      const month = moment(birthDay).format("MM");
+      const year = moment(birthDay).format("YYYY");
+      const currentYear = moment().format("YYYY");
+      const currentMonth = moment().format("MM");
       const txtName = fullName.trim();
       const name = removeAccents(txtName.toLocaleUpperCase());
       let completedName: string = "";
@@ -42,26 +48,24 @@ export const useProcessNumerology = (
       const passion = getPassion(arrName);
       const mature = sumAdjacent(walksOfLife, mission); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
       const balance = getBalance(completedName);
-      const missingNumber = getMissingNumbers(arrName);
-      const subconsciousPower = 9 - missingNumber.length;
-      const rationalThinking = getRationalThinking(
-         completedName,
-         moment(birthDay).format("DD")
+      const missingNumber = getMissingNumbers(arrName).map(
+         (item) => item.value
       );
-      const way1 = sumAdjacent(
-            moment(birthDay).format("MM"),
-            moment(birthDay).format("DD")
-         ),
-         way2 = sumAdjacent(
-            moment(birthDay).format("YYYY"),
-            moment(birthDay).format("DD")
-         );
+      const subconsciousPower = 9 - missingNumber.length;
+      const rationalThinking = getRationalThinking(completedName, date);
+      const way1 = sumAdjacent(month, date),
+         way2 = sumAdjacent(year, date);
       const way3 = sumAdjacent(way1, way2),
-         way4 = sumAdjacent(
-            moment(birthDay).format("MM"),
-            moment(birthDay).format("YYYY")
-         );
+         way4 = sumAdjacent(month, year);
       const way = ` ${way1} ${way2} ${way3} ${way4}`;
+      const challenge1 = substractAdjacent(month, date);
+      const challenge2 = substractAdjacent(year, date);
+      const challenge3 = Math.abs(challenge1 - challenge2);
+      const challenge4 = substractAdjacent(month, year);
+      const challenges = ` ${challenge1} ${challenge2} ${challenge3} ${challenge4}`;
+      const yearDividual = sumAdjacent(Number(currentYear), date + month);
+      const monthDividual = sumAdjacent(yearDividual, Number(currentMonth));
+
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -78,7 +82,7 @@ export const useProcessNumerology = (
          },
          {
             key: "missingNumbers",
-            value: missingNumber.map((item) => item.value + " "),
+            value: missingNumber.toString().replace(/\,/g, " "),
             name: "Số thiếu",
          },
          {
@@ -90,6 +94,21 @@ export const useProcessNumerology = (
             key: "way",
             value: way,
             name: "Chặng",
+         },
+         {
+            key: "challenges",
+            value: challenges,
+            name: "Thách thức",
+         },
+         {
+            key: "yearIndividual",
+            value: yearDividual,
+            name: "Năm cá nhân",
+         },
+         {
+            key: "monthIndividual",
+            value: monthDividual,
+            name: "Tháng cá nhân",
          },
       ];
    }, [fullName, birthDay]);
