@@ -11,6 +11,7 @@ import {
    getBalance,
    getMissingNumbers,
    getRationalThinking,
+   substractAdjacent,
 } from "../Functions";
 import moment from "moment";
 
@@ -19,6 +20,9 @@ export const useProcessNumerology = (
    birthDay: string
 ): NumerologyHookType[] => {
    const data = useMemo(() => {
+      const date = moment(birthDay).format("DD");
+      const month = moment(birthDay).format("MM");
+      const year = moment(birthDay).format("YYYY");
       const txtName = fullName.trim();
       const name = removeAccents(txtName.toLocaleUpperCase());
       let completedName: string = "";
@@ -44,24 +48,15 @@ export const useProcessNumerology = (
       const balance = getBalance(completedName);
       const missingNumber = getMissingNumbers(arrName);
       const subconsciousPower = 9 - missingNumber.length;
-      const rationalThinking = getRationalThinking(
-         completedName,
-         moment(birthDay).format("DD")
-      );
-      const way1 = sumAdjacent(
-            moment(birthDay).format("MM"),
-            moment(birthDay).format("DD")
-         ),
-         way2 = sumAdjacent(
-            moment(birthDay).format("YYYY"),
-            moment(birthDay).format("DD")
-         );
+      const rationalThinking = getRationalThinking(completedName, date);
+      const way1 = sumAdjacent(month, date),
+         way2 = sumAdjacent(year, date);
       const way3 = sumAdjacent(way1, way2),
-         way4 = sumAdjacent(
-            moment(birthDay).format("MM"),
-            moment(birthDay).format("YYYY")
-         );
+         way4 = sumAdjacent(month, year);
       const way = ` ${way1} ${way2} ${way3} ${way4}`;
+      const challenge1 = substractAdjacent(month, date);
+      const challenge2 = substractAdjacent(year, date);
+      const challenges = ` ${challenge1} ${challenge2} ${way3} ${way4}`;
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -90,6 +85,11 @@ export const useProcessNumerology = (
             key: "way",
             value: way,
             name: "Chặng",
+         },
+         {
+            key: "challenges",
+            value: challenges,
+            name: "Thách thức",
          },
       ];
    }, [fullName, birthDay]);

@@ -104,3 +104,4 @@ export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { Layout } from "./Layout";
 export { Numerology } from "./Numerology";
+export { InputDate } from "./InputDate";

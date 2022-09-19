@@ -6,8 +6,7 @@ import {
    useId,
    useRef,
 } from "react";
-import moment from "moment";
-import { Box, Heading, Input, VStack, Wrap } from "../";
+import { Box, Heading, Input, InputDate, VStack, Wrap } from "../";
 import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 import { RenderItem } from "./RenderItem";
 import { useProcessNumerology } from "../../Hooks";
@@ -42,9 +41,8 @@ export const Numerology: FC = () => {
                   }
                />
             </Box>
-            <Box bg="gray.50">
+            {/* <Box bg="gray.50">
                <Input
-                  autoFocus
                   type="date"
                   placeholder="Ngày tháng năm sinh"
                   w={{ md: "50%", xs: "100%" }}
@@ -53,6 +51,12 @@ export const Numerology: FC = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                      setBirth(e.target.value)
                   }
+               />
+            </Box> */}
+            <Box bg="gray.50">
+               <InputDate
+                  getValue={(date) => setBirth(date)}
+                  defaultValue={birth}
                />
             </Box>
          </VStack>

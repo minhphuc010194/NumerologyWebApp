@@ -8,3 +8,4 @@ export { getPassion } from "./getPassion";
 export { getBalance } from "./getBalance";
 export { getMissingNumbers } from "./getMissingNumbers";
 export { getRationalThinking } from "./getRationalThinking";
+export { substractAdjacent } from "./subtractAdjacent";
