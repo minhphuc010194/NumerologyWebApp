@@ -1,4 +1,5 @@
-import { FC, useRef, useEffect } from "react";
+import moment from "moment";
+import { FC, useRef, useEffect, ChangeEvent } from "react";
 import { Input, InputGroup } from "./";
 
 type PropTypes = {
@@ -25,28 +26,27 @@ export const InputDate: FC<PropTypes> = (props) => {
          refMonth.current.value = splitDate[1];
          refYear.current.value = splitDate[0];
       }
-   }, [defaultValue]);
+   }, []);
 
    const handleChange = () => {
       const date: string = refDate.current?.value ?? "";
       const month: string = refMonth.current?.value ?? "";
       const year: string = refYear.current?.value ?? "";
 
-      if (date.length >= 2) {
-         refMonth.current?.select();
-      }
-      if (month.length >= 2) {
-         refYear.current?.select();
-      }
-      console.log(date, month, year);
       if (typeof getValue === "function") {
-         getValue(year + "-" + month + "-" + date);
+         getValue(moment(year + "-" + month + "-" + date).format("YYYY-MM-DD"));
       }
    };
    return (
       <InputGroup>
          <Input
-            onChange={handleChange}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+               const value = e.target.value;
+               if (value.length >= 2) {
+                  refMonth.current?.select();
+               }
+               handleChange();
+            }}
             onFocus={(e) => e.target.select()}
             ref={refDate}
             textAlign="center"
@@ -54,14 +54,22 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={1}
             min={1}
             max={31}
+            placeholder="ngày sinh"
          />
          <Input
-            onChange={handleChange}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+               const value = e.target.value;
+               if (value.length >= 2) {
+                  refYear.current?.select();
+               }
+               handleChange();
+            }}
             onFocus={(e) => e.target.select()}
             ref={refMonth}
             type="number"
             defaultValue={1}
             textAlign="center"
+            placeholder="tháng sinh"
             min={1}
             max={12}
          />
@@ -72,6 +80,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={1982}
             textAlign="center"
             type="number"
+            placeholder="năm sinh"
          />
       </InputGroup>
    );

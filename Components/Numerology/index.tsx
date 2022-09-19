@@ -20,6 +20,7 @@ export const Numerology: FC = () => {
    const deferredBirth = useDeferredValue(birth);
    const data = useProcessNumerology(deferredName, deferredBirth);
 
+   // console.log(birth);
    return (
       <Box>
          <Heading textAlign="center" fontFamily="fantasy" pt={4}>

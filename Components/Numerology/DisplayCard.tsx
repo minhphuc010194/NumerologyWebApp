@@ -4,7 +4,7 @@ import { BoxProps } from "../../Utils/types";
 
 type PropTypes = BoxProps & {
    title: string;
-   content: string | number;
+   content: string | number | JSX.Element;
 };
 export const DisplayCard: FC<PropTypes> = ({ title, content, ...rest }) => {
    return (

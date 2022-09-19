@@ -5,15 +5,26 @@ export function substractAdjacent(
    strFirst: string | number,
    strNext: string | number
 ): number {
-   const substractDate = Number(strFirst) - Number(strNext);
+   const sumStrFirst = sumAdjacent(strFirst, 0);
+   const sumStrNext = sumAdjacent(strNext, 0);
+
+   const substractDate = Math.abs(sumStrFirst - sumStrNext);
+
    if (substractDate >= 10) {
       const strSubstractDate = String(substractDate).split("");
-      const str1 = strSubstractDate[0];
-      const str2 = strSubstractDate
-         .splice(1, strSubstractDate.length - 1)
+
+      const separate = Math.floor(strSubstractDate.length / 2);
+      const str1 = strSubstractDate
+         .slice(0, separate)
          .toString()
          .replace(/\,/g, "");
-      return sumAdjacent(str1, str2);
+      const str2 = strSubstractDate
+         .slice(separate, strSubstractDate.length)
+         .toString()
+         .replace(/\,/g, "");
+      const sum = sumAdjacent(str1, str2);
+
+      return sum;
    }
-   return Math.abs(substractDate);
+   return substractDate;
 }
