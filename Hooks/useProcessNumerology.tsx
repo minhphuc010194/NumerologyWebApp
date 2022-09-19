@@ -63,9 +63,9 @@ export const useProcessNumerology = (
       const challenge3 = Math.abs(challenge1 - challenge2);
       const challenge4 = substractAdjacent(month, year);
       const challenges = ` ${challenge1} ${challenge2} ${challenge3} ${challenge4}`;
-      const yearDividual = sumAdjacent(Number(currentYear), date + month);
-      const monthDividual = sumAdjacent(yearDividual, Number(currentMonth));
-
+      const yearIndividual = sumAdjacent(Number(currentYear), date + month);
+      const monthIndividual = sumAdjacent(yearIndividual, Number(currentMonth));
+      const linkPersonalityAndSoul = substractAdjacent(personality, soul);
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -102,13 +102,18 @@ export const useProcessNumerology = (
          },
          {
             key: "yearIndividual",
-            value: yearDividual,
+            value: yearIndividual,
             name: "Năm cá nhân",
          },
          {
             key: "monthIndividual",
-            value: monthDividual,
+            value: monthIndividual,
             name: "Tháng cá nhân",
+         },
+         {
+            key: "linkPersonalityAndSoul",
+            value: linkPersonalityAndSoul,
+            name: "Liên kết nhân cách và linh hồn",
          },
       ];
    }, [fullName, birthDay]);
