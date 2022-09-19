@@ -1,8 +1,9 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Box } from "./";
+import { Box, useColorMode } from "./";
 
 export const Footer: FC = () => {
+   const { toggleColorMode } = useColorMode();
    return (
       <footer>
          {/* <a href="/" target="_blank" rel="noopener noreferrer"> */}
@@ -14,6 +15,10 @@ export const Footer: FC = () => {
                height="50%"
                placeholder="blur"
                blurDataURL="/Images/numerologyPNG.png"
+               style={{
+                  cursor: "pointer",
+               }}
+               onClick={toggleColorMode}
             />
          </Box>
          {/* </a> */}

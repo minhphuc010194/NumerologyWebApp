@@ -1,15 +1,16 @@
 import moment from "moment";
 import { FC, useRef, useEffect, ChangeEvent } from "react";
 import { Input, InputGroup } from "./";
+import { InputProps } from "../Utils/types";
 
-type PropTypes = {
+type PropTypes = InputProps & {
    // eslint-disable-next-line no-unused-vars
    getValue?: (dateTime: string) => void;
    //    value?: string;
    defaultValue?: string;
 };
 export const InputDate: FC<PropTypes> = (props) => {
-   const { getValue, defaultValue = "" } = props;
+   const { getValue, defaultValue = "", ...rest } = props;
    const refDate = useRef<HTMLInputElement>(null);
    const refMonth = useRef<HTMLInputElement>(null);
    const refYear = useRef<HTMLInputElement>(null);
@@ -55,6 +56,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             min={1}
             max={31}
             placeholder="ngày sinh"
+            {...rest}
          />
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +74,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             placeholder="tháng sinh"
             min={1}
             max={12}
+            {...rest}
          />
          <Input
             onChange={handleChange}
@@ -81,6 +84,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             textAlign="center"
             type="number"
             placeholder="năm sinh"
+            {...rest}
          />
       </InputGroup>
    );

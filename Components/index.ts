@@ -83,6 +83,7 @@ export {
    UnorderedList,
    Wrap,
    WrapItem,
+   useColorMode,
    useColorModeValue,
    useDisclosure,
 } from "@chakra-ui/react";

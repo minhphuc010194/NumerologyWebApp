@@ -6,13 +6,22 @@ import {
    useId,
    useRef,
 } from "react";
-import { Box, Heading, Input, InputDate, VStack, Wrap } from "../";
+import {
+   Box,
+   Heading,
+   Input,
+   InputDate,
+   useColorModeValue,
+   VStack,
+   Wrap,
+} from "../";
 import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 import { RenderItem } from "./RenderItem";
 import { useProcessNumerology } from "../../Hooks";
 
 export const Numerology: FC = () => {
    const id = useId();
+   const color = useColorModeValue("black", "gray.500");
    const refInputName = useRef<HTMLInputElement>(null);
    const [name, setName] = useState<string>("Lê Phạm Thanh Nga");
    const [birth, setBirth] = useState<string>("1982-10-12");
@@ -40,6 +49,7 @@ export const Numerology: FC = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                      setName(e.target.value)
                   }
+                  color={color}
                />
             </Box>
             {/* <Box bg="gray.50">
@@ -58,6 +68,7 @@ export const Numerology: FC = () => {
                <InputDate
                   getValue={(date) => setBirth(date)}
                   defaultValue={birth}
+                  color={color}
                />
             </Box>
          </VStack>
