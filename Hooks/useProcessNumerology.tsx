@@ -66,6 +66,7 @@ export const useProcessNumerology = (
       const yearIndividual = sumAdjacent(Number(currentYear), date + month);
       const monthIndividual = sumAdjacent(yearIndividual, Number(currentMonth));
       const linkPersonalityAndSoul = substractAdjacent(personality, soul);
+      const dateOfBirth = sumAdjacent(date, 0);
       return [
          { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
          { key: "mission", value: mission, name: "Sứ mệnh" },
@@ -99,6 +100,11 @@ export const useProcessNumerology = (
             key: "challenges",
             value: challenges,
             name: "Thách thức",
+         },
+         {
+            key: "dateOfBirth",
+            value: dateOfBirth,
+            name: "Ngày sinh",
          },
          {
             key: "yearIndividual",
