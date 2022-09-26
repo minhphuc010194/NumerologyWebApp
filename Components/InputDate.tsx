@@ -30,10 +30,15 @@ export const InputDate: FC<PropTypes> = (props) => {
    }, []);
 
    const handleChange = () => {
-      const date: string = refDate.current?.value ?? "";
-      const month: string = refMonth.current?.value ?? "";
-      const year: string = refYear.current?.value ?? "";
-
+      const date: string = !!refDate.current?.value
+         ? refDate.current.value
+         : "01";
+      const month: string = !!refMonth.current?.value
+         ? refMonth.current.value
+         : "01";
+      const year: string = !!refYear.current?.value
+         ? refYear.current.value
+         : "1982";
       if (typeof getValue === "function") {
          getValue(moment(year + "-" + month + "-" + date).format("YYYY-MM-DD"));
       }
