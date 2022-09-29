@@ -2103,10 +2103,10 @@ focus-lock@^0.11.2:
   dependencies:
     tslib "^2.0.3"
 
-framer-motion@7.3.6:
-  version "7.3.6"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-7.3.6.tgz#aff993b9b7064c8d13cf0afa118d24e07713570a"
-  integrity sha512-en8mLpDv6IcieZo54acHg56HSLpOSryRLZtMOd1Sj1s7hBbUTWnJsv68CWaHI2ysPKcbH/olGfAhRh4yrJn5tw==
+framer-motion@7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-7.5.0.tgz#e61864f9423f8b24ee5d6539e77c5d6571ee5f31"
+  integrity sha512-uz42xPsO5VmoRrT0Q2I1UZBvQ+Px0Is2c+7mum2z/UhC9m2Q1/2DmSR82ncc5qRtO/4OerNEm473ktOEX3unRg==
   dependencies:
     "@motionone/dom" "10.13.1"
     framesync "6.1.2"
