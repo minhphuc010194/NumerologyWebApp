@@ -30,10 +30,15 @@ export const InputDate: FC<PropTypes> = (props) => {
    }, []);
 
    const handleChange = () => {
-      const date: string = refDate.current?.value ?? "";
-      const month: string = refMonth.current?.value ?? "";
-      const year: string = refYear.current?.value ?? "";
-
+      const date: string = !!refDate.current?.value
+         ? refDate.current.value
+         : "01";
+      const month: string = !!refMonth.current?.value
+         ? refMonth.current.value
+         : "01";
+      const year: string = !!refYear.current?.value
+         ? refYear.current.value
+         : "1982";
       if (typeof getValue === "function") {
          getValue(moment(year + "-" + month + "-" + date).format("YYYY-MM-DD"));
       }
@@ -55,7 +60,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={1}
             min={1}
             max={31}
-            placeholder="ngày sinh"
+            placeholder="Date(ngày sinh)..."
             {...rest}
          />
          <Input
@@ -71,7 +76,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             type="number"
             defaultValue={1}
             textAlign="center"
-            placeholder="tháng sinh"
+            placeholder="Month(tháng sinh)..."
             min={1}
             max={12}
             {...rest}
@@ -83,7 +88,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={1982}
             textAlign="center"
             type="number"
-            placeholder="năm sinh"
+            placeholder="Year(năm sinh)..."
             {...rest}
          />
       </InputGroup>
