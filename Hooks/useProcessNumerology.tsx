@@ -68,58 +68,66 @@ export const useProcessNumerology = (
       const linkPersonalityAndSoul = substractAdjacent(personality, soul);
       const dateOfBirth = sumAdjacent(date, 0);
       return [
-         { key: "walksOfLife", value: walksOfLife, name: "Đường đời" },
-         { key: "mission", value: mission, name: "Sứ mệnh" },
-         { key: "soul", value: soul, name: "Linh hồn" },
-         { key: "connect", value: connect, name: "Kết nối" },
-         { key: "personality", value: personality, name: "Nhân cách" },
-         { key: "passion", value: passion, name: "Đam mê" },
-         { key: "mature", value: mature, name: "Trưởng thành" },
-         { key: "balance", value: balance, name: "Cân bằng" },
+         {
+            key: "walksOfLife",
+            value: walksOfLife,
+            name: "Đường đời (Path of life)",
+         },
+         { key: "mission", value: mission, name: "Sứ mệnh (Mission)" },
+         { key: "soul", value: soul, name: "Linh hồn (Soul)" },
+         { key: "connect", value: connect, name: "Kết nối (connection)" },
+         {
+            key: "personality",
+            value: personality,
+            name: "Nhân cách (Personality)",
+         },
+         { key: "passion", value: passion, name: "Đam mê (Passion)" },
+         { key: "mature", value: mature, name: "Trưởng thành (Mature)" },
+         { key: "balance", value: balance, name: "Cân bằng (Balance)" },
          {
             key: "subconsciousPower",
             value: subconsciousPower,
-            name: "Sức mạnh tiềm thức",
+            name: "Sức mạnh tiềm thức (Subconscious Power)",
          },
          {
             key: "missingNumbers",
             value: missingNumber.toString().replace(/\,/g, " "),
-            name: "Số thiếu",
+            name: "Số thiếu (Missing Numbers)",
          },
          {
             key: "rationalThinking",
             value: rationalThinking,
-            name: "Tư duy lý trí",
+            name: "Tư duy lý trí (Rational Thinking)",
          },
          {
             key: "way",
             value: way,
-            name: "Chặng",
+            name: "Chặng (Way)",
          },
          {
             key: "challenges",
             value: challenges,
-            name: "Thách thức",
+            name: "Thách thức (Challenges)",
          },
          {
             key: "dateOfBirth",
             value: dateOfBirth,
-            name: "Ngày sinh",
+            name: "Ngày sinh (Date Of Birth)",
          },
          {
             key: "yearIndividual",
             value: yearIndividual,
-            name: "Năm cá nhân",
+            name: "Năm cá nhân (Individual Year)",
          },
          {
             key: "monthIndividual",
             value: monthIndividual,
-            name: "Tháng cá nhân",
+            name: "Tháng cá nhân (Individual Month)",
          },
          {
             key: "linkPersonalityAndSoul",
             value: linkPersonalityAndSoul,
-            name: "Liên kết nhân cách và linh hồn",
+            name: "Liên kết nhân cách và linh hồn (Link Personality And Soul)",
          },
       ];
    }, [fullName, birthDay]);

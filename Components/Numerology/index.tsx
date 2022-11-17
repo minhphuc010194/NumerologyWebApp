@@ -1,19 +1,19 @@
 import {
    FC,
-   useDeferredValue,
-   useState,
-   ChangeEvent,
    useId,
    useRef,
+   useState,
+   ChangeEvent,
+   useDeferredValue,
 } from "react";
 import {
    Box,
-   Heading,
+   Wrap,
    Input,
+   VStack,
+   Heading,
    InputDate,
    useColorModeValue,
-   VStack,
-   Wrap,
 } from "../";
 import { Numerology as NumerologyTxt } from "../../Utils/constaints";
 import { RenderItem } from "./RenderItem";
@@ -43,7 +43,7 @@ export const Numerology: FC = () => {
                   onClick={() => refInputName.current?.select()}
                   ref={refInputName}
                   defaultValue={deferredName}
-                  placeholder="Nhập họ tên đầy đủ, vd: 'Nguyen Van A'"
+                  placeholder="Your full name, ex: 'Nguyen Van A'"
                   w={{ md: "50%", xs: "100%" }}
                   textAlign="center"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -83,7 +83,7 @@ export const Numerology: FC = () => {
                borderRadius={5}
             >
                <Box as="legend" fontSize={20} fontWeight={800} color="red.400">
-                  Chỉ Số
+                  Index (Chỉ Số)
                </Box>
 
                <Wrap spacing="10px" justify="center" pb={2}>

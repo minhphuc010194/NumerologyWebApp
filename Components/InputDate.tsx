@@ -60,7 +60,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={1}
             min={1}
             max={31}
-            placeholder="ngày sinh"
+            placeholder="Date(ngày sinh)..."
             {...rest}
          />
          <Input
@@ -76,7 +76,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             type="number"
             defaultValue={1}
             textAlign="center"
-            placeholder="tháng sinh"
+            placeholder="Month(tháng sinh)..."
             min={1}
             max={12}
             {...rest}
@@ -88,7 +88,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={1982}
             textAlign="center"
             type="number"
-            placeholder="năm sinh"
+            placeholder="Year(năm sinh)..."
             {...rest}
          />
       </InputGroup>
