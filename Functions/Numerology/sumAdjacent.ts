@@ -2,14 +2,18 @@
 export function sumAdjacent(
    strFirst: string | number,
    strNext: string | number,
-   flagNumerology?: "walksOfLife"
+   flagNumerology?: "walksOfLife" | "mission" | "soul" | "mature" | "finalWay"
 ): number {
    const sumDate = Number(strFirst) + Number(strNext);
    if (sumDate >= 10) {
-      if (
-         flagNumerology === "walksOfLife" &&
-         (sumDate === 10 || sumDate === 11 || sumDate === 22)
-      ) {
+      const isMaster =
+         (flagNumerology === "walksOfLife" ||
+            flagNumerology === "mission" ||
+            flagNumerology === "soul" ||
+            flagNumerology === "mature" ||
+            flagNumerology === "finalWay") &&
+         (sumDate === 11 || sumDate === 22 || sumDate === 33);
+      if (isMaster) {
          return sumDate;
       }
       const strSumDate = String(sumDate).split("");
