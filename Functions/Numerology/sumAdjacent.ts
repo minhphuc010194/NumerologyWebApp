@@ -5,14 +5,19 @@ export function sumAdjacent(
    flagNumerology?: "walksOfLife" | "mission" | "soul" | "mature" | "finalWay"
 ): number {
    const sumDate = Number(strFirst) + Number(strNext);
+   const joinStrDate = String(strFirst) + String(strNext);
+   const checkIsMaster =
+      joinStrDate === "11" || joinStrDate === "22" || joinStrDate === "33";
+   const flagMaster =
+      flagNumerology === "walksOfLife" ||
+      flagNumerology === "mission" ||
+      flagNumerology === "soul" ||
+      flagNumerology === "mature" ||
+      flagNumerology === "finalWay";
+   if (flagMaster && checkIsMaster) return Number(joinStrDate);
    if (sumDate >= 10) {
       const isMaster =
-         (flagNumerology === "walksOfLife" ||
-            flagNumerology === "mission" ||
-            flagNumerology === "soul" ||
-            flagNumerology === "mature" ||
-            flagNumerology === "finalWay") &&
-         (sumDate === 11 || sumDate === 22 || sumDate === 33);
+         flagMaster && (sumDate === 11 || sumDate === 22 || sumDate === 33);
       if (isMaster) {
          return sumDate;
       }
