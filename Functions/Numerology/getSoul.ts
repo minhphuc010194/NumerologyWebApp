@@ -16,5 +16,5 @@ export const getSoul = (strArray: string[]): number => {
    const strSum = soulNumber.toString().split("");
    const str1 = strSum[0];
    const str2 = strSum.splice(1, strSum.length - 1).toString();
-   return sumAdjacent(str1, str2);
+   return sumAdjacent(str1, str2, "soul");
 };
