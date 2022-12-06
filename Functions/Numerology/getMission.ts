@@ -13,5 +13,5 @@ export const getMission = (strArray: string[]): number => {
       .splice(1, strSum.length - 1)
       .toString()
       .replace(/\,/g, "");
-   return sumAdjacent(str1, str2);
+   return sumAdjacent(str1, str2, "mission");
 };
