@@ -42,7 +42,7 @@ export const useProcessNumerology = (
 
       const walksOfLife = getWalksOfLife(birthDay);
       const mission = getMission(arrName);
-      const soul = getSoul(arrName);
+      const soul = getSoul(name);
       const resumWalksOfLife = String(walksOfLife).split("");
       const connect = Math.abs(
          sumAdjacent(resumWalksOfLife[0], resumWalksOfLife?.[1] ?? 0) - mission
