@@ -43,10 +43,19 @@ export const useProcessNumerology = (
       const walksOfLife = getWalksOfLife(birthDay);
       const mission = getMission(arrName);
       const soul = getSoul(arrName);
-      const connect = Math.abs(walksOfLife - mission);
+      const resumWalksOfLife = String(walksOfLife).split("");
+      const connect = Math.abs(
+         sumAdjacent(resumWalksOfLife[0], resumWalksOfLife?.[1] ?? 0) - mission
+      );
       const personality = getPersonality(arrName);
       const passion = getPassion(arrName);
-      const mature = sumAdjacent(walksOfLife, mission, "mature"); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
+      const resumMission = String(mission).split("");
+
+      const mature = sumAdjacent(
+         walksOfLife,
+         sumAdjacent(resumMission[0], resumMission?.[1] ?? 0),
+         "mature"
+      ); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
       const balance = getBalance(completedName);
       const missingNumber = getMissingNumbers(arrName).map(
          (item) => item.value
