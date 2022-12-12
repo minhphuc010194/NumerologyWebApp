@@ -41,7 +41,7 @@ export const useProcessNumerology = (
       const arrName = name.replace(/\s/g, "").split("");
 
       const walksOfLife = getWalksOfLife(birthDay);
-      const mission = getMission(arrName);
+      const mission = getMission(name);
       const soul = getSoul(name);
       const resumWalksOfLife = String(walksOfLife).split("");
       const connect = Math.abs(
