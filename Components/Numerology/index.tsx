@@ -11,35 +11,28 @@ import {
    Wrap,
    Input,
    VStack,
-   Heading,
    InputDate,
    useColorModeValue,
-} from "../";
-import { Numerology as NumerologyTxt } from "../../Utils/constaints";
+} from "Components";
 import { RenderItem } from "./RenderItem";
-import { useProcessNumerology } from "../../Hooks";
+import { useProcessNumerology } from "Hooks";
 
 export const Numerology: FC = () => {
    const id = useId();
-   const color = useColorModeValue("black", "gray.500");
+   const color = useColorModeValue("black", "white");
    const refInputName = useRef<HTMLInputElement>(null);
    const [name, setName] = useState<string>("Lê Phạm Thanh Nga");
    const [birth, setBirth] = useState<string>("1982-10-12");
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
    const data = useProcessNumerology(deferredName, deferredBirth);
-
-   // console.log(birth);
    return (
       <Box>
-         <Heading textAlign="center" fontFamily="fantasy" pt={4}>
-            {NumerologyTxt}
-         </Heading>
-         <Box as="br" />
          <VStack spacing={2} align="stretch">
-            <Box h="40px" bg="gray.50">
+            <Box h="40px">
                <Input
                   autoFocus
+                  rounded={50}
                   onClick={() => refInputName.current?.select()}
                   ref={refInputName}
                   defaultValue={deferredName}
@@ -52,20 +45,10 @@ export const Numerology: FC = () => {
                   color={color}
                />
             </Box>
-            {/* <Box bg="gray.50">
-               <Input
-                  type="date"
-                  placeholder="Ngày tháng năm sinh"
-                  w={{ md: "50%", xs: "100%" }}
-                  defaultValue={moment(birth).format("YYYY-MM-DD")}
-                  textAlign="center"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                     setBirth(e.target.value)
-                  }
-               />
-            </Box> */}
-            <Box bg="gray.50">
+
+            <Box>
                <InputDate
+                  rounded={50}
                   getValue={(date) => setBirth(date)}
                   defaultValue={birth}
                   color={color}
@@ -75,12 +58,12 @@ export const Numerology: FC = () => {
 
          <Box as="form">
             <Box
-               as="fieldset"
-               border="1px solid red"
-               textAlign="center"
                py={4}
                px={2}
+               as="fieldset"
+               textAlign="center"
                borderRadius={5}
+               border="1px solid red"
             >
                <Box as="legend" fontSize={20} fontWeight={800} color="red.400">
                   Index (Chỉ Số)
