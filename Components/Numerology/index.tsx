@@ -20,6 +20,7 @@ import { useProcessNumerology } from "Hooks";
 export const Numerology: FC = () => {
    const id = useId();
    const color = useColorModeValue("black", "white");
+   const colorBorder = useColorModeValue("gray.200", "gray.600");
    const refInputName = useRef<HTMLInputElement>(null);
    const [name, setName] = useState<string>("Lê Phạm Thanh Nga");
    const [birth, setBirth] = useState<string>("1982-10-12");
@@ -63,7 +64,8 @@ export const Numerology: FC = () => {
                as="fieldset"
                textAlign="center"
                borderRadius={5}
-               border="1px solid red"
+               border="1px solid"
+               borderColor={colorBorder}
             >
                <Box as="legend" fontSize={20} fontWeight={800} color="red.400">
                   Index (Chỉ Số)
