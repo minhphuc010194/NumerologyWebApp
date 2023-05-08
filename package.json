@@ -21,7 +21,7 @@
     "framer-motion": "10.12.8",
     "lodash": "4.17.21",
     "moment": "2.29.4",
-    "next": "12.3.4",
+    "next": "13.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "4.8.0"
