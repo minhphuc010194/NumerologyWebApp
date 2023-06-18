@@ -1,5 +1,3 @@
-#  Numerology-ThầnSốHọc 
-![image](https://user-images.githubusercontent.com/58540065/207747326-830281d8-b1b4-4d93-8cb8-8150ebbe8f8d.png)
-
-![image](https://user-images.githubusercontent.com/58540065/207747383-48718c4f-ef65-40aa-8b72-0ebcbfed1992.png)
+#  [Numerology - Thần Số Học](https://numerology-web-app.vercel.app/)
+<img width="1274" alt="image" src="https://github.com/minhphuc010194/NumerologyWebApp/assets/58540065/3720d31d-7aaf-4323-be41-e0b654688d50">
 
