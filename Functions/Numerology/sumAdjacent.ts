@@ -21,6 +21,8 @@ export function sumAdjacent(
       flagNumerology === "mature" ||
       flagNumerology === "finalWay";
    if (flagMaster && checkIsMaster) return Number(joinStrDate);
+   if (flagNumerology === "finalWay" && sumDate === 11)
+      return Number(joinStrDate);
    if (sumDate >= 10) {
       const isMaster =
          flagMaster && (sumDate === 11 || sumDate === 22 || sumDate === 33);
