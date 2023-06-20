@@ -44,18 +44,16 @@ export const useProcessNumerology = (
       const mission = getMission(name);
       const soul = getSoul(name);
       const resumWalksOfLife = String(walksOfLife).split("");
+      const resumMission = String(mission).split("");
       const connect = Math.abs(
-         sumAdjacent(resumWalksOfLife[0], resumWalksOfLife?.[1] ?? 0) - mission
+         sumAdjacent(resumWalksOfLife[0], resumWalksOfLife?.[1] ?? 0) -
+            sumAdjacent(resumMission[0], resumMission?.[1] ?? 0)
+         // walksOfLife - mission
       );
       const personality = getPersonality(arrName);
       const passion = getPassion(arrName);
-      const resumMission = String(mission).split("");
 
-      const mature = sumAdjacent(
-         walksOfLife,
-         sumAdjacent(resumMission[0], resumMission?.[1] ?? 0),
-         "mature"
-      ); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
+      const mature = sumAdjacent(walksOfLife, mission, "mature"); // walksOfLife + mission; 36 - walksOfLife = đỉnh đầu của chặng đầu tiên
       const balance = getBalance(completedName);
       const missingNumber = getMissingNumbers(arrName).map(
          (item) => item.value

@@ -5,4 +5,5 @@
 yarn lint
 yarn lint-staged
 yarn build
+rm -rf .next
 # yarn ts-check

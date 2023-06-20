@@ -2,7 +2,13 @@
 export function sumAdjacent(
    strFirst: string | number,
    strNext: string | number,
-   flagNumerology?: "walksOfLife" | "mission" | "soul" | "mature" | "finalWay"
+   flagNumerology?:
+      | "walksOfLife"
+      | "mission"
+      | "soul"
+      | "mature"
+      | "finalWay"
+      | "connect"
 ): number {
    const sumDate = Number(strFirst) + Number(strNext);
    const joinStrDate = String(strFirst) + String(strNext);
