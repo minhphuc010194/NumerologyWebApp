@@ -22,8 +22,8 @@ export const Numerology: FC = () => {
    const color = useColorModeValue("black", "white");
    const colorBorder = useColorModeValue("gray.200", "gray.600");
    const refInputName = useRef<HTMLInputElement>(null);
-   const [name, setName] = useState<string>("Lê Phạm Thanh Nga");
-   const [birth, setBirth] = useState<string>("1982-10-12");
+   const [name, setName] = useState<string>("Dương Văn Nghĩa"); //Lê Phạm Thanh Nga
+   const [birth, setBirth] = useState<string>("1976-06-11");
    const deferredName = useDeferredValue(name);
    const deferredBirth = useDeferredValue(birth);
    const data = useProcessNumerology(deferredName, deferredBirth);

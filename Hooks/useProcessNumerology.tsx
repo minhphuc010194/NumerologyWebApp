@@ -2,16 +2,16 @@ import { useMemo } from "react";
 import { NumerologyHookType } from "../Utils/types";
 import {
    getSoul,
+   getBalance,
    getMission,
-   getWalksOfLife,
-   removeAccents,
-   getPersonality,
    getPassion,
    sumAdjacent,
-   getBalance,
+   removeAccents,
+   getWalksOfLife,
+   getPersonality,
    getMissingNumbers,
-   getRationalThinking,
    substractAdjacent,
+   getRationalThinking,
 } from "../Functions";
 import moment from "moment";
 

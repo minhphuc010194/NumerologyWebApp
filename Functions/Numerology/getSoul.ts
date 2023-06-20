@@ -10,14 +10,18 @@ export const getSoul = (fullName: string): number => {
    let soulNumber = 0;
    splitName.map((strs) => {
       const strArray = strs.replace(/\s/g, "").split("");
-
       soulNumber += strArray.reduce(
          (prevValue: number, currentValue: string, index: number) => {
-            const isVowel =
-               DataVowels.indexOf(currentValue) >= 0 ||
-               (currentValue === "Y" && index === strArray.length - 1);
-            if (isVowel) {
+            const isVowel = DataVowels.indexOf(currentValue) >= 0;
+            if (isVowel && currentValue !== "Y") {
                return prevValue + getValueInAlphabets(currentValue);
+            } else if (currentValue === "Y") {
+               const prevY = DataVowels.indexOf(strArray[index - 1]) >= 0;
+               const nextY = DataVowels.indexOf(strArray[index + 1]) >= 0;
+               return (
+                  prevValue +
+                  (!prevY && !nextY ? getValueInAlphabets(currentValue) : 0)
+               );
             }
             return prevValue;
          },

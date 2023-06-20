@@ -24,7 +24,7 @@ export const Data_numbers_Alphabets = [
       value: 6,
    },
    {
-      key: ["G", "P", "Y"],
+      key: ["G", "P", "Y"], // *Note: Lưu ý chữ Y nếu đứng một mình không có nguyên âm đúng chung thì nó sẽ là nguyên âm (7), ngược lại nếu đứng cùng nguyên âm khác nó sẽ là phụ âm (0)
       value: 7,
    },
    {
