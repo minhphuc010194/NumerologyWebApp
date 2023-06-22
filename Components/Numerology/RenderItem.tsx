@@ -9,7 +9,12 @@ type PropTypes = {
 export const RenderItem: FC<PropTypes> = ({ item }) => {
    return (
       <WrapItem>
-         <DisplayCard title={item.name} content={item.value} borderRadius={5} />
+         <DisplayCard
+            title={item.name}
+            name={item.name_en}
+            content={item.value}
+            borderRadius={5}
+         />
       </WrapItem>
    );
 };
