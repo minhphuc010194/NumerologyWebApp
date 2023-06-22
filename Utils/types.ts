@@ -3,4 +3,5 @@ export type NumerologyHookType = {
    key: string;
    value: string | number | JSX.Element;
    name: string;
+   name_en: string;
 };
