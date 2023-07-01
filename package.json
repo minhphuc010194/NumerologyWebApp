@@ -18,7 +18,7 @@
     "@types/lodash": "4.14.195",
     "@types/moment": "2.13.0",
     "@typescript-eslint/eslint-plugin": "5.60.1",
-    "framer-motion": "10.12.17",
+    "framer-motion": "10.12.18",
     "lodash": "4.17.21",
     "moment": "2.29.4",
     "next": "12.3.4",
