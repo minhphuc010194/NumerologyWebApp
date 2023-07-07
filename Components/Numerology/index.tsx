@@ -1,5 +1,5 @@
 import {
-   FC,
+   type FC,
    useId,
    useRef,
    useState,

@@ -83,6 +83,7 @@ export {
    UnorderedList,
    Wrap,
    WrapItem,
+   useToast,
    useColorMode,
    useColorModeValue,
    useDisclosure,
