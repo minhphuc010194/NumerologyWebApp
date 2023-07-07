@@ -1,6 +1,6 @@
 import moment from "moment";
-import { FC, useRef, useEffect, ChangeEvent } from "react";
-import { Input, InputGroup } from "./";
+import { type FC, useRef, useEffect, type ChangeEvent } from "react";
+import { Input, InputGroup, useToast } from "./";
 import { InputProps } from "../Utils/types";
 
 type PropTypes = InputProps & {
@@ -14,6 +14,7 @@ export const InputDate: FC<PropTypes> = (props) => {
    const refDate = useRef<HTMLInputElement>(null);
    const refMonth = useRef<HTMLInputElement>(null);
    const refYear = useRef<HTMLInputElement>(null);
+   const toast = useToast();
 
    useEffect(() => {
       if (
@@ -40,7 +41,22 @@ export const InputDate: FC<PropTypes> = (props) => {
          ? refYear.current?.value
          : "1982";
       if (typeof getValue === "function") {
-         getValue(moment(year + "-" + month + "-" + date).format("YYYY-MM-DD"));
+         const currentDate = moment(year + "-" + month + "-" + date).format(
+            "YYYY-MM-DD"
+         );
+         if (currentDate === "Invalid date") {
+            return toast({
+               status: "warning",
+               title: "Sai định dạng ngày, tháng, năm",
+               description: `Vui lòng kiểm tra lại định dạng vừa nhập (giá trị hiện tại ${
+                  date + "-" + month + "-" + year
+               } chưa chính xác)`,
+               duration: 5000,
+               position: "top",
+               isClosable: true,
+            });
+         }
+         getValue(currentDate);
       }
    };
    return (
@@ -48,6 +64,7 @@ export const InputDate: FC<PropTypes> = (props) => {
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
+               // auto select to month
                if (value.length >= 2) {
                   refMonth.current?.select();
                }
@@ -66,6 +83,7 @@ export const InputDate: FC<PropTypes> = (props) => {
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
+               // auto select to year
                if (value.length >= 2) {
                   refYear.current?.select();
                }
