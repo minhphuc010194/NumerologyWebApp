@@ -37,10 +37,14 @@ export const InputDate: FC<PropTypes> = (props) => {
       const month = !!(refMonth.current?.value ?? "")
          ? refMonth.current?.value
          : "01";
-      const year = !!(refYear.current?.value ?? "")
+      let year = !!(refYear.current?.value ?? "")
          ? refYear.current?.value
          : "1982";
+
       if (typeof getValue === "function") {
+         if ((year?.length ?? 0) < 3) {
+            year += "00";
+         }
          const currentDate = moment(year + "-" + month + "-" + date).format(
             "YYYY-MM-DD"
          );
@@ -51,8 +55,8 @@ export const InputDate: FC<PropTypes> = (props) => {
                description: `Vui lòng kiểm tra lại định dạng vừa nhập (giá trị hiện tại ${
                   date + "-" + month + "-" + year
                } chưa chính xác)`,
-               duration: 5000,
-               position: "top",
+               duration: 3000,
+               position: "bottom",
                isClosable: true,
             });
          }
