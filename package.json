@@ -15,7 +15,7 @@
     "@chakra-ui/react": "2.8.1",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
-    "@types/lodash": "4.14.198",
+    "@types/lodash": "4.14.199",
     "@types/moment": "2.13.0",
     "@typescript-eslint/eslint-plugin": "6.7.2",
     "framer-motion": "10.16.4",
