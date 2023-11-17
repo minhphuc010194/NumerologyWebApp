@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 import Image from "next/image";
 import { AiFillGithub } from "react-icons/ai";
@@ -14,13 +15,13 @@ export const Footer: FC = () => {
                   <Image
                      src="/Images/numerologyPNG.png"
                      alt="numerology logo"
-                     width="50%"
-                     height="50%"
                      placeholder="blur"
                      blurDataURL="/Images/numerologyPNG.png"
                      style={{
                         cursor: "pointer",
                      }}
+                     width={50}
+                     height={50}
                      onClick={toggleColorMode}
                   />
                </CustomCard>

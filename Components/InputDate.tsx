@@ -1,3 +1,5 @@
+"use client";
+
 import moment from "moment";
 import { type FC, useRef, useEffect, type ChangeEvent } from "react";
 import { Input, InputGroup, useToast } from "./";
@@ -28,7 +30,7 @@ export const InputDate: FC<PropTypes> = (props) => {
          refMonth.current.value = splitDate[1];
          refYear.current.value = splitDate[0];
       }
-   }, []);
+   });
 
    const handleChange = () => {
       const date = !!(refDate.current?.value ?? "")

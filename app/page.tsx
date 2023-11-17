@@ -1,8 +1,7 @@
-import type { NextPage } from "next";
 import { Numerology as NumerologyTxt } from "Utils/constaints";
 import { Box, Heading, Layout, Numerology } from "Components";
 
-const Home: NextPage = () => {
+export default function HomePage() {
    return (
       <Layout>
          <div>
@@ -16,6 +15,4 @@ const Home: NextPage = () => {
          </div>
       </Layout>
    );
-};
-
-export default Home;
+}
