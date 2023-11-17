@@ -1,3 +1,5 @@
+"use client";
+
 import moment from "moment";
 import { type FC, useRef, useEffect, type ChangeEvent } from "react";
 import { Input, InputGroup, useToast } from "./";
