@@ -9,7 +9,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
    return (
       <html lang="en">
          <title>Numerology Web App</title>
-         <meta name="description" content="Numerology Web App" />
+         <meta
+            name="description"
+            content="Numerology Web App - Tra cứu thần số học"
+         />
          <link rel="icon" href="/Images/numerologyPNG.png" />
          <body>
             <ChakraProvider theme={theme}>
