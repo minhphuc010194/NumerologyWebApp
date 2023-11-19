@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import Script from "next/script";
-import { theme } from "../Utils/themes";
+import { theme } from "Utils/themes";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
    const id = Date.now().toString();
@@ -19,7 +19,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                <Script
                   id={id}
                   strategy="lazyOnload"
-                  src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+                  src={`https://www.googletagmanager.com/gtag/js?id=${
+                     process.env?.NEXT_PUBLIC_GOOGLE_ANALYTICS ??
+                     "UA-137260564-1"
+                  }`}
                />
 
                <Script id={id} strategy="lazyOnload">
@@ -27,7 +30,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                      window.dataLayer = window.dataLayer || [];
                      function gtag(){dataLayer.push(arguments);}
                      gtag('js', new Date());
-                     gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                     gtag('config', '${
+                        process.env?.NEXT_PUBLIC_GOOGLE_ANALYTICS ??
+                        "UA-137260564-1"
+                     }', {
                      page_path: window.location.pathname,
                      });
                   `}
