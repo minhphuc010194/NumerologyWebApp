@@ -10,7 +10,7 @@ const reader = process.env.NEXT_PUBLIC_EMAIL_READ;
 const transport: SMTPTransport.Options = {
    host,
    port,
-   secure: true,
+   // secure: true,
    service: "gmail",
    auth: {
       type: "LOGIN",
