@@ -1,16 +1,22 @@
 "use client";
 import { FC } from "react";
 import Image from "next/image";
-import { AiFillGithub } from "react-icons/ai";
-import { CustomCard, Icon, Wrap, useColorMode } from "Components";
-import { Tooltip } from "@chakra-ui/react";
+import {
+   Icon,
+   Wrap,
+   Tooltip,
+   Feeacback,
+   CustomCard,
+   useColorMode,
+   AiFillGithub,
+} from "Components";
 
 export const Footer: FC = () => {
    const { toggleColorMode, colorMode } = useColorMode();
    return (
       <footer>
          <Wrap justify="center" my={1}>
-            <Tooltip label={colorMode + " mode"}>
+            <Tooltip label={colorMode + " mode"} hasArrow>
                <CustomCard>
                   <Image
                      src="/Images/numerologyPNG.png"
@@ -27,7 +33,7 @@ export const Footer: FC = () => {
                </CustomCard>
             </Tooltip>
 
-            <Tooltip label="Source code">
+            <Tooltip label="Source code" hasArrow>
                <CustomCard
                   as="a"
                   href="https://github.com/minhphuc010194/NumerologyWebApp"
@@ -41,6 +47,7 @@ export const Footer: FC = () => {
                   />
                </CustomCard>
             </Tooltip>
+            <Feeacback />
          </Wrap>
       </footer>
    );
