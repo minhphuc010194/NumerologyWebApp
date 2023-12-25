@@ -10,7 +10,7 @@ const reader = process.env.NEXT_PUBLIC_EMAIL_READ;
 const transport: SMTPTransport.Options = {
    host,
    port,
-   // secure: true,
+   secure: true,
    service: "gmail",
    auth: {
       type: "LOGIN",
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
    if (!mailOption.message || !mailOption.email) {
       return NextResponse.json({ message: "Bad request", status: 400 });
    }
+   console.log("mailOption :>> ", mailOption);
    try {
       // send to customer====>
       await transporter.sendMail(
