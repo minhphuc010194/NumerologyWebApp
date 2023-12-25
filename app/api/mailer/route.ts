@@ -26,8 +26,9 @@ export async function POST(req: Request) {
    if (!mailOption.message || !mailOption.email) {
       return NextResponse.json({ message: "Bad request", status: 400 });
    }
-   console.log("mailOption :>> ", mailOption);
+
    try {
+      console.log("transport :>> ", transport);
       // send to customer====>
       await transporter.sendMail(
          {
@@ -40,11 +41,6 @@ export async function POST(req: Request) {
          function (err) {
             if (err) {
                return NextResponse.json({ message: err.message, status: 400 });
-            } else {
-               return NextResponse.json(
-                  { message: "Mail sent success" },
-                  { status: 200 }
-               );
             }
          }
       );
@@ -60,11 +56,6 @@ export async function POST(req: Request) {
          function (err) {
             if (err) {
                return NextResponse.json({ message: err.message, status: 400 });
-            } else {
-               return NextResponse.json(
-                  { message: "Mail sent reader success" },
-                  { status: 200 }
-               );
             }
          }
       );
