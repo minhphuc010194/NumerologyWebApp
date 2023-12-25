@@ -17,11 +17,13 @@
     "@emotion/styled": "11.11.0",
     "@types/lodash": "4.14.202",
     "@types/moment": "2.13.0",
+    "@types/nodemailer": "6.4.14",
     "@typescript-eslint/eslint-plugin": "6.15.0",
     "framer-motion": "10.16.16",
     "lodash": "4.17.21",
     "moment": "2.29.4",
     "next": "^14.0.3",
+    "nodemailer": "6.9.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "4.12.0"
