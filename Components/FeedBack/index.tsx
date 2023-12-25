@@ -55,6 +55,7 @@ export const Feeacback = () => {
             isClosable: true,
          });
       }
+      onClose();
       // console.log("data :>> ", data);
    };
    return (
