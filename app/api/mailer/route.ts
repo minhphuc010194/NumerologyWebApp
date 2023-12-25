@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
-const host = process.env.EMAIL_SERVER_HOST;
-const email = process.env.EMAIL_SERVER_USER ?? "";
-const pass = process.env.EMAIL_SERVER_PASSWORD ?? "";
-const port = Number(process.env.EMAIL_SERVER_PORT) ?? 0;
-const reader = process.env.EMAIL_READ;
+const host = process.env.NEXT_PUBLIC_EMAIL_SERVER_HOST;
+const email = process.env.NEXT_PUBLIC_EMAIL_SERVER_USER ?? "";
+const pass = process.env.NEXT_PUBLIC_EMAIL_SERVER_PASSWORD ?? "";
+const port = Number(process.env.NEXT_PUBLIC_EMAIL_SERVER_PORT) ?? 0;
+const reader = process.env.NEXT_PUBLIC_EMAIL_READ;
 const transport: SMTPTransport.Options = {
    host,
    port,
