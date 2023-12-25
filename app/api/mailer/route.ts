@@ -28,7 +28,6 @@ export async function POST(req: Request) {
    }
 
    try {
-      console.log("transport :>> ", transport);
       // send to customer====>
       await transporter.sendMail(
          {
