@@ -1,3 +1,4 @@
+// import Head from "next/head";
 import { ReactNode } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import Script from "next/script";
@@ -8,12 +9,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
    return (
       <html lang="en">
-         <title>Numerology Web App</title>
-         <meta
-            name="description"
-            content="Numerology Web App - Tra cứu thần số học"
-         />
-         <link rel="icon" href="/Images/numerologyPNG.png" />
+         <head>
+            <title>Numerology Web App</title>
+            <meta
+               name="description"
+               content="Numerology Web App - Tra cứu thần số học"
+            />
+            <link rel="icon" href="/Images/numerologyPNG.png" />
+            <script
+               async
+               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4328746565330736"
+               crossOrigin="anonymous"
+            ></script>
+         </head>
+
          <body>
             <ChakraProvider theme={theme}>
                <Script
