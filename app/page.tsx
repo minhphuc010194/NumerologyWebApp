@@ -5,7 +5,7 @@ export default function HomePage() {
    return (
       <Layout>
          <div>
-            <Heading as="h3" textAlign="center" fontFamily="fantasy" pt={4}>
+            <Heading as="h1" textAlign="center" fontFamily="fantasy" pt={4}>
                {NumerologyTxt}
             </Heading>
             <Box as="br" />
