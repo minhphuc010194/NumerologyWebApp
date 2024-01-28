@@ -16,11 +16,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                content="Numerology Web App - Tra cứu thần số học"
             />
             <link rel="icon" href="/Images/numerologyPNG.png" />
-            <script
+            {/* <script
                async
                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4328746565330736"
                crossOrigin="anonymous"
-            ></script>
+            ></script> */}
          </head>
 
          <body>
@@ -34,8 +34,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   }`}
                />
 
-               <Script id={id} strategy="lazyOnload">
-                  {`
+               {children}
+            </ChakraProvider>
+            <Script id={id} strategy="lazyOnload">
+               {`
                      window.dataLayer = window.dataLayer || [];
                      function gtag(){dataLayer.push(arguments);}
                      gtag('js', new Date());
@@ -46,9 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                      page_path: window.location.pathname,
                      });
                   `}
-               </Script>
-               {children}
-            </ChakraProvider>
+            </Script>
          </body>
       </html>
    );
