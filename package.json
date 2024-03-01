@@ -23,7 +23,7 @@
     "lodash": "4.17.21",
     "moment": "2.30.1",
     "next": "^14.0.3",
-    "nodemailer": "6.9.10",
+    "nodemailer": "6.9.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "5.0.1"
