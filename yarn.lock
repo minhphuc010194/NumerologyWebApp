@@ -1242,19 +1242,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "18.2.22"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.22.tgz#abe778a1c95a07fa70df40a52d7300a40b949ccb"
-  integrity sha512-60fLTOLqzarLED2O3UQImc/lsNRgG0jE/a1mPW9KjMemY0LMITWEsbS4VvZ4p6rorEHd5YKxxmMKSDK505GHpA==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
-"@types/react@18.0.30":
-  version "18.0.30"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.30.tgz#83944e679fc7aeab3f042b76d63c4d755b56b7c4"
-  integrity sha512-AnME2cHDH11Pxt/yYX6r0w448BfTwQOLEhQEjCdwB7QskEI7EKtxhGUsExTQe/MsY3D9D5rMtu62WRocw9A8FA==
+"@types/react@*", "@types/react@18.2.63":
+  version "18.2.63"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.63.tgz#4637c56146ad90f96d0583171edab953f7e6fe57"
+  integrity sha512-ppaqODhs15PYL2nGUOaOu2RSCCB4Difu4UFrP4I3NHLloXC/ESQzQMi9nvjfT1+rudd0d2L3fQPJxRSey+rGlQ==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3697,6 +3688,7 @@ string-argv@0.3.2:
   integrity sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
