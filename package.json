@@ -26,7 +26,7 @@
     "nodemailer": "6.9.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "5.0.1"
+    "react-icons": "5.1.0"
   },
   "devDependencies": {
     "@types/node": "20.12.7",
