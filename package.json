@@ -33,7 +33,7 @@
     "@types/react": "18.0.30",
     "@types/react-dom": "18.2.25",
     "eslint": "9.0.0",
-    "eslint-config-next": "^14.0.3",
+    "eslint-config-next": "^14.2.2",
     "husky": "9.0.11",
     "lint-staged": "15.2.2",
     "typescript": "5.4.5"
