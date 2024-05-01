@@ -29,7 +29,7 @@
     "react-icons": "5.1.0"
   },
   "devDependencies": {
-    "@types/node": "20.12.7",
+    "@types/node": "20.12.8",
     "@types/react": "18.0.30",
     "@types/react-dom": "18.2.25",
     "eslint": "9.1.1",
