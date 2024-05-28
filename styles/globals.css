@@ -6,6 +6,46 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+@keyframes colors {
+  0% { color: red; }
+  14% { color: orange; }
+  28% { color: yellow; }
+  42% { color: lime; }
+  57% { color: cyan; }
+  71% { color: blue; }
+  85% { color: magenta; }
+  100% { color: red; }
+}
+
+.sparkle-effect {
+  position: relative;
+  color: white;
+  animation: colors 2s infinite;
+}
+
+.sparkle-effect::before,
+.sparkle-effect::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+.sparkle-effect::before {
+  text-shadow: 2px 0 10px cyan, -2px 0 10px magenta;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: colors 2s infinite;
+}
+
+.sparkle-effect::after {
+  text-shadow: 2px 0 10px red, -2px 0 10px lime;
+  clip: rect(56px, 450px, 68px, 0);
+  animation: colors 2s infinite reverse;
+}
+
 a {
   color: inherit;
   text-decoration: none;
