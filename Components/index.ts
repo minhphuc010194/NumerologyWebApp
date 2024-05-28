@@ -3,6 +3,7 @@ export * from "@chakra-ui/react";
 export * from "@chakra-ui/icons";
 export * from "react-icons/md";
 export * from "react-icons/ai";
+export * from "react-icons/fa";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { Layout } from "./Layout";
