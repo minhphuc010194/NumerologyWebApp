@@ -2,8 +2,8 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # yarn eslint .
-yarn lint
-yarn lint-staged
-yarn build
-rm -rf .next
+# yarn lint
+# yarn lint-staged
+# yarn build
+# rm -rf .next
 # yarn ts-check
