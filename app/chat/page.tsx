@@ -70,6 +70,7 @@ export default function Chat() {
             bot_id: process.env.NEXT_PUBLIC_BOT_ID,
             user: "29032201862555",
             query: input,
+            chat_history: data,
             stream: true,
          }),
       });
