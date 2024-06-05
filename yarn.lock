@@ -1435,10 +1435,10 @@ acorn@^8.11.3:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.11.3.tgz#71e0b14e13a4ec160724b38fb7b0f233b1b81d7a"
   integrity sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==
 
-ai@3.1.20:
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-3.1.20.tgz#7ba4480da73bed10b14b9e65e79d5e25f6f74952"
-  integrity sha512-DxrBfudk6zjUlQm4+ByawVce0ElG+e/rxUOqqNnRIncAHNM5vB0mz9ySEBBqWXsDHMKviEmXzlIo84Lf4nS27A==
+ai@3.1.26:
+  version "3.1.26"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-3.1.26.tgz#5f48e0591630e2e7fa93feb634dd7f2a4db065d1"
+  integrity sha512-/XM4HHtDQ2nGVSHaOS1pHscHi2c10YXq2xa7LSq6YxUtD1uW7pSJmkwZFOlZcdVtP8RtjvGuxmI8IiURFso91g==
   dependencies:
     "@ai-sdk/provider" "0.0.8"
     "@ai-sdk/provider-utils" "0.0.11"
