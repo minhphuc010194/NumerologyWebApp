@@ -45,6 +45,7 @@ export default function Chat() {
 
    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+      if (isLoading) return;
       setData((prevData) => [
          ...prevData,
          {
