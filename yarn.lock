@@ -7,20 +7,20 @@
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
-"@ai-sdk/provider-utils@0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-0.0.11.tgz#f89cced1b016ce4e4700f9776a63cdd0db4c8f47"
-  integrity sha512-JRDrqL2FGDmLh+a4R5qbS8UrWN9Lt7DpDIY1x6owgXjXkz3Umm1czs1X32VlL0M1dpoSxu4hGBFtXd56+kDzXA==
+"@ai-sdk/provider-utils@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-0.0.12.tgz#1761ce0fbbcdc4a1e49f0e2434601732c23469e0"
+  integrity sha512-jt3RwW68x+fVPrsmcKR3RT+G+ISgsO7mu/M+kCnZmxR4JtbypgS/JsAtnnoD7YtAcqLplbYBzJEsRW4CRqIWMQ==
   dependencies:
-    "@ai-sdk/provider" "0.0.8"
+    "@ai-sdk/provider" "0.0.9"
     eventsource-parser "1.1.2"
     nanoid "3.3.6"
     secure-json-parse "2.7.0"
 
-"@ai-sdk/provider@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-0.0.8.tgz#dbdb63dff3f5c3fe2c999924c7cfe4b9043d3354"
-  integrity sha512-+gcMvyPUDfDXV9caN3CG5Le0M5K4CjqTdMV1ODg/AosApQiJW9ByN5imJPdI043zVdt+HS9WG+s0j4am7ca4bg==
+"@ai-sdk/provider@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-0.0.9.tgz#7c350f7cdf4c6050a8e4f5cfedc1cce1bad04fd9"
+  integrity sha512-SJX9J+wiur/EVSYZ6lHV33YWB/yeZ+RCGg+8gSsKzrxEUCh+TkqM5Af7cw2hDFv65dXyeNOZHhfINoD9StEm6A==
   dependencies:
     json-schema "0.4.0"
 
@@ -1435,20 +1435,20 @@ acorn@^8.11.3:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.11.3.tgz#71e0b14e13a4ec160724b38fb7b0f233b1b81d7a"
   integrity sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==
 
-ai@3.1.20:
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-3.1.20.tgz#7ba4480da73bed10b14b9e65e79d5e25f6f74952"
-  integrity sha512-DxrBfudk6zjUlQm4+ByawVce0ElG+e/rxUOqqNnRIncAHNM5vB0mz9ySEBBqWXsDHMKviEmXzlIo84Lf4nS27A==
+ai@3.1.27:
+  version "3.1.27"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-3.1.27.tgz#ba28beae3af366c9c4ee0481adb22383b676885f"
+  integrity sha512-SzjJ+s9Y5MtPwqUIluBWpIQ+csH4B76oPT/VthMf4gk45DMkKOXT/JX9o+a58u3/wd+qpqJ+hVwXvlDsuLPZZA==
   dependencies:
-    "@ai-sdk/provider" "0.0.8"
-    "@ai-sdk/provider-utils" "0.0.11"
+    "@ai-sdk/provider" "0.0.9"
+    "@ai-sdk/provider-utils" "0.0.12"
     eventsource-parser "1.1.2"
     json-schema "0.4.0"
     jsondiffpatch "0.6.0"
     nanoid "3.3.6"
     secure-json-parse "2.7.0"
     solid-swr-store "0.10.7"
-    sswr "2.0.0"
+    sswr "2.1.0"
     swr "2.2.0"
     swr-store "0.10.6"
     swrv "1.0.4"
@@ -3736,10 +3736,10 @@ source-map@^0.5.7:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
 
-sswr@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/sswr/-/sswr-2.0.0.tgz#db5e1f7c44addb8316de8e7efe23b7ea2cba090d"
-  integrity sha512-mV0kkeBHcjcb0M5NqKtKVg/uTIYNlIIniyDfSGrSfxpEdM9C365jK0z55pl9K0xAkNTJi2OAOVFQpgMPUk+V0w==
+sswr@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/sswr/-/sswr-2.1.0.tgz#1eb64cd647cc9e11f871e7f43554abd8c64e1103"
+  integrity sha512-Cqc355SYlTAaUt8iDPaC/4DPPXK925PePLMxyBKuWd5kKc5mwsG3nT9+Mq2tyguL5s7b4Jg+IRMpTRsNTAfpSQ==
   dependencies:
     swrev "^4.0.0"
 
