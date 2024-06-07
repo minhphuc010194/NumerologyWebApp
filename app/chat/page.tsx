@@ -183,6 +183,15 @@ export default function Chat() {
                   </Box>
                ))}
             </Box>
+            <Box
+               textAlign="center"
+               fontStyle="italic"
+               fontSize="small"
+               color="red.300"
+            >
+               Currently there is not enough operating budget for AI, sorry for
+               the inconvenience
+            </Box>
             <HStack>
                <InputGroup size="md">
                   <Input
