@@ -19,7 +19,7 @@
     "@types/moment": "2.13.0",
     "@types/nodemailer": "6.4.15",
     "@typescript-eslint/eslint-plugin": "7.13.0",
-    "ai": "3.1.36",
+    "ai": "3.2.0",
     "framer-motion": "11.2.10",
     "lodash": "4.17.21",
     "moment": "2.30.1",
