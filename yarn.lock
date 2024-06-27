@@ -24,28 +24,26 @@
   dependencies:
     json-schema "0.4.0"
 
-"@ai-sdk/react@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-0.0.10.tgz#fd2c5b1a67c466b52de85ab902dee113c889c83e"
-  integrity sha512-T3z5PdidmAe3FJLODwdhD19ohKelqhfgV2l8jbpMQ1m7AYGGMbMPLOBVXpi5SqDTtJ6znx5Hj7cEQ61+peACyw==
+"@ai-sdk/react@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-0.0.11.tgz#5fd5e24cc58ab6d52c8f21ea2ab07703d2695a34"
+  integrity sha512-luyEBmXCwiwx349OrV/GfpS2d4YslrJ99su53pjyKUWNczsPvbvx7fQhY9b2YMx6dBGtZKQLbGCvitMYoOe0WA==
   dependencies:
     "@ai-sdk/provider-utils" "0.0.16"
     "@ai-sdk/ui-utils" "0.0.6"
     swr "2.2.0"
 
-"@ai-sdk/solid@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/solid/-/solid-0.0.7.tgz#5c42686bc0c1a6bdc60b80f8fcdc4133de0de5c3"
-  integrity sha512-3aN5JWbgRMeyZiXgSVwTL6TjNrTIvESl05Hm2+eAFEDMcnSzgYKnCUbKgBNm4eZgKvrY7XDRMdJ37uXzRxdF7Q==
+"@ai-sdk/solid@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/solid/-/solid-0.0.8.tgz#768015a2340dc469b357b30602460b63baeab075"
+  integrity sha512-snVSRnz1wpSIL/fXhNWmXuxMOEgffyOALFB3mt94Meu26YLgDhIBWIUxxPe3znFGOVtEgCCFqb0heBCdFDH/vA==
   dependencies:
     "@ai-sdk/ui-utils" "0.0.6"
-    solid-swr-store "0.10.7"
-    swr-store "0.10.6"
 
-"@ai-sdk/svelte@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/svelte/-/svelte-0.0.8.tgz#cfc887c3ecf50689c85ecbccadabc24f226d6c40"
-  integrity sha512-JcyjDZ2M7Mb/8ZTvy9hCn2Rob++LmJE+icqBL90TcjKFdvINvc1GlNlVntXIJFkRO5XyIfqEOGOmqwkTp4mRmg==
+"@ai-sdk/svelte@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/svelte/-/svelte-0.0.9.tgz#79f1227aad4db480a25e164d013bc542787475a5"
+  integrity sha512-khMwcyHDyxC005c9Dvol2x3ysyXQvYQqIcDkG0zyGAMM59RbXaY32SRsj+2QsUFcghiKCz5PISy3f1QqA9NAuQ==
   dependencies:
     "@ai-sdk/provider-utils" "0.0.16"
     "@ai-sdk/ui-utils" "0.0.6"
@@ -1478,16 +1476,16 @@ acorn@^8.11.3:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.11.3.tgz#71e0b14e13a4ec160724b38fb7b0f233b1b81d7a"
   integrity sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==
 
-ai@3.2.10:
-  version "3.2.10"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-3.2.10.tgz#959e8b34f56749588b4142497bce76901d30d67d"
-  integrity sha512-RsNt4h7ygV150qWzIAdJimzKEPP2VtboVk1aZvR4vsIhQqbgglIRfHHuGTBRQgX6JMEXY5u1+VqQRdwcvzvr5w==
+ai@3.2.11:
+  version "3.2.11"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-3.2.11.tgz#ea9377c7042f8f98047c0e37543fd82ca22083b8"
+  integrity sha512-EyCABeSzYKtlFumhWegHWqll8lw1u+l3fgmDsG9V6GjyS+LGdZuDW+/eOtNfT/tuRqWIG/ZjEzNlziZz+CBJNQ==
   dependencies:
     "@ai-sdk/provider" "0.0.10"
     "@ai-sdk/provider-utils" "0.0.16"
-    "@ai-sdk/react" "0.0.10"
-    "@ai-sdk/solid" "0.0.7"
-    "@ai-sdk/svelte" "0.0.8"
+    "@ai-sdk/react" "0.0.11"
+    "@ai-sdk/solid" "0.0.8"
+    "@ai-sdk/svelte" "0.0.9"
     "@ai-sdk/ui-utils" "0.0.6"
     "@ai-sdk/vue" "0.0.8"
     eventsource-parser "1.1.2"
@@ -3765,11 +3763,6 @@ slice-ansi@^7.0.0:
     ansi-styles "^6.2.1"
     is-fullwidth-code-point "^5.0.0"
 
-solid-swr-store@0.10.7:
-  version "0.10.7"
-  resolved "https://registry.yarnpkg.com/solid-swr-store/-/solid-swr-store-0.10.7.tgz#9511308f01250a1509efbfaad5b481be7517e436"
-  integrity sha512-A6d68aJmRP471aWqKKPE2tpgOiR5fH4qXQNfKIec+Vap+MGQm3tvXlT8n0I8UgJSlNAsSAUuw2VTviH2h3Vv5g==
-
 source-map-js@^1.0.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.0.tgz#16b809c162517b5b8c3e7dcd315a2a5c2612b2af"
@@ -3945,13 +3938,6 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
-
-swr-store@0.10.6:
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/swr-store/-/swr-store-0.10.6.tgz#1856bda886e87dbed40c8c9874c1b1624d2e502d"
-  integrity sha512-xPjB1hARSiRaNNlUQvWSVrG5SirCjk2TmaUyzzvk69SZQan9hCJqw/5rG9iL7xElHU784GxRPISClq4488/XVw==
-  dependencies:
-    dequal "^2.0.3"
 
 swr@2.2.0:
   version "2.2.0"
