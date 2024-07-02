@@ -24,10 +24,10 @@
   dependencies:
     json-schema "0.4.0"
 
-"@ai-sdk/react@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-0.0.15.tgz#0214213e0770276b2ff1eef1f844704b750ae44b"
-  integrity sha512-Nd+Ikr8aBemEByKtNbmzT4keKqM0dCsDYqMZL2/2/HeOb7QC5XwOw5LKYJ8Yu8JW3oRItEsVdFTaZenjrXVJ6w==
+"@ai-sdk/react@0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-0.0.16.tgz#9149901374f266e9b675d33938715b7c89eb2d15"
+  integrity sha512-PUPjI4XB8or2m2NvRU8SBzGfSwjlJ19Mdde8LkeppFoNj++53kgM4BiniAsVRl8v8WNGZ55rrsLyY5g8h+gfeA==
   dependencies:
     "@ai-sdk/provider-utils" "1.0.0"
     "@ai-sdk/ui-utils" "0.0.9"
@@ -1481,14 +1481,14 @@ acorn@^8.12.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.12.0.tgz#1627bfa2e058148036133b8d9b51a700663c294c"
   integrity sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==
 
-ai@3.2.15:
-  version "3.2.15"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-3.2.15.tgz#3d1ad1d4f07113f2e833c220d4df9ea93f8696b0"
-  integrity sha512-8xBW8jGTbw/eD54jetw32h6/AzzaM0qsgMVPGbpsnSAOW6AVxohQXFWVGBjyi3NNluzRmpaqg8yrBgCeEI+v8A==
+ai@3.2.16:
+  version "3.2.16"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-3.2.16.tgz#f74899497423b23ad92655095c8c542c24015fb5"
+  integrity sha512-kNqnmSQxUm3dcxLv/NoOusoMAq7EK/zahB/N//wkGoawgYqfOUpvz3+uS/FG52tZwMyy4YblVoeuBHpfPWzNDw==
   dependencies:
     "@ai-sdk/provider" "0.0.11"
     "@ai-sdk/provider-utils" "1.0.0"
-    "@ai-sdk/react" "0.0.15"
+    "@ai-sdk/react" "0.0.16"
     "@ai-sdk/solid" "0.0.11"
     "@ai-sdk/svelte" "0.0.12"
     "@ai-sdk/ui-utils" "0.0.9"
