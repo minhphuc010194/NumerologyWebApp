@@ -118,17 +118,17 @@
     "@babel/helper-validator-identifier" "^7.22.19"
     to-fast-properties "^2.0.0"
 
-"@chakra-ui/anatomy@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/anatomy/-/anatomy-2.3.1.tgz#e75a0be6faa1de3123ff3c914b42664d4a202879"
-  integrity sha512-eiZyE6kOqERZI9SrOSzKPy2jCNzWtrhuKQmLj8QfaPUVdjRw9eZ86A72C+r/82KOVi/4/uAxMuYrv48wzWbnVg==
+"@chakra-ui/anatomy@2.3.3":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/anatomy/-/anatomy-2.3.3.tgz#f189e231e2ccae7a6e64bd41b3da43222aa106b0"
+  integrity sha512-Sy2VAG0WrzkQE40Y0fY406c6AlyqFxAc7j6fDz8Wwotz9veAvm+y5UgFUyhZ6FoYNAjDMPQ7JCcN7OGz74pNlA==
 
-"@chakra-ui/hooks@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/hooks/-/hooks-2.3.1.tgz#618dfedf4c5d6acaabfffac472743e265083ea9b"
-  integrity sha512-fiYOus51s/2q+F4iMDri7AfK1f/yQ9DhbZhXV7CXIZoP7CG5ww/UBCiHRMAHM/nKLJMAOIyfRze6+P97kGRP6A==
+"@chakra-ui/hooks@2.3.3":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/hooks/-/hooks-2.3.3.tgz#ec0400b5c6b20bf877c68b0bbe3564affd647f57"
+  integrity sha512-nvqQfR+u0qAJ2/mdGF1XTrnfW9WahSsOc62E/xtRm5hPClfkxPCIXDuw0C17lZ2RYfg/hxsYKLJCGnQWZcC/7w==
   dependencies:
-    "@chakra-ui/utils" "2.1.1"
+    "@chakra-ui/utils" "2.1.3"
     "@zag-js/element-size" "0.31.1"
     copy-to-clipboard "3.3.3"
     framesync "6.1.2"
@@ -138,15 +138,15 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.2.1.tgz#2392aa9c036475820081bf5298adb81f6a605845"
   integrity sha512-/v1zxmRqrBoOFtU0FJDvZ/Rf4wnee1G9V4BMB3F0lqKOHOoEOkv1ATyoHKqySx2rxNs0NWeDtsk7jdrUIEaGtQ==
 
-"@chakra-ui/react@2.9.1":
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.9.1.tgz#4baad8d1757ba04ca475539c2e4a6fc3cf00f1ff"
-  integrity sha512-Q2tV23CAqHfB0V7nprmB5n6npydAQoDqPF3yNuBygjBLMUYbIah44aCoDZ44ODpj673LCWoa8qCAaVD8/GmK1g==
+"@chakra-ui/react@2.9.4":
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.9.4.tgz#950a48b90f174407f8d71005962ac7fa79ab9838"
+  integrity sha512-e7fMItdoUjZsQuVsq4DSvrX/dpmYHEwJD2UM5dkHvR2Vzsrili0EWfXrT9R+4kCDHtc6vlECbHA13RHru7XUUg==
   dependencies:
-    "@chakra-ui/hooks" "2.3.1"
-    "@chakra-ui/styled-system" "2.10.1"
-    "@chakra-ui/theme" "3.4.1"
-    "@chakra-ui/utils" "2.1.1"
+    "@chakra-ui/hooks" "2.3.3"
+    "@chakra-ui/styled-system" "2.10.3"
+    "@chakra-ui/theme" "3.4.3"
+    "@chakra-ui/utils" "2.1.3"
     "@popperjs/core" "^2.11.8"
     "@zag-js/focus-visible" "^0.31.1"
     aria-hidden "^1.2.3"
@@ -155,37 +155,36 @@
     react-lorem-component "^0.13.0"
     react-remove-scroll "^2.5.7"
 
-"@chakra-ui/styled-system@2.10.1":
-  version "2.10.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/styled-system/-/styled-system-2.10.1.tgz#f322b6d7bb85ef5f4b732d1ab2e82920a1f38f63"
-  integrity sha512-6D7MLeRFTHCj2PL/RI3phK2VWYJqp4YX1hHXnCy0sm1ztW5/B/BKpakultMtpaFa6A1kQPF8nvBZU7jDc7XZBg==
+"@chakra-ui/styled-system@2.10.3":
+  version "2.10.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/styled-system/-/styled-system-2.10.3.tgz#226b48d832a3748852be6ae79db713a405ef5377"
+  integrity sha512-rU4sG712pnp3Qrc8XT5AKcMhZjByXp1IrErLJ8wmiez2v8hAl/Dv8roK2BTqd4GfkJOrtkyfq2e2ZcDWjbd9Dw==
   dependencies:
-    "@chakra-ui/utils" "2.1.1"
+    "@chakra-ui/utils" "2.1.3"
     csstype "^3.1.2"
 
-"@chakra-ui/theme-tools@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-2.2.1.tgz#d2baa31ea27e58d782e232f72e0f2b7589d9dc63"
-  integrity sha512-n4mcgeXQJiBrOOI2Lis+dzUOM7g0Xgc2TvoxlJJ9ONB04Lw385/ySMSTewrJYhlmw3bTO5mmXIDSMfAtYQ1XZA==
+"@chakra-ui/theme-tools@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-2.2.3.tgz#eef036a8ea1bca77baf2d096553b5af5f4517cb7"
+  integrity sha512-9fbBh4YaF8k1puovMnvdZtoVxQd1IKlRvWQBmIzXoae3KSJi9p1znRLzEX+Qjvph15dFCa2Q4h1gynI+HOh8oQ==
   dependencies:
-    "@chakra-ui/anatomy" "2.3.1"
-    "@chakra-ui/utils" "2.1.1"
+    "@chakra-ui/anatomy" "2.3.3"
+    "@chakra-ui/utils" "2.1.3"
     color2k "^2.0.2"
-    dlv "^1.1.3"
 
-"@chakra-ui/theme@3.4.1":
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-3.4.1.tgz#3ff4235c07ad881fd791940e81ee0ab884821c14"
-  integrity sha512-yRlxDaYwR4jIgMoelyYaX87RfRDCv8w8TZhlBigiykcn73NroIeparYDzOTAKJt+0UXZ+q7TZWhn88tpMTR4cg==
+"@chakra-ui/theme@3.4.3":
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-3.4.3.tgz#1cefc534a1351c52e2dda2723f27a560e395c7ec"
+  integrity sha512-WxGk5wEMr8x/YmR99TfVcnt+qsHt9qy5FJycPgcKoL8blQiZ+v/rLhdWhXvu8K03DyfAoLkQDh2guVl+wKFfHA==
   dependencies:
-    "@chakra-ui/anatomy" "2.3.1"
-    "@chakra-ui/theme-tools" "2.2.1"
-    "@chakra-ui/utils" "2.1.1"
+    "@chakra-ui/anatomy" "2.3.3"
+    "@chakra-ui/theme-tools" "2.2.3"
+    "@chakra-ui/utils" "2.1.3"
 
-"@chakra-ui/utils@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-2.1.1.tgz#34dbc07ea0a4942c9d5d88282a4175ebd3775b78"
-  integrity sha512-FZdchKAjG9j1+WLjle0uDNcOvSwwgQYDUANoYrDYtu4e8CXzZjftA0RXuovwI7yIlP/cKxTcA8AyeI1+2Q3Pqw==
+"@chakra-ui/utils@2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-2.1.3.tgz#f7a3385c5abebd48e6c00223861ce7937db6563f"
+  integrity sha512-qIuyEg1ThVrUAnkV5nOngMDxUVCKavC04LfuraOCS1PHU4zhU4urJC2FURriALIQSgy6LpegASjvRzi7CIDDQQ==
   dependencies:
     "@types/lodash.mergewith" "4.6.9"
     lodash.mergewith "4.6.2"
@@ -1214,11 +1213,6 @@ diff-match-patch@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.5.tgz#abb584d5f10cd1196dfc55aa03701592ae3f7b37"
   integrity sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==
-
-dlv@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/dlv/-/dlv-1.1.3.tgz#5c198a8a11453596e751494d49874bc7732f2e79"
-  integrity sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==
 
 doctrine@^2.1.0:
   version "2.1.0"
