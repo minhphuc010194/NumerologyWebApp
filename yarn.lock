@@ -133,10 +133,10 @@
     copy-to-clipboard "3.3.3"
     framesync "6.1.2"
 
-"@chakra-ui/icons@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.2.1.tgz#2392aa9c036475820081bf5298adb81f6a605845"
-  integrity sha512-/v1zxmRqrBoOFtU0FJDvZ/Rf4wnee1G9V4BMB3F0lqKOHOoEOkv1ATyoHKqySx2rxNs0NWeDtsk7jdrUIEaGtQ==
+"@chakra-ui/icons@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.2.3.tgz#f2faee93ab05c04a8ce7116cd26296e39b42e3dd"
+  integrity sha512-BihIvFvAKq+9/U3sI47Vdo3Mmr9VxTvWcFBl3qZsbJSBpqK7GYaakNWADyPvgsCRGo2be72AZgcOAYaAqWDThQ==
 
 "@chakra-ui/react@2.9.1":
   version "2.9.1"
