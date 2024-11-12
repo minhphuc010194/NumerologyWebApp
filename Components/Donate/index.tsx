@@ -84,7 +84,7 @@ export const Donate = () => {
               align="stretch"
             >
               <Box>
-                <Image src="/images/MomoQR.jpeg" />
+                <Image src="/Images/MomoQR.jpeg" />
               </Box>
               <Box>
                 {address.map((item, index) => (
