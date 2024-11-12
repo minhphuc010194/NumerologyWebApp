@@ -16,22 +16,26 @@ import {
   PiCoffeeBold,
   VStack,
   StackDivider,
-  Input,
   Image,
-  ButtonGroup,
-  IconButton,
   FaBtc,
   FaEthereum,
   Code,
   HStack,
   useToast,
   RiBnbFill,
+  Divider,
 } from "Components";
 
+type AddressWallet = {
+  name: string;
+  address: string;
+  color: string;
+  icon: any;
+};
 export const Donate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const [address, setAdress] = useState([
+  const [address, setAdress] = useState<AddressWallet[]>([
     {
       name: "Bitcoin",
       address: "1NTP9TcpYQL6nHyiNgyQ1ekL2kXDsdcrAt",
@@ -52,12 +56,12 @@ export const Donate = () => {
     },
   ]);
 
-  const copyAddress = (address: string) => {
-    navigator.clipboard.writeText(address);
+  const copyAddress = (item: AddressWallet) => {
+    navigator.clipboard.writeText(item.address);
     toast({
-      title: "Copied successfully",
+      title: "Copied successfully " + item.name + " address",
       status: "success",
-      duration: 1_500,
+      duration: 2_500,
       isClosable: true,
     });
   };
@@ -88,7 +92,7 @@ export const Donate = () => {
                     <Tooltip label={item.name} hasArrow>
                       <CustomCard>
                         <Button
-                          onClick={() => copyAddress(item.address)}
+                          onClick={() => copyAddress(item)}
                           color={item.color}
                           variant="outline"
                           size="sm"
@@ -103,12 +107,13 @@ export const Donate = () => {
                 ))}
               </Box>
             </VStack>
+            <Divider my={4} />
           </ModalBody>
         </ModalContent>
       </Modal>
 
       <Tooltip label="By me a coffee" hasArrow>
-        <CustomCard as="button" onClick={onOpen}>
+        <CustomCard as="button" onClick={onOpen} color="orange.600">
           <Icon
             as={FaDonate}
             boxSize={12}
