@@ -67,7 +67,12 @@ export const Donate = () => {
   };
   return (
     <Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={["full", "md"]}
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader display="flex">
@@ -77,7 +82,7 @@ export const Donate = () => {
             </Box>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody p={[2, 3]}>
             <VStack
               divider={<StackDivider borderColor="gray.200" />}
               spacing={4}
