@@ -7,23 +7,13 @@
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
-"@ai-sdk/openai@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.0.0.tgz#4dd7bd9106dfac1e6b53ca0a3d141d68c22d1521"
-  integrity sha512-EZ2UDxTBb3v3e2eexKTFGXF9MEy7rEcfIrkdD3yo8RCpwIkwRjyxCfs6wzh8KAW6XQZRu3Rp0kqw1S4FQcQgJA==
+"@ai-sdk/openai@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.0.4.tgz#5818aff68a3e3e4853da97f6f624bcaea852ff8a"
+  integrity sha512-3QpgKmkCeJvUdeu3sVRL/ZKWzg8biO0tN2owQW/lFV95o8qskE3bN95R9H136Mmu0124/C28aY6ScxO93nUrtg==
   dependencies:
-    "@ai-sdk/provider" "1.0.0"
-    "@ai-sdk/provider-utils" "2.0.0"
-
-"@ai-sdk/provider-utils@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.0.0.tgz#dc4da55bde547e5098566761547950cb278c60bb"
-  integrity sha512-uITgVJByhtzuQU2ZW+2CidWRmQqTUTp6KADevy+4aRnmILZxY2LCt+UZ/ZtjJqq0MffwkuQPPY21ExmFAQ6kKA==
-  dependencies:
-    "@ai-sdk/provider" "1.0.0"
-    eventsource-parser "^3.0.0"
-    nanoid "^5.0.8"
-    secure-json-parse "^2.7.0"
+    "@ai-sdk/provider" "1.0.1"
+    "@ai-sdk/provider-utils" "2.0.2"
 
 "@ai-sdk/provider-utils@2.0.2":
   version "2.0.2"
@@ -34,13 +24,6 @@
     eventsource-parser "^3.0.0"
     nanoid "^3.3.7"
     secure-json-parse "^2.7.0"
-
-"@ai-sdk/provider@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.0.0.tgz#f4e2eeca4e1feeebc02f6335c5b699071fca2b04"
-  integrity sha512-Sj29AzooJ7SYvhPd+AAWt/E7j63E9+AzRnoMHUaJPRYzOd/WDrVNxxv85prF9gDcQ7XPVlSk9j6oAZV9/DXYpA==
-  dependencies:
-    json-schema "^0.4.0"
 
 "@ai-sdk/provider@1.0.1":
   version "1.0.1"
@@ -2511,11 +2494,6 @@ nanoid@^3.3.6, nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
-
-nanoid@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.8.tgz#7610003f6b3b761b5c244bb342c112c5312512bf"
-  integrity sha512-TcJPw+9RV9dibz1hHUzlLVy8N4X9TnwirAjrU08Juo6BNKggzVfP2ZJ/3ZUSq15Xl5i85i+Z89XBO90pB2PghQ==
 
 natural-compare@^1.4.0:
   version "1.4.0"
