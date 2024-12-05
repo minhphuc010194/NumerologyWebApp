@@ -8,17 +8,27 @@
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
 "@ai-sdk/openai@^1.0.0":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.0.5.tgz#cafc58f91f585597b855aa65aae743fee2e6c280"
-  integrity sha512-JDCPBJQx9o3LgboBPaA55v+9EZ7Vm/ozy0+J5DIr2jJF8WETjeCnigdxixyzEy/Od4wX871jOTSuGffwNIi0kA==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.0.7.tgz#2ca1816d8efc834829c0ebc65fb8e72501c45568"
+  integrity sha512-eXWERuUrMyH3k1GpmYHzTj7Xzxx5/0dENAkbxnj7t2Sn2Mgfb5Td/8QYfGSxuuPd8BrfGTyknArff6yqPkuvPA==
   dependencies:
     "@ai-sdk/provider" "1.0.1"
-    "@ai-sdk/provider-utils" "2.0.2"
+    "@ai-sdk/provider-utils" "2.0.3"
 
 "@ai-sdk/provider-utils@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.0.2.tgz#ea9d510be442b38bd40ae50dbf5b64ffc396952b"
   integrity sha512-IAvhKhdlXqiSmvx/D4uNlFYCl8dWT+M9K+IuEcSgnE2Aj27GWu8sDIpAf4r4Voc+wOUkOECVKQhFo8g9pozdjA==
+  dependencies:
+    "@ai-sdk/provider" "1.0.1"
+    eventsource-parser "^3.0.0"
+    nanoid "^3.3.7"
+    secure-json-parse "^2.7.0"
+
+"@ai-sdk/provider-utils@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.0.3.tgz#1f9fd6c1c17d3ee8813617b113a08a6d51328e83"
+  integrity sha512-Cyk7GlFEse2jQ4I3FWYuZ1Zhr5w1mD9SHMJTYm/in1rd7r89nmEoQiOy3h8YV2ZvTa2/6aR10xZ4M0k4B3BluA==
   dependencies:
     "@ai-sdk/provider" "1.0.1"
     eventsource-parser "^3.0.0"
