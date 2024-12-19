@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ai-sdk/openai@^1.0.0":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.0.8.tgz#d00d0fcadae8b4523fe7053bd57696d4bc402b47"
-  integrity sha512-wcTHM9qgRWGYVO3WxPSTN/RwnZ9R5/17xyo61iUCCSCZaAuJyh6fKddO0/oamwDp3BG7g+4wbfAyuTo32H+fHw==
+"@ai-sdk/openai@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.0.10.tgz#06997ef447539619e7e38fddf781d7ad66150a13"
+  integrity sha512-ltZ1B/qSHvNiXngJBVY1GJD41/kvvi9QCQeuiEdf5utJnjRlR0MKNHzb3YRhJaLKFuGFrq1vAnxlSHGANY8R7A==
   dependencies:
     "@ai-sdk/provider" "1.0.2"
     "@ai-sdk/provider-utils" "2.0.4"
