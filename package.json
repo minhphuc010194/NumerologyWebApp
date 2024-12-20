@@ -26,7 +26,7 @@
     "moment": "2.30.1",
     "next": "^14.0.3",
     "nodemailer": "6.9.16",
-    "openai": "^4.72.0",
+    "openai": "^4.77.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "5.4.0",
