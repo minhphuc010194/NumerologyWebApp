@@ -4,8 +4,8 @@ import { prompt as contentPrompt } from './prompt';
 
 export async function POST(req: NextRequest) {
    try {
-      const baseURL = process.env.OPENAI_BASE_URL;
-      const apiKey = process.env.OPENAI_API_KEY;
+      const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+      const apiKey = process.env.NEXT_PUBLIC_API_KEY;
       const { messages } = await req.json();
       // Add system prompt
       const systemPrompt = {
