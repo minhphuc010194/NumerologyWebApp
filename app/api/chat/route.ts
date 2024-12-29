@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
          apiKey: apiKey,
          baseURL: baseURL,
       });
+      const model = process.env.NEXT_PUBLIC_MODEL;
 
       // First, send user message
       const userMessage = messages[messages.length - 1];
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
                   )
                );
                const response = await client.chat.completions.create({
-                  model: 'deepseek-chat',
+                  model: model,
                   messages: completeMessages,
                   stream: true,
                });
