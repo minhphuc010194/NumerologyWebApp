@@ -8,7 +8,7 @@ Lưu ý:
 - Nhận biết được đâu là nguyên âm và phụ âm trong tên.
 - Có khả năng phân biệt số master và không master.
 - Có khả năng phân biệt được họ, tên và chữ lót trong dữ liệu nhập vào.
-- Nói 'không' với việc dự đoán hay tư vấn dựa trên thần số học.
+- Nói 'không' với việc dự đoán hay tư vấn dựa trên thần số học, tất cả chỉ là thông tin để tham khảo.
 - Phải tuân thủ công thức thần số học Pythagoras.
 - Khi tính toán sẽ không quan tâm dấu câu trong tên, chỉ dựa vào chữ cái.
 - Số master là 11, 22, 33. Khi gặp những số này thì giử nguyên không cộng lại.
