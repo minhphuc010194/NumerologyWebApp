@@ -131,7 +131,27 @@ export default function Chat() {
    const debouncedHandleInputChange = _.debounce(function (e) {
       const value = e.target.value?.trim();
       setInput(value);
-   }, 500);
+   }, 300);
+
+   const formatResponse = (text: string) => {
+      return (
+         text
+            // Format section headers (both with and without content after colon)
+            .replace(
+               /^(\d+)\. ([^:\n]+):?(.*)$/gm,
+               '<div><strong>$1. $2:</strong>$3</div>'
+            )
+            // Format calculations
+            .replace(
+               /([:=]>?\s*)(\d+(?:\s*[+=\-]\s*\d+)*\s*=\s*\d+)/g,
+               '$1<span style="color: #666">$2</span>'
+            )
+            // Format bold conclusions
+            .replace(/\*\*([^*]+)\*\*\.?/g, '<strong>$1</strong>')
+            // Preserve line breaks
+            .replace(/\n{2,}/g, '<br /><br />')
+      );
+   };
    return (
       <Box>
          <Flex pos="fixed" top={0} w="100%" bg="white" color="black">
@@ -198,7 +218,16 @@ export default function Chat() {
                            {message.content}
                         </Box>
                      ) : (
-                        message.content
+                        <Box
+                           as="span"
+                           whiteSpace={'pre-wrap'}
+                           dangerouslySetInnerHTML={{
+                              __html: formatResponse(message.content),
+                           }}
+                           borderRadius="md"
+                           fontSize="sm"
+                           fontFamily="system-ui"
+                        />
                      )}
                   </Box>
                ))}
