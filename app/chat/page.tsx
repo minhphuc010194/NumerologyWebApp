@@ -1,5 +1,5 @@
 'use client';
-import { FormEvent, useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { useChat, UseChatHelpers } from 'ai/react';
 import _ from 'lodash';
 import { useRouter } from 'next/navigation';
@@ -30,42 +30,92 @@ export default function Chat() {
    const [size, setSize] = useState({ w: 0, h: 0 });
    const [data, setData] = useState<Data[]>([]);
    const inputRef = useRef<HTMLInputElement>(null);
-   const { handleInputChange, input, handleSubmit, isLoading, setInput } =
-      useChat({
-         api: '/api/chat',
-         onResponse: async (response) => {
-            if (!response.ok) {
-               throw new Error('Failed to fetch response');
-            }
-            // Debug stream data
-            if (response.body) {
-               const reader = response.body.getReader();
-               while (true) {
-                  const { done, value } = await reader.read();
-                  if (done) break;
-                  // Decode and parse chunks
-                  const text = new TextDecoder().decode(value);
-                  const lines = text
-                     .split('\n')
-                     .filter((line) => line.trim() !== '');
+   const { input, handleSubmit, isLoading, setInput } = useChat({
+      api: '/api/chat',
+      onResponse: async (response) => {
+         if (!response.ok) {
+            throw new Error('Failed to fetch response');
+         }
+         const stream = new TextDecoderStream();
+         const streamReader = response.body?.getReader();
+         const readableStream = new ReadableStream({
+            async start(controller) {
+               try {
+                  while (true) {
+                     const { done, value } = (await streamReader?.read()) || {
+                        done: true,
+                        value: undefined,
+                     };
+                     if (done) break;
+                     controller.enqueue(value);
+                  }
+               } finally {
+                  streamReader?.releaseLock();
+                  controller.close();
+               }
+            },
+         });
 
-                  for (const line of lines) {
-                     if (line.startsWith('data: ')) {
-                        try {
-                           const json = JSON.parse(line.slice(6));
-                           setData((prev) => [...prev, json]);
-                        } catch (e) {
-                           console.warn('Failed to parse chunk:', line);
-                        }
+         const reader = readableStream.pipeThrough(stream).getReader();
+         let buffer = '';
+
+         try {
+            while (true) {
+               const { done, value } = await reader.read();
+               if (done) break;
+
+               buffer += value;
+               const lines = buffer.split('\n');
+               buffer = lines.pop() || '';
+
+               for (const line of lines) {
+                  if (line.startsWith('data: ')) {
+                     const jsonStr = line.slice(6);
+                     if (jsonStr === '[DONE]') break;
+
+                     try {
+                        const json = JSON.parse(jsonStr);
+                        setData((prev) => [...prev, json]);
+                     } catch (e) {
+                        console.warn('Parse error:', e);
                      }
                   }
                }
             }
-         },
-         onError: (error) => {
-            console.error('Chat error:', error);
-         },
-      }) as UseChatHelpers;
+         } catch (error) {
+            console.error('Stream error:', error);
+            throw error;
+         } finally {
+            reader?.releaseLock();
+         }
+         //  if (response.body) {
+         //     const reader = response.body.getReader();
+         //     while (true) {
+         //        const { done, value } = await reader.read();
+         //        if (done) break;
+         //        // Decode and parse chunks
+         //        const text = new TextDecoder().decode(value);
+         //        const lines = text
+         //           .split('\n')
+         //           .filter((line) => line.trim() !== '');
+
+         //        for (const line of lines) {
+         //           if (line.startsWith('data: ')) {
+         //              try {
+         //                 const json = JSON.parse(line.slice(6));
+         //                 setData((prev) => [...prev, json]);
+         //              } catch (e) {
+         //                 console.warn('Failed to parse chunk:', line);
+         //              }
+         //           }
+         //        }
+         //     }
+         //  }
+      },
+      onError: (error) => {
+         console.error('Chat error:', error);
+      },
+   }) as UseChatHelpers;
    const lastMessageRef = useRef<HTMLDivElement>(null);
    const router = useRouter();
 
