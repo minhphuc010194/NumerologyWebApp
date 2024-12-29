@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
          apiKey: apiKey,
          baseURL: baseURL,
       });
-      const model = process.env.NEXT_PUBLIC_MODEL;
+      const model = process.env.NEXT_PUBLIC_MODEL || '';
 
       // First, send user message
       const userMessage = messages[messages.length - 1];
