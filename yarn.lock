@@ -817,10 +817,10 @@ agentkeepalive@^4.2.1:
   dependencies:
     humanize-ms "^1.2.1"
 
-ai@4.0.25:
-  version "4.0.25"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-4.0.25.tgz#0a20c144cd81764bf77d00509210699b3dbdd3ed"
-  integrity sha512-gGmx5Yun0OZA4NAeg5nX+m1n3Z3ZEmB2By3R3eOfDdOaTYxE6xq+wwKpY4KsuQCd/XeabKRy+aHPrEe/vI9FWQ==
+ai@4.0.27:
+  version "4.0.27"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-4.0.27.tgz#ef5ac59a749073989d9ce5673ba658b747793d90"
+  integrity sha512-3wMFXNAR6a269R7k4ZDQ9FfF3fb8gQlnlIE4kWaQfZDUTEM5aWgQdbzFhsr9Q5DULCyZg7l/bFpGd48cRfvLaA==
   dependencies:
     "@ai-sdk/provider" "1.0.3"
     "@ai-sdk/provider-utils" "2.0.5"
