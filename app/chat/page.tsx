@@ -1,6 +1,7 @@
 "use client";
+
 import { FormEvent, useEffect, useMemo, useState, useRef } from "react";
-import { useChat, UseChatHelpers } from "ai/react";
+import { useChat } from "ai/react";
 import { useRouter } from "next/navigation";
 import {
    Box,
@@ -19,33 +20,64 @@ import {
    InputRightElement,
 } from "Components";
 
-type Data = {
-   role: string;
-   type: string;
-   content: string;
-   content_type: string;
-};
 export default function Chat() {
    const [size, setSize] = useState({ w: 0, h: 0 });
-   const [isLoading, setIsLoading] = useState(false);
-   const [data, setData] = useState<Data[]>([]);
-   const { handleInputChange, input, setInput } = useChat() as UseChatHelpers;
+   const [liveMessages, setLiveMessages] = useState<
+      { role: string; content: string }[]
+   >([]);
+   const { handleInputChange, input, handleSubmit, isLoading, messages } =
+      useChat({
+         api: "/api/chat",
+         onResponse: async (stream) => {
+            const reader = await stream.body?.getReader();
+            const decoder = new TextDecoder();
+            let done = false;
+
+            let currentMessage = "";
+            while (!done) {
+               const { value, done: streamDone } =
+                  (await reader?.read()) as any;
+               done = streamDone;
+               const chunk = decoder.decode(value, { stream: !done });
+               currentMessage += chunk;
+
+               // Update the liveMessages with the latest chunk
+               setLiveMessages((prevMessages) => [
+                  ...prevMessages.slice(0, -1),
+                  {
+                     role: "assistant",
+                     content: currentMessage,
+                  },
+               ]);
+            }
+         },
+      });
+
    const lastMessageRef = useRef<HTMLDivElement>(null);
    const router = useRouter();
 
    useEffect(() => {
       setSize({ w: window.innerWidth, h: window.innerHeight });
    }, []);
+
+   useEffect(() => {
+      // Add the user message to the liveMessages
+      if (messages.length > 0) {
+         setLiveMessages((prevMessages) => [
+            ...prevMessages,
+            messages[messages.length - 1],
+            { role: "assistant", content: "" },
+         ]);
+      }
+   }, [messages]);
+
    useEffect(() => {
       if (lastMessageRef.current) {
          lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
       }
-   }, [data]);
-   const isDisabled = useMemo(() => isLoading || !input, [isLoading, input]);
+   }, [liveMessages]);
 
-   const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-   };
+   const isDisabled = useMemo(() => isLoading || !input, [isLoading, input]);
 
    return (
       <Box>
@@ -81,13 +113,17 @@ export default function Chat() {
                   "&::-webkit-scrollbar": {
                      display: "none",
                   },
-                  "-ms-overflow-style": "none" /* IE and Edge */,
-                  "scrollbar-width": "none" /* Firefox */,
+                  "-ms-overflow-style": "none",
+                  "scrollbar-width": "none",
                }}
             >
-               {data.map((message, index) => (
+               {liveMessages.map((message, index) => (
                   <Box
-                     ref={index === data.length - 1 ? lastMessageRef : null}
+                     ref={
+                        index === liveMessages.length - 1
+                           ? lastMessageRef
+                           : null
+                     }
                      as={message.role === "user" ? "div" : "span"}
                      key={index}
                      whiteSpace="pre-line"
