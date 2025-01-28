@@ -10,16 +10,6 @@
     "@ai-sdk/provider" "1.0.6"
     "@ai-sdk/provider-utils" "2.1.4"
 
-"@ai-sdk/provider-utils@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.1.0.tgz#40f060252a192a31063300dd277a04df0eba604e"
-  integrity sha512-rBUabNoyB25PBUjaiMSk86fHNSCqTngNZVvXxv8+6mvw47JX5OexW+ZHRsEw8XKTE8+hqvNFVzctaOrRZ2i9Zw==
-  dependencies:
-    "@ai-sdk/provider" "1.0.4"
-    eventsource-parser "^3.0.0"
-    nanoid "^3.3.8"
-    secure-json-parse "^2.7.0"
-
 "@ai-sdk/provider-utils@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.1.4.tgz#3f6d112f9b955f4b8543d7acde6c6dd31fe76710"
@@ -30,12 +20,15 @@
     nanoid "^3.3.8"
     secure-json-parse "^2.7.0"
 
-"@ai-sdk/provider@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.0.4.tgz#fe041f09e053235922ab9706be29fedf63c53bd0"
-  integrity sha512-lJi5zwDosvvZER3e/pB8lj1MN3o3S7zJliQq56BRr4e9V3fcRyFtwP0JRxaRS5vHYX3OJ154VezVoQNrk0eaKw==
+"@ai-sdk/provider-utils@2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.1.5.tgz#acceca29bef1ed3855789197c3b587e260f995d4"
+  integrity sha512-PcNR7E4ovZGV/J47gUqaFlvzorgca6uUfN5WzfXJSFWeOeLunN+oxRVwgUOwj0zbmO0yGQTHQD+FHVw8s3Rz8w==
   dependencies:
-    json-schema "^0.4.0"
+    "@ai-sdk/provider" "1.0.6"
+    eventsource-parser "^3.0.0"
+    nanoid "^3.3.8"
+    secure-json-parse "^2.7.0"
 
 "@ai-sdk/provider@1.0.6":
   version "1.0.6"
@@ -44,23 +37,23 @@
   dependencies:
     json-schema "^0.4.0"
 
-"@ai-sdk/react@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-1.1.0.tgz#7059fb3981818667856d3f9afff312e429c0d6b8"
-  integrity sha512-U5lBbLyf1pw79xsk5dgHSkBv9Jta3xzWlOLpxsmHlxh1X94QOH3e1gm+nioQ/JvTuHLm23j2tz3i4MpMdchwXQ==
+"@ai-sdk/react@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-1.1.6.tgz#8cd4f60b2ca08974322c1ce345c88fa874f9b953"
+  integrity sha512-kP5pimLyNWldw8+0j3ym+AACFEXcQHdELNtk45wDJA3HoH486x/zffdn7yLc3c1DOu5apew+COl8CNL4A+2E4g==
   dependencies:
-    "@ai-sdk/provider-utils" "2.1.0"
-    "@ai-sdk/ui-utils" "1.1.0"
+    "@ai-sdk/provider-utils" "2.1.5"
+    "@ai-sdk/ui-utils" "1.1.6"
     swr "^2.2.5"
     throttleit "2.1.0"
 
-"@ai-sdk/ui-utils@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/ui-utils/-/ui-utils-1.1.0.tgz#4c31029bae0d06fd2c2530dd214eff434c5a3787"
-  integrity sha512-ETXwdHaHwzC7NIehbthDFGwsTFk+gNtRL/lm85nR4WDFvvYQptoM/7wTANs0p0H7zumB3Ep5hKzv0Encu8vSRw==
+"@ai-sdk/ui-utils@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/ui-utils/-/ui-utils-1.1.6.tgz#285f59f6e9c6d3f10c0ab9c5a5860a1c03c9514c"
+  integrity sha512-YAwZhFwpIcvWERIjkET2o2MAwMFfJG18WdtcIjtxxMW7hA0bt5cliOV78DVcwRrxqJ2IKBlxaFmwUjW6M4SdOQ==
   dependencies:
-    "@ai-sdk/provider" "1.0.4"
-    "@ai-sdk/provider-utils" "2.1.0"
+    "@ai-sdk/provider" "1.0.6"
+    "@ai-sdk/provider-utils" "2.1.5"
     zod-to-json-schema "^3.24.1"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.25.9", "@babel/code-frame@^7.26.2":
@@ -842,15 +835,15 @@ agentkeepalive@^4.2.1:
   dependencies:
     humanize-ms "^1.2.1"
 
-ai@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-4.1.0.tgz#3150a91da72fb9dd7df25a781554f9a77114ca4a"
-  integrity sha512-95nI9hBSSAKPrMnpJbaB3yqvh+G8BS4/EtFz3HR0HgEDJpxC0R6JAlB8+B/BXHd/roNGBrS08Z3Zain/6OFSYA==
+ai@4.1.9:
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-4.1.9.tgz#3ac0408c48328e054c604da0a02d6d56bb8d55eb"
+  integrity sha512-EUc21jyV/2Fv0hEd4toLxQMxjTXBWjKnw16tpto12Vrg/EvkmfVSEvtwXDa+J70iPDmASxL10VKmJk/wnb6bZA==
   dependencies:
-    "@ai-sdk/provider" "1.0.4"
-    "@ai-sdk/provider-utils" "2.1.0"
-    "@ai-sdk/react" "1.1.0"
-    "@ai-sdk/ui-utils" "1.1.0"
+    "@ai-sdk/provider" "1.0.6"
+    "@ai-sdk/provider-utils" "2.1.5"
+    "@ai-sdk/react" "1.1.6"
+    "@ai-sdk/ui-utils" "1.1.6"
     "@opentelemetry/api" "1.9.0"
     jsondiffpatch "0.6.0"
 
