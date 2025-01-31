@@ -3110,9 +3110,9 @@ onetime@^7.0.0:
     mimic-function "^5.0.0"
 
 openai@^4.72.0:
-  version "4.81.0"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-4.81.0.tgz#3d92de8ca9bc769ed0d8a999706522f8833786ff"
-  integrity sha512-lXkFkV+He3O6RGnldHncRGef4uWHssDsAVwN5I3bWcgIdDPy/w8vgtIAwvZxAj49m4WiwWVD0+eGTJ9xOv/ISA==
+  version "4.82.0"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-4.82.0.tgz#9a28ba6552f94639c2de4278255ad669940b6267"
+  integrity sha512-1bTxOVGZuVGsKKUWbh3BEwX1QxIXUftJv+9COhhGGVDTFwiaOd4gWsMynF2ewj1mg6by3/O+U8+EEHpWRdPaJg==
   dependencies:
     "@types/node" "^18.11.18"
     "@types/node-fetch" "^2.6.4"
