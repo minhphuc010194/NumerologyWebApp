@@ -24,7 +24,7 @@
     "framer-motion": "12.4.1",
     "lodash": "4.17.21",
     "moment": "2.30.1",
-    "next": "^14.0.3",
+    "next": "^15.1.6",
     "nodemailer": "6.10.0",
     "openai": "^4.72.0",
     "react": "^18.2.0",
