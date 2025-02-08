@@ -21,7 +21,7 @@
     "@types/nodemailer": "6.4.17",
     "@typescript-eslint/eslint-plugin": "8.22.0",
     "ai": "4.1.18",
-    "framer-motion": "12.0.6",
+    "framer-motion": "12.4.1",
     "lodash": "4.17.21",
     "moment": "2.30.1",
     "next": "^14.0.3",
