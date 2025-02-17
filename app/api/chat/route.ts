@@ -1,45 +1,89 @@
-import { NextResponse } from "next/server";
-import ollama from "ollama";
+import { NextRequest, NextResponse } from "next/server";
+import OpenAI from "openai";
+import { prompt as contentPrompt } from "./prompt";
 
-export async function POST(req: { json: () => any }) {
-   const body = await req.json();
-   if (!body) {
-      return NextResponse.json({ message: "Bad request", status: 400 });
-   }
-
+export async function POST(req: NextRequest) {
    try {
-      const { messages } = body;
-      const response = await ollama.chat({
-         model: "llama3.1",
-         messages,
-         stream: true,
-      });
+      const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+      const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-      // Create a ReadableStream to handle the streaming response
+      const { messages } = await req.json();
+      // Add system prompt
+      const systemPrompt = {
+         role: "system",
+         content: contentPrompt,
+      };
+      // Combine system prompt with user messages
+      const completeMessages = [systemPrompt, ...messages];
+      if (!baseURL || !apiKey) {
+         return new Response("Missing API configuration", { status: 500 });
+      }
+
+      const client = new OpenAI({
+         apiKey: apiKey,
+         baseURL: baseURL,
+      });
+      const model = process.env.NEXT_PUBLIC_MODEL || "";
+
+      // First, send user message
+      const userMessage = messages[messages.length - 1];
+      // Create stream with proper encoding for useChat
+      const encoder = new TextEncoder();
       const stream = new ReadableStream({
          async start(controller) {
             try {
-               for await (const part of response) {
-                  const text = part.message.content;
-                  // console.log("Streaming chunk: ", text);
-                  controller.enqueue(new TextEncoder().encode(text));
+               // Send user message first
+               controller.enqueue(
+                  encoder.encode(
+                     `data: ${JSON.stringify({
+                        id: crypto.randomUUID(),
+                        role: "user",
+                        content: userMessage.content,
+                        createdAt: new Date(),
+                     })}\n\n`
+                  )
+               );
+               const response = await client.chat.completions.create({
+                  model: model,
+                  messages: completeMessages,
+                  stream: true,
+               });
+               for await (const chunk of response) {
+                  const content = chunk.choices[0]?.delta?.content || "";
+                  controller.enqueue(
+                     encoder.encode(
+                        `data: ${JSON.stringify({
+                           id: chunk.id,
+                           role: "assistant",
+                           content: content,
+                           createdAt: new Date(),
+                        })}\n\n`
+                     )
+                  );
                }
+               controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                controller.close();
-            } catch (err) {
-               console.error("Error during streaming: ", err);
-               controller.error(err);
+            } catch (error) {
+               controller.error(error);
             }
          },
       });
 
       return new Response(stream, {
          headers: {
-            "Content-Type": "text/plain; charset=utf-8",
-            "Transfer-Encoding": "chunked",
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            Connection: "keep-alive",
          },
       });
-   } catch (err) {
-      console.error("Error in API handler: ", err);
-      return NextResponse.json({ message: err, status: 400 });
+   } catch (error) {
+      console.error("Error:==>", error);
+      return new Response("Error processing request", { status: 500 });
    }
+}
+
+export async function GET() {
+   return NextResponse.json({
+      message: "This endpoint only supports POST requests.",
+   });
 }

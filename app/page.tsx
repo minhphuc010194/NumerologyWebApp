@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Numerology as NumerologyTxt } from "Utils/constaints";
-import { Box, Heading, Layout, Numerology } from "Components";
-import "../styles/globals.css";
+import Link from 'next/link';
+import { Numerology as NumerologyTxt } from 'Utils/constaints';
+import { Box, Heading, Layout, Numerology } from 'Components';
+import '../styles/globals.css';
 
 export default function HomePage() {
    return (
@@ -19,7 +19,7 @@ export default function HomePage() {
                   className="sparkle-effect"
                   cursor="pointer"
                >
-                  👉 Try Numerology with AI BOT now {"🤖 "}
+                  👉 Try Numerology with AI now {'🤖 '}
                </Box>
             </Link>
             <Box as="br" />
