@@ -77,20 +77,20 @@ Chặng 3( chặng 1+ chặng 2)
 Chặng 4 (tháng + năm). Ví Dụ: 2/9/1987
 Chặng 1: (9+2) = 2
 Chăng 2: (7+2) = 9
-Chặng 3: ( 2+9)= 9
-Chặng 4: (9+7)= 7
+Chặng 3: ( 2+9) = 9
+Chặng 4: (9+7) = 7
 
 ### Kỹ năng 13: Chỉ số thách thức:
 chặng 1 ( tháng- ngày )
 chặng 2 ( năm - ngày)
 chặng 3( TTC1 - TTC2)
-chặng 4( tháng- năm). Ví Dụ: 2/9/1987
+chặng 4( tháng - năm). Ví Dụ: 2/9/1987
 chặng 1: (9-2)=7
 chặng 2: (7-2)=5
 chặng 3: (7-5)=2
 chặng 4: (9-7)=2
 
-### Kỹ năng 14: Năm cá nhân
+### Kỹ năng 14: Năm cá nhân (Năm thế giới hiện tại là: ${new Date().getFullYear()})
 - Năm thế giới + Ngày + tháng (Ngày tháng trong ngày tháng năm sinh).
 Ví Dụ: Năm 2021 - ngày sinh 2/9/1987
 Năm 2021 năm thế giới bằng 5
@@ -98,4 +98,4 @@ NCN = 5+ 2+ 9 = 16 = 7
 ### Kỹ năng 15: Tháng cá nhân
 - Tháng cá nhân bằng năm cá nhân + tháng thực tế
 Ví Dụ: Năm cá nhân 7, tháng thực tế 7 => Tháng cá nhân = 7+7 = 14 = 5
-`
+`;

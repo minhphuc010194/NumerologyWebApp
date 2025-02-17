@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
-import { prompt as contentPrompt } from './prompt';
+import { NextRequest, NextResponse } from "next/server";
+import OpenAI from "openai";
+import { prompt as contentPrompt } from "./prompt";
 
 export async function POST(req: NextRequest) {
    try {
@@ -10,20 +10,20 @@ export async function POST(req: NextRequest) {
       const { messages } = await req.json();
       // Add system prompt
       const systemPrompt = {
-         role: 'system',
+         role: "system",
          content: contentPrompt,
       };
       // Combine system prompt with user messages
       const completeMessages = [systemPrompt, ...messages];
       if (!baseURL || !apiKey) {
-         return new Response('Missing API configuration', { status: 500 });
+         return new Response("Missing API configuration", { status: 500 });
       }
 
       const client = new OpenAI({
          apiKey: apiKey,
          baseURL: baseURL,
       });
-      const model = process.env.NEXT_PUBLIC_MODEL || '';
+      const model = process.env.NEXT_PUBLIC_MODEL || "";
 
       // First, send user message
       const userMessage = messages[messages.length - 1];
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
                   encoder.encode(
                      `data: ${JSON.stringify({
                         id: crypto.randomUUID(),
-                        role: 'user',
+                        role: "user",
                         content: userMessage.content,
                         createdAt: new Date(),
                      })}\n\n`
@@ -49,19 +49,19 @@ export async function POST(req: NextRequest) {
                   stream: true,
                });
                for await (const chunk of response) {
-                  const content = chunk.choices[0]?.delta?.content || '';
+                  const content = chunk.choices[0]?.delta?.content || "";
                   controller.enqueue(
                      encoder.encode(
                         `data: ${JSON.stringify({
                            id: chunk.id,
-                           role: 'assistant',
+                           role: "assistant",
                            content: content,
                            createdAt: new Date(),
                         })}\n\n`
                      )
                   );
                }
-               controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+               controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                controller.close();
             } catch (error) {
                controller.error(error);
@@ -71,19 +71,19 @@ export async function POST(req: NextRequest) {
 
       return new Response(stream, {
          headers: {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            Connection: 'keep-alive',
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            Connection: "keep-alive",
          },
       });
    } catch (error) {
-      console.error('Error:==>', error);
-      return new Response('Error processing request', { status: 500 });
+      console.error("Error:==>", error);
+      return new Response("Error processing request", { status: 500 });
    }
 }
 
 export async function GET() {
    return NextResponse.json({
-      message: 'This endpoint only supports POST requests.',
+      message: "This endpoint only supports POST requests.",
    });
 }
