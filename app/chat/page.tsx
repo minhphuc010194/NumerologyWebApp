@@ -1,8 +1,8 @@
-'use client';
-import { useEffect, useMemo, useState, useRef } from 'react';
-import { useChat, UseChatHelpers } from 'ai/react';
-import _ from 'lodash';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { useChat, UseChatHelpers } from "ai/react";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
 import {
    Box,
    Flex,
@@ -18,7 +18,7 @@ import {
    AiOutlineSend,
    MdArrowBackIosNew,
    InputRightElement,
-} from 'Components';
+} from "Components";
 
 type Data = {
    role: string;
@@ -31,10 +31,10 @@ export default function Chat() {
    const [data, setData] = useState<Data[]>([]);
    const inputRef = useRef<HTMLInputElement>(null);
    const { input, handleSubmit, isLoading, setInput } = useChat({
-      api: '/api/chat',
+      api: "/api/chat",
       onResponse: async (response) => {
          if (!response.ok) {
-            throw new Error('Failed to fetch response');
+            throw new Error("Failed to fetch response");
          }
          const stream = new TextDecoderStream();
          const streamReader = response.body?.getReader();
@@ -57,7 +57,7 @@ export default function Chat() {
          });
 
          const reader = readableStream.pipeThrough(stream).getReader();
-         let buffer = '';
+         let buffer = "";
 
          try {
             while (true) {
@@ -65,25 +65,25 @@ export default function Chat() {
                if (done) break;
 
                buffer += value;
-               const lines = buffer.split('\n');
-               buffer = lines.pop() || '';
+               const lines = buffer.split("\n");
+               buffer = lines.pop() || "";
 
                for (const line of lines) {
-                  if (line.startsWith('data: ')) {
+                  if (line.startsWith("data: ")) {
                      const jsonStr = line.slice(6);
-                     if (jsonStr === '[DONE]') break;
+                     if (jsonStr === "[DONE]") break;
 
                      try {
                         const json = JSON.parse(jsonStr);
                         setData((prev) => [...prev, json]);
                      } catch (e) {
-                        console.warn('Parse error:', e);
+                        console.warn("Parse error:", e);
                      }
                   }
                }
             }
          } catch (error) {
-            console.error('Stream error:', error);
+            console.error("Stream error:", error);
             throw error;
          } finally {
             reader?.releaseLock();
@@ -113,7 +113,7 @@ export default function Chat() {
          //  }
       },
       onError: (error) => {
-         console.error('Chat error:', error);
+         console.error("Chat error:", error);
       },
    }) as UseChatHelpers;
    const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -124,14 +124,14 @@ export default function Chat() {
    }, []);
    useEffect(() => {
       if (lastMessageRef.current) {
-         lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+         lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
       }
    }, [data]);
    const isDisabled = useMemo(() => isLoading || !input, [isLoading, input]);
    const debouncedHandleInputChange = _.debounce(function (e) {
       const value = e.target.value?.trim();
       setInput(value);
-   }, 300);
+   }, 100);
 
    const formatResponse = (text: string) => {
       return (
@@ -139,7 +139,7 @@ export default function Chat() {
             // Format section headers (both with and without content after colon)
             .replace(
                /^(\d+)\. ([^:\n]+):?(.*)$/gm,
-               '<div><strong>$1. $2:</strong>$3</div>'
+               "<div><strong>$1. $2:</strong>$3</div>"
             )
             // Format calculations
             .replace(
@@ -147,9 +147,9 @@ export default function Chat() {
                '$1<span style="color: #666">$2</span>'
             )
             // Format bold conclusions
-            .replace(/\*\*([^*]+)\*\*\.?/g, '<strong>$1</strong>')
+            .replace(/\*\*([^*]+)\*\*\.?/g, "<strong>$1</strong>")
             // Preserve line breaks
-            .replace(/\n{2,}/g, '<br /><br />')
+            .replace(/\n{2,}/g, "<br /><br />")
       );
    };
    return (
@@ -157,7 +157,7 @@ export default function Chat() {
          <Flex pos="fixed" top={0} w="100%" bg="white" color="black">
             <HStack p="4">
                <Icon
-                  onClick={() => router.push('/')}
+                  onClick={() => router.push("/")}
                   as={MdArrowBackIosNew}
                   boxSize={6}
                   cursor="pointer"
@@ -175,7 +175,7 @@ export default function Chat() {
             onSubmit={(e) => {
                handleSubmit(e);
                if (inputRef.current) {
-                  inputRef.current.value = '';
+                  inputRef.current.value = "";
                   inputRef.current?.focus();
                }
             }}
@@ -189,25 +189,25 @@ export default function Chat() {
                pb={10}
                overflowY="auto"
                css={{
-                  '&::-webkit-scrollbar': {
-                     display: 'none',
+                  "&::-webkit-scrollbar": {
+                     display: "none",
                   },
-                  '-ms-overflow-style': 'none' /* IE and Edge */,
-                  'scrollbar-width': 'none' /* Firefox */,
+                  "-ms-overflow-style": "none" /* IE and Edge */,
+                  "scrollbar-width": "none" /* Firefox */,
                }}
             >
                {data.map((message, index) => (
                   <Box
                      ref={index === data.length - 1 ? lastMessageRef : null}
-                     as={message.role === 'user' ? 'div' : 'span'}
+                     as={message.role === "user" ? "div" : "span"}
                      key={index}
                      whiteSpace="pre-line"
-                     display={message.role === 'user' ? 'flex' : ''}
+                     display={message.role === "user" ? "flex" : ""}
                      justifyContent={
-                        message.role === 'user' ? 'right' : 'normal'
+                        message.role === "user" ? "right" : "normal"
                      }
                   >
-                     {message.role === 'user' && message.content.trim() ? (
+                     {message.role === "user" && message.content.trim() ? (
                         <Box
                            p={3}
                            border="1px solid gray"
@@ -220,7 +220,7 @@ export default function Chat() {
                      ) : (
                         <Box
                            as="span"
-                           whiteSpace={'pre-wrap'}
+                           whiteSpace={"pre-wrap"}
                            dangerouslySetInnerHTML={{
                               __html: formatResponse(message.content),
                            }}
@@ -247,7 +247,7 @@ export default function Chat() {
                      ref={inputRef}
                      autoFocus
                      pr="3rem"
-                     size={{ md: 'lg', xs: 'md' }}
+                     size={{ md: "lg", xs: "md" }}
                      placeholder="Dương Văn Nghĩa sinh 11 - 06 - 1976 ..."
                      borderRadius={30}
                      //  value={input}
@@ -255,18 +255,18 @@ export default function Chat() {
                   />
 
                   <InputRightElement
-                     width={{ base: '40px', md: '70px' }}
+                     width={{ base: "40px", md: "70px" }}
                      mt={{ md: 2, sm: 1 }}
                   >
                      <Button
-                        size={{ md: 'lg', xs: 'md' }}
+                        size={{ md: "lg", xs: "md" }}
                         rounded={30}
                         variant="unstyled"
                         disabled={isDisabled}
                         type="submit"
                      >
                         <Icon
-                           color={isDisabled ? 'gray' : 'black'}
+                           color={isDisabled ? "gray" : "black"}
                            as={AiOutlineSend}
                            boxSize={8}
                         />
