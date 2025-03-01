@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@ai-sdk/openai@^1.0.0":
-  version "1.1.13"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.1.13.tgz#36e342e23f3973011a0a39c8fddcc04d8edcd871"
-  integrity sha512-IdChK1pJTW3NQis02PG/hHTG0gZSyQIMOLPt7f7ES56C0xH2yaKOU1Tp2aib7pZzWGwDlzTOW2h5TtAB8+V6CQ==
+"@ai-sdk/openai@^1.1.15":
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.1.15.tgz#6c87eba3794e1bb5c84207ee5358eaf7dd7b5a2c"
+  integrity sha512-irGQx5lMrYI9gub7Sy2ZHu49D3Icf7OtfOu3X8fVKMONOyi54RTKRNjVZTewkfRNE44psTbZDO8j8qmPirOTNQ==
   dependencies:
-    "@ai-sdk/provider" "1.0.8"
-    "@ai-sdk/provider-utils" "2.1.9"
+    "@ai-sdk/provider" "1.0.9"
+    "@ai-sdk/provider-utils" "2.1.10"
 
 "@ai-sdk/provider-utils@2.1.10":
   version "2.1.10"
@@ -19,23 +19,6 @@
     eventsource-parser "^3.0.0"
     nanoid "^3.3.8"
     secure-json-parse "^2.7.0"
-
-"@ai-sdk/provider-utils@2.1.9":
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.1.9.tgz#aa1693212dbd7f36d593d20a1139bc421dfe2bda"
-  integrity sha512-NerKjTuuUUs6glJGaentaXEBH52jRM0pR+cRCzc7aWke/K5jYBD6Frv1JYBpcxS7gnnCqSQZR9woiyS+6jrdjw==
-  dependencies:
-    "@ai-sdk/provider" "1.0.8"
-    eventsource-parser "^3.0.0"
-    nanoid "^3.3.8"
-    secure-json-parse "^2.7.0"
-
-"@ai-sdk/provider@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.0.8.tgz#9029dfe8b2698e43c3012524fd1192dd546c6a6c"
-  integrity sha512-f9jSYwKMdXvm44Dmab1vUBnfCDSFfI5rOtvV1W9oKB7WYHR5dGvCC6x68Mk3NUfrdmNoMVHGoh6JT9HCVMlMow==
-  dependencies:
-    json-schema "^0.4.0"
 
 "@ai-sdk/provider@1.0.9":
   version "1.0.9"
