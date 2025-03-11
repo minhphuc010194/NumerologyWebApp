@@ -3,9 +3,9 @@
 
 
 "@ai-sdk/openai@^1.0.0":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.2.1.tgz#9451cb9354f0ae5ddd7a98bb359ba84de07e5b9d"
-  integrity sha512-UtVDNrmrKzb3b4T9bnpduXs4FKpWGn+sH5qaFP1mtxOPeYGUF9OoJfGilH3CNfqGAE4QdZh/LT3IV6GHacooGg==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.2.2.tgz#76eaaeed5ea1494f517e87e731fb4a663288ba92"
+  integrity sha512-5355FLtSOH8sz9N9fsSwWpTaEgfqKOPMMHgSs1j4Aih5kQc9PhJ/oAPZuH308c/ktrbx6GcCW/hVrITimYsQhQ==
   dependencies:
     "@ai-sdk/provider" "1.0.10"
     "@ai-sdk/provider-utils" "2.1.11"
