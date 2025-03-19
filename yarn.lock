@@ -3,12 +3,12 @@
 
 
 "@ai-sdk/openai@^1.0.0":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.2.5.tgz#26c2def7c091193677b0d49f201238fa407627c6"
-  integrity sha512-COK7LzspgQQh5Yq070xfDdVMvp8WX592rXRaMaYNNqu1xpzahxDcM24aF9xgKYWuYH0UMoOw4UmWGwGxr6ygIg==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.2.6.tgz#bcbd88182d5a1de724b28898aa6e897d15d62821"
+  integrity sha512-0HxWjE3NDABAxu6u33Q253a4N+xxOCD/M2HeZuALC1O2gjmzLeytxjSbDA6QU0PnVN0uaYLOc2YT/keFF5eGrg==
   dependencies:
-    "@ai-sdk/provider" "1.0.11"
-    "@ai-sdk/provider-utils" "2.1.13"
+    "@ai-sdk/provider" "1.0.12"
+    "@ai-sdk/provider-utils" "2.1.14"
 
 "@ai-sdk/provider-utils@2.1.13":
   version "2.1.13"
@@ -20,10 +20,27 @@
     nanoid "^3.3.8"
     secure-json-parse "^2.7.0"
 
+"@ai-sdk/provider-utils@2.1.14":
+  version "2.1.14"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.1.14.tgz#363d9c111cd7ba29871e4a49c6a09b6860ca33e1"
+  integrity sha512-0fNQwstwqHP+cE9bP9nQXeEhY/qJRGW5Y+AQrvwzd0EI2+gH1GmwI1IC/gIOksmz/gRy4G+kXXD+Fbq4T/jCbA==
+  dependencies:
+    "@ai-sdk/provider" "1.0.12"
+    eventsource-parser "^3.0.0"
+    nanoid "^3.3.8"
+    secure-json-parse "^2.7.0"
+
 "@ai-sdk/provider@1.0.11":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.0.11.tgz#c1141b622f6a72551719c106b613c2350c6a29e0"
   integrity sha512-CPyImHGiT3svyfmvPvAFTianZzWFtm0qK82XjwlQIA1C3IQ2iku/PMQXi7aFyrX0TyMh3VTkJPB03tjU2VXVrw==
+  dependencies:
+    json-schema "^0.4.0"
+
+"@ai-sdk/provider@1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.0.12.tgz#f2df2b1f17863e213b5138d27cd5d09bcb6f976c"
+  integrity sha512-88Uu1zJIE1UUOVJWfE2ybJXgiH8JJ97QY9fbmplErEbfa/k/1kF+tWMVAAJolF2aOGmazQGyQLhv4I9CCuVACw==
   dependencies:
     json-schema "^0.4.0"
 
@@ -3191,10 +3208,15 @@ ms@^2.0.0, ms@^2.1.1, ms@^2.1.3:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-nanoid@^3.3.6, nanoid@^3.3.8:
+nanoid@^3.3.6:
   version "3.3.10"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.10.tgz#7bc882237698ef787d5cbba109e3b0168ba6e7b1"
   integrity sha512-vSJJTG+t/dIKAUhUDw/dLdZ9s//5OxcHqLaDWWrW4Cdq7o6tdLIczUkMXt2MBNmk6sJRZBZRXVixs7URY1CmIg==
+
+nanoid@^3.3.8:
+  version "3.3.11"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.11.tgz#4f4f112cefbe303202f2199838128936266d185b"
+  integrity sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==
 
 natural-compare@^1.4.0:
   version "1.4.0"
