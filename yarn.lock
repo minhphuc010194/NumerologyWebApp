@@ -3,12 +3,12 @@
 
 
 "@ai-sdk/openai@^1.0.0":
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.2.6.tgz#bcbd88182d5a1de724b28898aa6e897d15d62821"
-  integrity sha512-0HxWjE3NDABAxu6u33Q253a4N+xxOCD/M2HeZuALC1O2gjmzLeytxjSbDA6QU0PnVN0uaYLOc2YT/keFF5eGrg==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.3.0.tgz#c4de8d80251290b246f33bed9c13c779e5a07dda"
+  integrity sha512-zKKacGH8AyUjC63GizDpts+Nf8qAEtvAtO5O/AfVML8pIrtNWsbF+U3nT6mM8Oqvkp9X7ivuc4hCurivMFlJ6Q==
   dependencies:
-    "@ai-sdk/provider" "1.0.12"
-    "@ai-sdk/provider-utils" "2.1.14"
+    "@ai-sdk/provider" "1.1.0"
+    "@ai-sdk/provider-utils" "2.2.0"
 
 "@ai-sdk/provider-utils@2.1.13":
   version "2.1.13"
@@ -20,12 +20,12 @@
     nanoid "^3.3.8"
     secure-json-parse "^2.7.0"
 
-"@ai-sdk/provider-utils@2.1.14":
-  version "2.1.14"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.1.14.tgz#363d9c111cd7ba29871e4a49c6a09b6860ca33e1"
-  integrity sha512-0fNQwstwqHP+cE9bP9nQXeEhY/qJRGW5Y+AQrvwzd0EI2+gH1GmwI1IC/gIOksmz/gRy4G+kXXD+Fbq4T/jCbA==
+"@ai-sdk/provider-utils@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.2.0.tgz#cf123935dbbe1ac346c7955713d50f8f8e3287f1"
+  integrity sha512-RX5BnDSqudjvZjwwpROcxVQElyX7rUn/xImBgaZLXekSGqq8f7/tefqDcQiRbDZjuCd4CVIfhrK8y/Pta8cPfQ==
   dependencies:
-    "@ai-sdk/provider" "1.0.12"
+    "@ai-sdk/provider" "1.1.0"
     eventsource-parser "^3.0.0"
     nanoid "^3.3.8"
     secure-json-parse "^2.7.0"
@@ -37,10 +37,10 @@
   dependencies:
     json-schema "^0.4.0"
 
-"@ai-sdk/provider@1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.0.12.tgz#f2df2b1f17863e213b5138d27cd5d09bcb6f976c"
-  integrity sha512-88Uu1zJIE1UUOVJWfE2ybJXgiH8JJ97QY9fbmplErEbfa/k/1kF+tWMVAAJolF2aOGmazQGyQLhv4I9CCuVACw==
+"@ai-sdk/provider@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.1.0.tgz#a9e8bc5ea820a7e4df0abad008f80c8bda44d035"
+  integrity sha512-0M+qjp+clUD0R1E5eWQFhxEvWLNaOtGQRUaBn8CUABnSKredagq92hUS9VjOzGsTm37xLfpaxl97AVtbeOsHew==
   dependencies:
     json-schema "^0.4.0"
 
