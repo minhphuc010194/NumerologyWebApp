@@ -10,16 +10,6 @@
     "@ai-sdk/provider" "1.1.0"
     "@ai-sdk/provider-utils" "2.2.1"
 
-"@ai-sdk/provider-utils@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.2.0.tgz#cf123935dbbe1ac346c7955713d50f8f8e3287f1"
-  integrity sha512-RX5BnDSqudjvZjwwpROcxVQElyX7rUn/xImBgaZLXekSGqq8f7/tefqDcQiRbDZjuCd4CVIfhrK8y/Pta8cPfQ==
-  dependencies:
-    "@ai-sdk/provider" "1.1.0"
-    eventsource-parser "^3.0.0"
-    nanoid "^3.3.8"
-    secure-json-parse "^2.7.0"
-
 "@ai-sdk/provider-utils@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.2.1.tgz#f8877238c5a5d665fe311d69e559f1b932ed1d4e"
@@ -36,23 +26,23 @@
   dependencies:
     json-schema "^0.4.0"
 
-"@ai-sdk/react@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-1.2.0.tgz#7b95d03764e79e4611371da3123124a56137d805"
-  integrity sha512-fUTZkAsxOMz8ijjWf87E/GfYkgsH4V5MH2yuj7EXh5ShjWe/oayn2ZJkyoqFMr4Jf8m5kptDaivmbIenDq5OXA==
+"@ai-sdk/react@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-1.2.2.tgz#2af43a4bcc19b5005cdb905c0f246ee72076981e"
+  integrity sha512-rxyNTFjUd3IilVOJFuUJV5ytZBYAIyRi50kFS2gNmSEiG4NHMBBm31ddrxI/i86VpY8gzZVp1/igtljnWBihUA==
   dependencies:
-    "@ai-sdk/provider-utils" "2.2.0"
-    "@ai-sdk/ui-utils" "1.2.0"
+    "@ai-sdk/provider-utils" "2.2.1"
+    "@ai-sdk/ui-utils" "1.2.1"
     swr "^2.2.5"
     throttleit "2.1.0"
 
-"@ai-sdk/ui-utils@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/ui-utils/-/ui-utils-1.2.0.tgz#1b95b80aa2f837fffe0311537cc4b56799626f06"
-  integrity sha512-0IZwCqe7E+GkCASTDPAbzMr+POm9GDzWvFd37FvzpOeKNeibmge/LZEkTDbGSa+3b928H8wPwOLsOXBWPLUPDQ==
+"@ai-sdk/ui-utils@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/ui-utils/-/ui-utils-1.2.1.tgz#5d3719ad19ce6f993cd1df6c0976f10c4352706e"
+  integrity sha512-BzvMbYm7LHBlbWuLlcG1jQh4eu14MGpz7L+wrGO1+F4oQ+O0fAjgUSNwPWGlZpKmg4NrcVq/QLmxiVJrx2R4Ew==
   dependencies:
     "@ai-sdk/provider" "1.1.0"
-    "@ai-sdk/provider-utils" "2.2.0"
+    "@ai-sdk/provider-utils" "2.2.1"
     zod-to-json-schema "^3.24.1"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.26.2":
@@ -1041,17 +1031,16 @@ agentkeepalive@^4.2.1:
   dependencies:
     humanize-ms "^1.2.1"
 
-ai@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-4.2.0.tgz#20b8f3c5ca0ccda097c79e275f3cf2cdf629b232"
-  integrity sha512-3xJWzBZpBS3n/UY360IopufV5dpfgYoY08eCAV2A2m7CcyJxVOAQ4lXvBGSsB+mR+BYJ8Y/JOesFfc0+k4jz3A==
+ai@4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-4.2.5.tgz#5058c3321eb658b30428669b4c158fbe19da4297"
+  integrity sha512-URJEslI3cgF/atdTJHtz+Sj0W1JTmiGmD3znw9KensL3qV605odktDim+GTazNJFPR4QaIu1lUio5b8RymvOjA==
   dependencies:
     "@ai-sdk/provider" "1.1.0"
-    "@ai-sdk/provider-utils" "2.2.0"
-    "@ai-sdk/react" "1.2.0"
-    "@ai-sdk/ui-utils" "1.2.0"
+    "@ai-sdk/provider-utils" "2.2.1"
+    "@ai-sdk/react" "1.2.2"
+    "@ai-sdk/ui-utils" "1.2.1"
     "@opentelemetry/api" "1.9.0"
-    eventsource-parser "^3.0.0"
     jsondiffpatch "0.6.0"
 
 ajv@^6.12.4:
@@ -1964,11 +1953,6 @@ eventemitter3@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
   integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
-
-eventsource-parser@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/eventsource-parser/-/eventsource-parser-3.0.0.tgz#9303e303ef807d279ee210a17ce80f16300d9f57"
-  integrity sha512-T1C0XCUimhxVQzW4zFipdx0SficT651NnkR0ZSH3yQwh+mFMdLfgjABVi4YtMTtaL4s168593DaoaRLMqryavA==
 
 execa@^8.0.1:
   version "8.0.1"
