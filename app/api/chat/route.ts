@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
          baseURL: baseURL,
       });
       const model = process.env.NEXT_PUBLIC_MODEL || "";
-
       // First, send user message
       const userMessage = messages[messages.length - 1];
       // Create stream with proper encoding for useChat

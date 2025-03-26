@@ -32,25 +32,25 @@ export default function Chat() {
    const inputRef = useRef<HTMLInputElement>(null);
    const { input, handleSubmit, isLoading, setInput } = useChat({
       api: "/api/chat",
-      onResponse: async (response) => {
+      onResponse: async (response: Response) => {
          if (!response.ok) {
             throw new Error("Failed to fetch response");
          }
          const stream = new TextDecoderStream();
          const streamReader = response.body?.getReader();
+         if (!streamReader) {
+            throw new Error("Response body is null");
+         }
          const readableStream = new ReadableStream({
             async start(controller) {
                try {
                   while (true) {
-                     const { done, value } = (await streamReader?.read()) || {
-                        done: true,
-                        value: undefined,
-                     };
+                     const { done, value } = await streamReader.read();
                      if (done) break;
                      controller.enqueue(value);
                   }
                } finally {
-                  streamReader?.releaseLock();
+                  streamReader.releaseLock();
                   controller.close();
                }
             },
@@ -86,33 +86,10 @@ export default function Chat() {
             console.error("Stream error:", error);
             throw error;
          } finally {
-            reader?.releaseLock();
+            reader.releaseLock();
          }
-         //  if (response.body) {
-         //     const reader = response.body.getReader();
-         //     while (true) {
-         //        const { done, value } = await reader.read();
-         //        if (done) break;
-         //        // Decode and parse chunks
-         //        const text = new TextDecoder().decode(value);
-         //        const lines = text
-         //           .split('\n')
-         //           .filter((line) => line.trim() !== '');
-
-         //        for (const line of lines) {
-         //           if (line.startsWith('data: ')) {
-         //              try {
-         //                 const json = JSON.parse(line.slice(6));
-         //                 setData((prev) => [...prev, json]);
-         //              } catch (e) {
-         //                 console.warn('Failed to parse chunk:', line);
-         //              }
-         //           }
-         //        }
-         //     }
-         //  }
       },
-      onError: (error) => {
+      onError: (error: any) => {
          console.error("Chat error:", error);
       },
    }) as UseChatHelpers;
@@ -131,7 +108,7 @@ export default function Chat() {
    const debouncedHandleInputChange = _.debounce(function (e) {
       const value = e.target.value?.trim();
       setInput(value);
-   }, 100);
+   }, 50);
 
    const formatResponse = (text: string) => {
       return (
@@ -192,8 +169,8 @@ export default function Chat() {
                   "&::-webkit-scrollbar": {
                      display: "none",
                   },
-                  "-ms-overflow-style": "none" /* IE and Edge */,
-                  "scrollbar-width": "none" /* Firefox */,
+                  msOverflowStyle: "none",
+                  scrollbarWidth: "none", // Moved here as a CSS property
                }}
             >
                {data.map((message, index) => (
