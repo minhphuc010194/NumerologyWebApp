@@ -30,7 +30,7 @@ export const InputDate: FC<PropTypes> = (props) => {
          refMonth.current.value = splitDate[1];
          refYear.current.value = splitDate[0];
       }
-   }, []);
+   }, [defaultValue]);
 
    const handleChange = () => {
       const date = !!(refDate.current?.value ?? "")

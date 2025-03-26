@@ -169,8 +169,8 @@ export default function Chat() {
                   "&::-webkit-scrollbar": {
                      display: "none",
                   },
-                  "-ms-overflow-style": "none" /* IE and Edge */,
-                  "scrollbar-width": "none" /* Firefox */,
+                  msOverflowStyle: "none",
+                  scrollbarWidth: "none", // Moved here as a CSS property
                }}
             >
                {data.map((message, index) => (
