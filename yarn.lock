@@ -26,20 +26,20 @@
   dependencies:
     json-schema "^0.4.0"
 
-"@ai-sdk/react@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-1.2.2.tgz#2af43a4bcc19b5005cdb905c0f246ee72076981e"
-  integrity sha512-rxyNTFjUd3IilVOJFuUJV5ytZBYAIyRi50kFS2gNmSEiG4NHMBBm31ddrxI/i86VpY8gzZVp1/igtljnWBihUA==
+"@ai-sdk/react@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/react/-/react-1.2.3.tgz#742c2f3b823e96b3bce2d53e5fa441d3b5be2eb9"
+  integrity sha512-EQ6nmmQBBAal1yg72GB/Q7QnmDXMfgYvCo9Gym2mESXUHTqwpXU0JFHtk5Kq3EEkk7CVMf1oBWlNFNvU5ckQBg==
   dependencies:
     "@ai-sdk/provider-utils" "2.2.1"
-    "@ai-sdk/ui-utils" "1.2.1"
+    "@ai-sdk/ui-utils" "1.2.2"
     swr "^2.2.5"
     throttleit "2.1.0"
 
-"@ai-sdk/ui-utils@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/ui-utils/-/ui-utils-1.2.1.tgz#5d3719ad19ce6f993cd1df6c0976f10c4352706e"
-  integrity sha512-BzvMbYm7LHBlbWuLlcG1jQh4eu14MGpz7L+wrGO1+F4oQ+O0fAjgUSNwPWGlZpKmg4NrcVq/QLmxiVJrx2R4Ew==
+"@ai-sdk/ui-utils@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/ui-utils/-/ui-utils-1.2.2.tgz#9db4aa46a9f90a856a1f2e51ea26a48308aca5f9"
+  integrity sha512-6rCx2jSEPuiF6fytfMNscSOinHQZp52aFCHyPVpPPkcWnOur1jPWhol+0TFCUruDl7dCfcSIfTexQUq2ioLwaA==
   dependencies:
     "@ai-sdk/provider" "1.1.0"
     "@ai-sdk/provider-utils" "2.2.1"
@@ -1051,15 +1051,15 @@ agentkeepalive@^4.2.1:
   dependencies:
     humanize-ms "^1.2.1"
 
-ai@4.2.5:
-  version "4.2.5"
-  resolved "https://registry.yarnpkg.com/ai/-/ai-4.2.5.tgz#5058c3321eb658b30428669b4c158fbe19da4297"
-  integrity sha512-URJEslI3cgF/atdTJHtz+Sj0W1JTmiGmD3znw9KensL3qV605odktDim+GTazNJFPR4QaIu1lUio5b8RymvOjA==
+ai@4.2.8:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-4.2.8.tgz#c25e2270c14dd8410f9e546ba15c8735a78e1bdd"
+  integrity sha512-0gwfPZAuuQ+uTfk/GssrfnNTYxliCFKojbSQoEhzpbpSVaPao9NoU3iuE8vwBjWuDKqILRGzYGFE4+vTak0Oxg==
   dependencies:
     "@ai-sdk/provider" "1.1.0"
     "@ai-sdk/provider-utils" "2.2.1"
-    "@ai-sdk/react" "1.2.2"
-    "@ai-sdk/ui-utils" "1.2.1"
+    "@ai-sdk/react" "1.2.3"
+    "@ai-sdk/ui-utils" "1.2.2"
     "@opentelemetry/api" "1.9.0"
     jsondiffpatch "0.6.0"
 
