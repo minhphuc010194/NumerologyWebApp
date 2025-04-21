@@ -3,21 +3,12 @@
 
 
 "@ai-sdk/openai@^1.0.0":
-  version "1.3.10"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.3.10.tgz#892286c4336dd3aa26a61f706438ac60f47caf7e"
-  integrity sha512-XO0wF2lmAMWCYjkM5bLpWTKoXet61fBiIimTi+blqEGiLUjAvivt/1zZL1Lzhrv9+p19IC1rn9EWZI1dCelV8w==
+  version "1.3.16"
+  resolved "https://registry.yarnpkg.com/@ai-sdk/openai/-/openai-1.3.16.tgz#73d95c6cdf8b5383b3121eb12fc9b01e25649a1d"
+  integrity sha512-pjtiBKt1GgaSKZryTbM3tqgoegJwgAUlp1+X5uN6T+VPnI4FLSymV65tyloWzDlyqZmi9HXnnSRPu76VoL5D5g==
   dependencies:
-    "@ai-sdk/provider" "1.1.2"
-    "@ai-sdk/provider-utils" "2.2.6"
-
-"@ai-sdk/provider-utils@2.2.6":
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider-utils/-/provider-utils-2.2.6.tgz#5dc457feaf3698bb2d1acf33adaf6b2182e501d5"
-  integrity sha512-sUlZ7Gnq84DCGWMQRIK8XVbkzIBnvPR1diV4v6JwPgpn5armnLI/j+rqn62MpLrU5ZCQZlDKl/Lw6ed3ulYqaA==
-  dependencies:
-    "@ai-sdk/provider" "1.1.2"
-    nanoid "^3.3.8"
-    secure-json-parse "^2.7.0"
+    "@ai-sdk/provider" "1.1.3"
+    "@ai-sdk/provider-utils" "2.2.7"
 
 "@ai-sdk/provider-utils@2.2.7":
   version "2.2.7"
@@ -27,13 +18,6 @@
     "@ai-sdk/provider" "1.1.3"
     nanoid "^3.3.8"
     secure-json-parse "^2.7.0"
-
-"@ai-sdk/provider@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@ai-sdk/provider/-/provider-1.1.2.tgz#d12e46fe396648812e51a682f9f4bbabc27af6d7"
-  integrity sha512-ITdgNilJZwLKR7X5TnUr1BsQW6UTX5yFp0h66Nfx8XjBYkWD9W3yugr50GOz3CnE9m/U/Cd5OyEbTMI0rgi6ZQ==
-  dependencies:
-    json-schema "^0.4.0"
 
 "@ai-sdk/provider@1.1.3":
   version "1.1.3"
