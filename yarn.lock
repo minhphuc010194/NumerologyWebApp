@@ -145,13 +145,13 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.2.4.tgz#fc3f59a7e377d6e4efdbe8ee0a3aec7f29a4ab32"
   integrity sha512-l5QdBgwrAg3Sc2BRqtNkJpfuLw/pWRDwwT58J6c4PqQT6wzXxyNa8Q0PForu1ltB5qEiFb1kxr/F/HO1EwNa6g==
 
-"@chakra-ui/react@2.10.8":
-  version "2.10.8"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.10.8.tgz#30c922997b854560aabad3262f43bd47fbe666b8"
-  integrity sha512-Ku2l365l2rdfUxyPVi2BBvPbDqK8Xf9kGKRDg622rTJyTN2HxoDrgUZwEFb5J8rUR4qdgxK9vF56rYovtHT1Cw==
+"@chakra-ui/react@2.10.9":
+  version "2.10.9"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.10.9.tgz#f268c83c435df09c96a8eafb066e76641057c24b"
+  integrity sha512-lhdcgoocOiURwBNR3L8OioCNIaGCZqRfuKioLyaQLjOanl4jr0PQclsGb+w0cmito252vEWpsz2xRqF7y+Flrw==
   dependencies:
     "@chakra-ui/hooks" "2.4.5"
-    "@chakra-ui/styled-system" "2.12.3"
+    "@chakra-ui/styled-system" "2.12.4"
     "@chakra-ui/theme" "3.4.9"
     "@chakra-ui/utils" "2.2.5"
     "@popperjs/core" "^2.11.8"
@@ -161,10 +161,10 @@
     react-focus-lock "^2.9.6"
     react-remove-scroll "^2.5.7"
 
-"@chakra-ui/styled-system@2.12.3":
-  version "2.12.3"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/styled-system/-/styled-system-2.12.3.tgz#e71702365418d5e97560561637146f62711c987c"
-  integrity sha512-QiftbTn7+yteenMIDDI5Ov3w3CFOLKHvvF0JS4Mck6a4az4Aa8sGUANUdDlW2ISAtRvVb6HCwTS+hcBvPJCg1w==
+"@chakra-ui/styled-system@2.12.4":
+  version "2.12.4"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/styled-system/-/styled-system-2.12.4.tgz#b6593a4e69809eb40bda7f6b37c1da23378b843b"
+  integrity sha512-oa07UG7Lic5hHSQtGRiMEnYjuhIa8lszyuVhZjZqR2Ap3VMF688y1MVPJ1pK+8OwY5uhXBgVd5c0+rI8aBZlwg==
   dependencies:
     "@chakra-ui/utils" "2.2.5"
     csstype "^3.1.2"
