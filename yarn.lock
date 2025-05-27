@@ -4418,9 +4418,9 @@ zod-to-json-schema@^3.24.1:
   integrity sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==
 
 zod@^3.23.8:
-  version "3.25.28"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.28.tgz#8ab13d04afa05933598fd9fca32490ca92c7ea3a"
-  integrity sha512-/nt/67WYKnr5by3YS7LroZJbtcCBurDKKPBPWWzaxvVCGuG/NOsiKkrjoOhI8mJ+SQUXEbUzeB3S+6XDUEEj7Q==
+  version "3.25.31"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.31.tgz#beff55c696ea66263310749989f3e63bb7faa11a"
+  integrity sha512-SVCtUpZ1D9TFcRnCY7wlCpGEzV4+2HlXnJiwrgq1T93m98BIT6M5lbxRrEm7v6pYZXV4QNQo1t2KVv93JXk6XA==
 
 zwitch@^2.0.0:
   version "2.0.4"
