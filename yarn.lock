@@ -4510,10 +4510,10 @@ zod-to-json-schema@^3.24.1:
   resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.24.5.tgz#d1095440b147fb7c2093812a53c54df8d5df50a3"
   integrity sha512-/AuWwMP+YqiPbsJx5D6TfgRTc4kTLjsh5SOcd4bLsfUg2RcEXrFMJl1DGgdHy2aCfsIA/cr/1JM0xcB2GZji8g==
 
-zod@^3.23.8:
-  version "3.25.42"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.42.tgz#4818381b32f5120e7ea06decb1cde54a230cad2a"
-  integrity sha512-PcALTLskaucbeHc41tU/xfjfhcz8z0GdhhDcSgrCTmSazUuqnYqiXO63M0QUBVwpBlsLsNVn5qHSC5Dw3KZvaQ==
+zod@^3.25.44:
+  version "3.25.44"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.44.tgz#9a06f6c9e504b88dd3a7dfd2591c337332576238"
+  integrity sha512-BVwH2PnqCwxUN+SNjzRL6kcGvvz1JuojtB+uZB1Hg8DA56Zqn0pjpIwMrb1IhUsF75DjpEe4fhxPKO6+AErqzw==
 
 zwitch@^2.0.0:
   version "2.0.4"
