@@ -3241,10 +3241,10 @@ onetime@^7.0.0:
   dependencies:
     mimic-function "^5.0.0"
 
-openai@^5.0.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-5.1.1.tgz#b09f43520e1b6321d487e39c3295cbbe11827def"
-  integrity sha512-lgIdLqvpLpz8xPUKcEIV6ml+by74mbSBz8zv/AHHebtLn/WdpH4kdXT3/Q5uUKDHg3vHV/z9+G9wZINRX6rkDg==
+openai@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-5.2.0.tgz#bd71106a534eaa23429c72e650f2580b04a33779"
+  integrity sha512-b+Sf2Yk2eApDkhqHr7C4d5hux9gkHUvyqQ7RrdSfLsjrXkCZpJPqkME0u5Py7RPB28Ozz+RkJZpW7YPTOoChew==
 
 optionator@^0.9.3:
   version "0.9.4"
