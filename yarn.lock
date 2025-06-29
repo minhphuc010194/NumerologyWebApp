@@ -3278,10 +3278,10 @@ next@^15.1.7:
     "@next/swc-win32-x64-msvc" "15.3.4"
     sharp "^0.34.1"
 
-nodemailer@7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-7.0.3.tgz#c098ce79ac60c7c111a86949eed2f99bd00cdac3"
-  integrity sha512-Ajq6Sz1x7cIK3pN6KesGTah+1gnwMnx5gKl3piQlQQE/PwyJ4Mbc8is2psWYxK3RJTVeqsDaCv8ZzXLCDHMTZw==
+nodemailer@7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-7.0.4.tgz#1204ca673026e93155d4a46eaa7c498a30fdd72a"
+  integrity sha512-9O00Vh89/Ld2EcVCqJ/etd7u20UhME0f/NToPfArwPEe1Don1zy4mAIz6ariRr7mJ2RDxtaDzN0WJVdVXPtZaw==
 
 object-assign@^4.1.1:
   version "4.1.1"
