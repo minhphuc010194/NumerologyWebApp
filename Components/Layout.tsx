@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Header, Footer, Container } from "./";
 
 type PropTypes = {
-   children: JSX.Element;
+   children: React.ReactNode;
 };
 export const Layout: FC<PropTypes> = ({ children }) => {
    return (

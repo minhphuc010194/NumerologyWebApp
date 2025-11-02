@@ -10,12 +10,14 @@ import {
   CustomCard,
   useColorMode,
   AiFillGithub,
+  Disclaimer,
 } from "Components";
 
 export const Footer: FC = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   return (
     <footer>
+      <Disclaimer />
       <Wrap justify="center" my={1}>
         <Tooltip label={colorMode + " mode"} hasArrow>
           <CustomCard>

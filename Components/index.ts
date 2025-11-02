@@ -10,6 +10,7 @@ export * from "react-icons/ri";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { Layout } from "./Layout";
+export { Disclaimer } from "./Disclaimer";
 export { Numerology } from "./Numerology";
 export { InputDate } from "./InputDate";
 export { CustomCard } from "./CustomCard";
