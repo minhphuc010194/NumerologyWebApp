@@ -18,7 +18,7 @@ import {
 import { RenderItem } from "./RenderItem";
 import { useProcessNumerology } from "Hooks";
 
-export const Numerology: FC = () => {
+const NumerologyComponent: FC = () => {
    const id = useId();
    const color = useColorModeValue("black", "white");
    const colorBorder = useColorModeValue("gray.200", "gray.600");
@@ -82,3 +82,7 @@ export const Numerology: FC = () => {
       </Box>
    );
 };
+
+// React 19 compatible component type - workaround for FC type incompatibility
+// Using any type to bypass React 19 JSX type strictness
+export const Numerology: any = NumerologyComponent;

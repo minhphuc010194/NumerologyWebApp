@@ -1,7 +1,10 @@
-import Link from 'next/link';
-import { Numerology as NumerologyTxt } from 'Utils/constaints';
-import { Box, Heading, Layout, Numerology } from 'Components';
-import '../styles/globals.css';
+import NextLink from "next/link";
+import { Numerology as NumerologyTxt } from "Utils/constaints";
+import { Box, Heading, Layout, Numerology } from "Components";
+import "../styles/globals.css";
+
+// React 19 compatibility - cast Link to any type
+const Link = NextLink as any;
 
 export default function HomePage() {
    return (
@@ -19,7 +22,8 @@ export default function HomePage() {
                   className="sparkle-effect"
                   cursor="pointer"
                >
-                  👉 Try Numerology with AI now {'🤖 '}
+                  👉 Server deployment in progress for AI with knowledge from
+                  reputable books {"🤖 "}
                </Box>
             </Link>
             <Box as="br" />
