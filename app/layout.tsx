@@ -1,8 +1,10 @@
-// import Head from "next/head";
 import { ReactNode } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import Script from "next/script";
 import { theme } from "Utils/themes";
+
+// React 19 compatibility - cast ChakraProvider to any type
+const ChakraProviderCompat = ChakraProvider as any;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
    const id = Date.now().toString();
@@ -24,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
          </head>
 
          <body>
-            <ChakraProvider theme={theme}>
+            <ChakraProviderCompat theme={theme}>
                <Script
                   id={id}
                   strategy="lazyOnload"
@@ -35,7 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                />
 
                {children}
-            </ChakraProvider>
+            </ChakraProviderCompat>
             <Script id={id} strategy="lazyOnload">
                {`
                      window.dataLayer = window.dataLayer || [];

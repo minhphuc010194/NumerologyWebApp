@@ -11,6 +11,7 @@ declare module "@chakra-ui/react" {
    export const ModalHeader: any;
    export const ModalBody: any;
    export const ModalCloseButton: any;
+   export const ChakraProvider: any;
 }
 
 declare module "next/link" {
