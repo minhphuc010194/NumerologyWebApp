@@ -7,7 +7,7 @@ import { theme } from "Utils/themes";
 const ChakraProviderCompat = ChakraProvider as any;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-   const id = Date.now().toString();
+   const id = "gtag-script";
 
    return (
       <html lang="en">
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             ></script> */}
          </head>
 
-         <body>
+         <body suppressHydrationWarning>
             <ChakraProviderCompat theme={theme}>
                <Script
                   id={id}

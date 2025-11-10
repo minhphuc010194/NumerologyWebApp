@@ -1,7 +1,6 @@
 "use client";
 
-import moment from "moment";
-import { type FC, useRef, useEffect, type ChangeEvent } from "react";
+import { type FC, useRef, useState, useEffect, type ChangeEvent } from "react";
 import { Input, InputGroup, useToast } from "./";
 import { InputProps } from "../Utils/types";
 
@@ -11,77 +10,64 @@ type PropTypes = InputProps & {
    //    value?: string;
    defaultValue?: string;
 };
+
+const parseDefaultValue = (defaultValue: string) => {
+   if (defaultValue) {
+      const splitDate = defaultValue.split("-");
+      if (splitDate.length === 3) {
+         return {
+            date: splitDate[2] || "01",
+            month: splitDate[1] || "01",
+            year: splitDate[0] || "1982",
+         };
+      }
+   }
+   return { date: "01", month: "01", year: "1982" };
+};
+
 export const InputDate: FC<PropTypes> = (props) => {
    const { getValue, defaultValue = "", ...rest } = props;
    const refDate = useRef<HTMLInputElement>(null);
    const refMonth = useRef<HTMLInputElement>(null);
    const refYear = useRef<HTMLInputElement>(null);
    const toast = useToast();
+   const initialValues = parseDefaultValue(defaultValue);
+   const [date, setDate] = useState<string>(initialValues.date);
+   const [month, setMonth] = useState<string>(initialValues.month);
+   const [year, setYear] = useState<string>(initialValues.year);
 
    useEffect(() => {
-      if (
-         defaultValue &&
-         refDate.current &&
-         refMonth.current &&
-         refYear.current
-      ) {
-         const splitDate = defaultValue.split("-");
-         refDate.current.value = splitDate[2];
-         refMonth.current.value = splitDate[1];
-         refYear.current.value = splitDate[0];
+      if (defaultValue) {
+         const parsed = parseDefaultValue(defaultValue);
+         setDate(parsed.date);
+         setMonth(parsed.month);
+         setYear(parsed.year);
       }
    }, [defaultValue]);
 
-   const handleChange = () => {
-      const date = !!(refDate.current?.value ?? "")
-         ? refDate.current?.value
-         : "01";
-      const month = !!(refMonth.current?.value ?? "")
-         ? refMonth.current?.value
-         : "01";
-      let year = !!(refYear.current?.value ?? "")
-         ? refYear.current?.value
-         : "1982";
-
+   useEffect(() => {
+      const currentDate = year + "-" + month + "-" + date;
       if (typeof getValue === "function") {
-         if ((year?.length ?? 0) < 3) {
-            year += "00";
-         }
-         const currentDate = moment(year + "-" + month + "-" + date).format(
-            "YYYY-MM-DD"
-         );
-         if (currentDate === "Invalid date") {
-            return toast({
-               status: "warning",
-               title: "Sai định dạng ngày, tháng, năm",
-               description: `Vui lòng kiểm tra lại định dạng vừa nhập (giá trị hiện tại ${
-                  date + "-" + month + "-" + year
-               } chưa chính xác)`,
-               duration: 3000,
-               position: "bottom",
-               isClosable: true,
-            });
-         }
          getValue(currentDate);
       }
-   };
+   }, [date, month, year, getValue]);
 
    return (
       <InputGroup>
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
+               setDate(value || "01");
                // auto select to month
                if (value.length >= 2) {
                   refMonth.current?.select();
                }
-               handleChange();
             }}
             onFocus={(e) => e.target.select()}
             ref={refDate}
             textAlign="center"
             type="number"
-            defaultValue={1}
+            defaultValue={date}
             min={1}
             max={31}
             placeholder="Date(ngày sinh)..."
@@ -90,16 +76,16 @@ export const InputDate: FC<PropTypes> = (props) => {
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
+               setMonth(value || "01");
                // auto select to year
                if (value.length >= 2) {
                   refYear.current?.select();
                }
-               handleChange();
             }}
             onFocus={(e) => e.target.select()}
             ref={refMonth}
             type="number"
-            defaultValue={1}
+            defaultValue={month}
             textAlign="center"
             placeholder="Month(tháng sinh)..."
             min={1}
@@ -107,10 +93,13 @@ export const InputDate: FC<PropTypes> = (props) => {
             {...rest}
          />
          <Input
-            onChange={handleChange}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+               const value = e.target.value;
+               setYear(value || "1982");
+            }}
             onFocus={(e) => e.target.select()}
             ref={refYear}
-            defaultValue={1982}
+            defaultValue={year}
             textAlign="center"
             type="number"
             placeholder="Year(năm sinh)..."
