@@ -4298,9 +4298,9 @@ onetime@^7.0.0:
     mimic-function "^5.0.0"
 
 openai@^6.7.0:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/openai/-/openai-6.9.0.tgz#acd15b2233c42b165981f3de8f4cfce27f844fce"
-  integrity sha512-n2sJRYmM+xfJ0l3OfH8eNnIyv3nQY7L08gZQu3dw6wSdfPtKAk92L83M2NIP5SS8Cl/bsBBG3yKzEOjkx0O+7A==
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/openai/-/openai-6.9.1.tgz#a591118d79d14ac01870d29efe869743e9b64167"
+  integrity sha512-vQ5Rlt0ZgB3/BNmTa7bIijYFhz3YBceAA3Z4JuoMSBftBF9YqFHIEhZakSs+O/Ad7EaoEimZvHxD5ylRjN11Lg==
 
 optionator@^0.9.3:
   version "0.9.4"
