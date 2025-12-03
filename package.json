@@ -17,7 +17,7 @@
       "@emotion/react": "11.14.0",
       "@emotion/styled": "11.14.1",
       "@types/lodash": "4.17.20",
-      "@types/nodemailer": "7.0.3",
+      "@types/nodemailer": "7.0.4",
       "@typescript-eslint/eslint-plugin": "8.46.2",
       "ai": "^4.2.5",
       "framer-motion": "^12.23.24",
