@@ -39,7 +39,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "8.46.2",
-    "eslint": "9.39.1",
+    "eslint": "9.39.4",
     "eslint-config-next": "latest",
     "husky": "9.1.7",
     "lint-staged": "^16.2.6",
