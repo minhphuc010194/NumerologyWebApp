@@ -22,7 +22,7 @@
     "dayjs": "^1.11.13",
     "framer-motion": "^12.23.24",
     "lodash": "4.17.21",
-    "next": "^16.0.1",
+    "next": "latest",
     "next-intl": "^4.9.0",
     "nodemailer": "^7.0.10",
     "openai": "^6.7.0",
@@ -40,7 +40,7 @@
     "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "8.46.2",
     "eslint": "9.39.1",
-    "eslint-config-next": "^16.0.1",
+    "eslint-config-next": "latest",
     "husky": "9.1.7",
     "lint-staged": "^16.2.6",
     "typescript": "5.9.3"
