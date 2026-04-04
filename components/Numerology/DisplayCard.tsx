@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { Box, HStack, Heading, Text } from "../";
-import { BoxProps } from "../../Utils/types";
+import { BoxProps } from "../../utils/types";
 
 type PropTypes = BoxProps & {
    title: string;

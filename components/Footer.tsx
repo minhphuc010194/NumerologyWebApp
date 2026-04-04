@@ -11,19 +11,23 @@ import {
   useColorMode,
   AiFillGithub,
   Disclaimer,
-} from "Components";
+  LanguageSwitcher,
+} from "components";
+import { useTranslations } from "next-intl";
 
 export const Footer: FC = () => {
+  const t = useTranslations("Footer");
   const { toggleColorMode, colorMode } = useColorMode();
   return (
     <footer>
       <Disclaimer />
-      <Wrap justify="center" my={1}>
-        <Tooltip label={colorMode + " mode"} hasArrow>
+      <Wrap justify="center" my={1} align="center">
+        <LanguageSwitcher />
+        <Tooltip label={t("mode", { mode: colorMode })} hasArrow>
           <CustomCard>
             <Image
               src="/Images/numerologyPNG.png"
-              alt="numerology logo"
+              alt={t("logoAlt")}
               placeholder="blur"
               blurDataURL="/Images/numerologyPNG.png"
               style={{
@@ -36,7 +40,7 @@ export const Footer: FC = () => {
           </CustomCard>
         </Tooltip>
 
-        <Tooltip label="Source code" hasArrow>
+        <Tooltip label={t("sourceCode")} hasArrow>
           <CustomCard
             as="a"
             href="https://github.com/minhphuc010194/NumerologyWebApp"

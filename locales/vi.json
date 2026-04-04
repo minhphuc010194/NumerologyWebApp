@@ -1,0 +1,80 @@
+{
+  "Header": {
+    "home": "Trang chủ",
+    "chat": "Chat AI"
+  },
+  "Home": {
+    "title": "Ứng Dụng Xem Thần Số Học",
+    "chatNotice": "👉 Đang triển khai server cho AI với kiến thức từ các tài liệu uy tín"
+  },
+  "Numerology": {
+    "namePlaceholder": "Nhập họ tên đầy đủ, VD: 'Nguyễn Văn A'",
+    "viewResult": "Xem kết quả",
+    "processing": "Đang xử lý...",
+    "indexTitle": "Chỉ Số"
+  },
+  "InputDate": {
+    "datePlaceholder": "Ngày sinh...",
+    "monthPlaceholder": "Tháng sinh...",
+    "yearPlaceholder": "Năm sinh..."
+  },
+  "Validation": {
+    "requireBirth": "Vui lòng nhập ngày sinh",
+    "invalidFormat": "Định dạng ngày sinh không hợp lệ. Vui lòng nhập theo định dạng YYYY-MM-DD",
+    "invalidDate": "Ngày sinh không hợp lệ",
+    "futureDate": "Ngày sinh không được ở tương lai",
+    "yearRange": "Năm sinh phải từ {min} đến {max}"
+  },
+  "Disclaimer": {
+    "title": "📌 Tuyên bố miễn trừ trách nhiệm",
+    "content": "Đây là ứng dụng chỉ mang tính chất tham khảo, giải trí. Không phục vụ mục đích bói toán, mê tín và trái với thuần phong mỹ tục."
+  },
+  "Donate": {
+    "buyCoffee": "Mua cho tôi một chút cafe",
+    "copySuccess": "Sao chép thành công địa chỉ {name}"
+  },
+  "Feedback": {
+    "tooltip": "Gửi phản hồi qua: {email}"
+  },
+  "Chat": {
+    "title": "🔮 Trợ Lý Khảo Sát Thần Số Học",
+    "subtitle": "Nhập tên và ngày sinh để bắt đầu tra cứu thần số học",
+    "exampleText": "Ví dụ: 'Dương Văn Nghĩa sinh 11 - 06 - 1976'",
+    "noticeTitle": "⚠️ Thông Báo",
+    "noticeText": "Hệ thống AI đang phát triển, sẽ ra mắt sớm trong tương lai",
+    "inputPlaceholder": "Nhập tên và ngày sinh (VD: Nguyễn Văn A sinh 01-01-2000)...",
+    "tip": "💡 Tip: Nhập đầy đủ tên và ngày sinh để có kết quả chính xác nhất"
+  },
+  "Metadata": {
+    "title": "Numerology Web App",
+    "description": "Numerology Web App - Tra cứu thần số học"
+  },
+  "Footer": {
+    "logoAlt": "logo thần số học",
+    "sourceCode": "Mã nguồn",
+    "mode": "Chế độ {mode}"
+  },
+  "LanguageSwitcher": {
+    "switchLocaleVi": "Chuyển sang Tiếng Việt",
+    "switchLocaleEn": "Chuyển sang Tiếng Anh"
+  },
+  "NumerologyMetrics": {
+    "walksOfLife": "Đường đời",
+    "mission": "Sứ mệnh",
+    "soul": "Linh hồn",
+    "connect": "Kết nối",
+    "personality": "Nhân cách",
+    "passion": "Đam mê",
+    "mature": "Trưởng thành",
+    "balance": "Cân bằng",
+    "subconsciousPower": "Sức mạnh tiềm thức",
+    "missingNumbers": "Số thiếu",
+    "rationalThinking": "Tư duy lý trí",
+    "way": "Chặng",
+    "challenges": "Thách thức",
+    "dateOfBirth": "Ngày sinh",
+    "yearIndividual": "Năm cá nhân",
+    "monthIndividual": "Tháng cá nhân",
+    "linkPersonalityAndSoul": "Liên kết nhân cách và linh hồn"
+  }
+}

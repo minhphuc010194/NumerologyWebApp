@@ -1,8 +1,10 @@
 "use client";
 import { FC } from "react";
-import { Box, Text, VStack, useColorModeValue } from "Components";
+import { Box, Text, VStack, useColorModeValue } from "components";
+import { useTranslations } from "next-intl";
 
 export const Disclaimer: FC = () => {
+   const t = useTranslations("Disclaimer");
    const bgColor = useColorModeValue("yellow.50", "yellow.900");
    const borderColor = useColorModeValue("yellow.200", "yellow.700");
    const textColor = useColorModeValue("gray.700", "gray.200");
@@ -25,18 +27,10 @@ export const Disclaimer: FC = () => {
                color={textColor}
                textAlign="center"
             >
-               📌 Disclaimer / Tuyên bố miễn trừ trách nhiệm
+               {t("title")}
             </Text>
             <Text fontSize="xs" color={textColor} textAlign="center">
-               <strong>Tiếng Việt:</strong> Đây là ứng dụng chỉ mang tính chất
-               tham khảo, giải trí. Không phục vụ mục đích bói toán, mê tín và
-               trái với thuần phong mỹ tục.
-            </Text>
-            <Text fontSize="xs" color={textColor} textAlign="center">
-               <strong>English:</strong> This application is for reference and
-               entertainment purposes only. It is not intended for fortune
-               telling, superstition, or any purpose contrary to good morals and
-               customs.
+               {t("content")}
             </Text>
          </VStack>
       </Box>
