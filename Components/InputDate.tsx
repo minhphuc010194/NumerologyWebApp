@@ -1,8 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FC, useRef, useState, useEffect, type ChangeEvent } from "react";
 import { Input, InputGroup, useToast } from "./";
-import { InputProps } from "../Utils/types";
+import { InputProps } from "../utils/types";
 
 type PropTypes = InputProps & {
    // eslint-disable-next-line no-unused-vars
@@ -26,6 +27,7 @@ const parseDefaultValue = (defaultValue: string) => {
 };
 
 export const InputDate: FC<PropTypes> = (props) => {
+   const t = useTranslations("InputDate");
    const { getValue, defaultValue = "", ...rest } = props;
    const refDate = useRef<HTMLInputElement>(null);
    const refMonth = useRef<HTMLInputElement>(null);
@@ -70,7 +72,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={date}
             min={1}
             max={31}
-            placeholder="Date(ngày sinh)..."
+            placeholder={t("datePlaceholder")}
             {...rest}
          />
          <Input
@@ -87,7 +89,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             type="number"
             defaultValue={month}
             textAlign="center"
-            placeholder="Month(tháng sinh)..."
+            placeholder={t("monthPlaceholder")}
             min={1}
             max={12}
             {...rest}
@@ -102,7 +104,7 @@ export const InputDate: FC<PropTypes> = (props) => {
             defaultValue={year}
             textAlign="center"
             type="number"
-            placeholder="Year(năm sinh)..."
+            placeholder={t("yearPlaceholder")}
             {...rest}
          />
       </InputGroup>

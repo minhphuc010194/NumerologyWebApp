@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { NumerologyHookType } from "../Utils/types";
+import { NumerologyHookType } from "../utils/types";
 import {
    getSoul,
    getBalance,
@@ -12,19 +12,19 @@ import {
    getMissingNumbers,
    substractAdjacent,
    getRationalThinking,
-} from "../Functions";
-import moment from "moment";
+} from "../functions";
+import dayjs from "dayjs";
 
 export const useProcessNumerology = (
    fullName: string,
    birthDay: string
 ): NumerologyHookType[] => {
    const data = useMemo(() => {
-      const date = moment(birthDay).format("DD");
-      const month = moment(birthDay).format("MM");
-      const year = moment(birthDay).format("YYYY");
-      const currentYear = moment().format("YYYY");
-      const currentMonth = moment().format("MM");
+      const date = dayjs(birthDay).format("DD");
+      const month = dayjs(birthDay).format("MM");
+      const year = dayjs(birthDay).format("YYYY");
+      const currentYear = dayjs().format("YYYY");
+      const currentMonth = dayjs().format("MM");
       const txtName = fullName.trim();
       const name = removeAccents(txtName.toLocaleUpperCase());
       let completedName: string = "";

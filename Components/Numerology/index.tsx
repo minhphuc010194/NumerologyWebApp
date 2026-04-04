@@ -19,12 +19,18 @@ import {
    FormControl,
    FormErrorMessage,
    useColorModeValue,
-} from "Components";
+} from "components";
 import { RenderItem } from "./RenderItem";
-import { useProcessNumerology } from "Hooks";
-import moment from "moment";
+import { useProcessNumerology } from "hooks";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useTranslations } from "next-intl";
+
+dayjs.extend(customParseFormat);
 
 const NumerologyComponent: FC = () => {
+   const tNum = useTranslations("Numerology");
+   const tVal = useTranslations("Validation");
    const id = useId();
    const color = useColorModeValue("black", "white");
    const colorBorder = useColorModeValue("gray.200", "gray.600");
@@ -65,38 +71,38 @@ const NumerologyComponent: FC = () => {
    const validateBirthDate = useCallback(
       (birthDate: string): string => {
          if (!birthDate || !birthDate.trim()) {
-            return "Vui lòng nhập ngày sinh";
+            return tVal("requireBirth");
          }
 
          const datePattern = /^\d{4}-\d{2}-\d{2}$/;
          if (!datePattern.test(birthDate)) {
-            return "Định dạng ngày sinh không hợp lệ. Vui lòng nhập theo định dạng YYYY-MM-DD";
+            return tVal("invalidFormat");
          }
 
          if (!isMounted) {
             return "";
          }
 
-         const date = moment(birthDate, "YYYY-MM-DD", true);
+         const date = dayjs(birthDate, "YYYY-MM-DD", true);
          if (!date.isValid()) {
-            return "Ngày sinh không hợp lệ";
+            return tVal("invalidDate");
          }
 
-         const today = moment();
+         const today = dayjs();
          if (date.isAfter(today)) {
-            return "Ngày sinh không được ở tương lai";
+            return tVal("futureDate");
          }
 
          const minYear = 1900;
-         const maxYear = moment().year();
+         const maxYear = dayjs().year();
          const year = date.year();
          if (year < minYear || year > maxYear) {
-            return `Năm sinh phải từ ${minYear} đến ${maxYear}`;
+            return tVal("yearRange", { min: minYear, max: maxYear });
          }
 
          return "";
       },
-      [isMounted]
+      [isMounted, tVal]
    );
 
    const handleSubmit = useCallback(
@@ -134,7 +140,7 @@ const NumerologyComponent: FC = () => {
                      onClick={() => refInputName.current?.select()}
                      ref={refInputName}
                      value={localName}
-                     placeholder="Your full name, ex: 'Nguyen Van A'"
+                     placeholder={tNum("namePlaceholder")}
                      w={{ md: "50%", xs: "100%" }}
                      textAlign="center"
                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -177,7 +183,7 @@ const NumerologyComponent: FC = () => {
                      fontSize="md"
                      fontWeight={700}
                      isLoading={isLoading}
-                     loadingText="Đang xử lý..."
+                     loadingText={tNum("processing")}
                      disabled={isLoading}
                      _hover={{
                         transform: isLoading ? "none" : "translateY(-2px)",
@@ -192,7 +198,7 @@ const NumerologyComponent: FC = () => {
                      }}
                      transition="all 0.2s"
                   >
-                     Xem kết quả (View result)
+                     {tNum("viewResult")}
                   </Button>
                </Box>
             </VStack>
@@ -208,7 +214,7 @@ const NumerologyComponent: FC = () => {
             borderColor={colorBorder}
          >
             <Box as="legend" fontSize={20} fontWeight={800} color="red.400">
-               Chỉ Số (Index)
+               {tNum("indexTitle")}
             </Box>
 
             <Wrap spacing="10px" justify="center" pb={2}>

@@ -1,12 +1,12 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { sumAdjacent } from "./sumAdjacent";
 
 export const getWalksOfLife = (
    birthDay: string = new Date().toISOString()
 ): number => {
-   const date = moment(birthDay).format("DD").split(""); // Array string
-   const month = moment(birthDay).format("MM").split(""); // Array string
-   const year = moment(birthDay)
+   const date = dayjs(birthDay).format("DD").split(""); // Array string
+   const month = dayjs(birthDay).format("MM").split(""); // Array string
+   const year = dayjs(birthDay)
       .format("YYYY")
       .split("")
       .reduce((a, c) => a + Number(c), 0)

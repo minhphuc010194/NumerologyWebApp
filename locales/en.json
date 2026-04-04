@@ -1,0 +1,80 @@
+{
+  "Header": {
+    "home": "Home",
+    "chat": "AI Chat"
+  },
+  "Home": {
+    "title": "Numerology Application",
+    "chatNotice": "👉 Server deployment in progress for AI with knowledge from reputable books"
+  },
+  "Numerology": {
+    "namePlaceholder": "Your full name, ex: 'Nguyen Van A'",
+    "viewResult": "View result",
+    "processing": "Processing...",
+    "indexTitle": "Index"
+  },
+  "InputDate": {
+    "datePlaceholder": "Date...",
+    "monthPlaceholder": "Month...",
+    "yearPlaceholder": "Year..."
+  },
+  "Validation": {
+    "requireBirth": "Please enter your birth date",
+    "invalidFormat": "Invalid format. Please use YYYY-MM-DD",
+    "invalidDate": "Invalid birth date",
+    "futureDate": "Birth date cannot be in the future",
+    "yearRange": "Birth year must be between {min} and {max}"
+  },
+  "Disclaimer": {
+    "title": "📌 Disclaimer",
+    "content": "This application is for reference and entertainment purposes only. It is not intended for fortune telling, superstition, or any purpose contrary to good morals and customs."
+  },
+  "Donate": {
+    "buyCoffee": "Buy me a coffee",
+    "copySuccess": "Copied successfully {name} address"
+  },
+  "Feedback": {
+    "tooltip": "Feedback to me: {email}"
+  },
+  "Chat": {
+    "title": "🔮 Numerology AI Assistant",
+    "subtitle": "Enter your name and birth date to start",
+    "exampleText": "Example: 'John Doe born 11 - 06 - 1976'",
+    "noticeTitle": "⚠️ Notice",
+    "noticeText": "AI system is under development, coming soon in the future",
+    "inputPlaceholder": "Enter name and birth date...",
+    "tip": "💡 Tip: Enter full name and birth date for accurate results"
+  },
+  "Metadata": {
+    "title": "Numerology Web App",
+    "description": "Numerology Web App - Fortune Lookup"
+  },
+  "Footer": {
+    "logoAlt": "numerology logo",
+    "sourceCode": "Source code",
+    "mode": "{mode} mode"
+  },
+  "LanguageSwitcher": {
+    "switchLocaleVi": "Switch to Vietnamese",
+    "switchLocaleEn": "Switch to English"
+  },
+  "NumerologyMetrics": {
+    "walksOfLife": "Path of life",
+    "mission": "Mission",
+    "soul": "Soul",
+    "connect": "Connection",
+    "personality": "Personality",
+    "passion": "Passion",
+    "mature": "Mature",
+    "balance": "Balance",
+    "subconsciousPower": "Subconscious Power",
+    "missingNumbers": "Missing Numbers",
+    "rationalThinking": "Rational Thinking",
+    "way": "Way",
+    "challenges": "Challenges",
+    "dateOfBirth": "Date Of Birth",
+    "yearIndividual": "Individual Year",
+    "monthIndividual": "Individual Month",
+    "linkPersonalityAndSoul": "Link Personality And Soul"
+  }
+}

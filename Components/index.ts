@@ -12,6 +12,7 @@ export { Header } from "./Header";
 export { Layout } from "./Layout";
 export { Disclaimer } from "./Disclaimer";
 export { Numerology } from "./Numerology";
+export { LanguageSwitcher } from "./LanguageSwitcher";
 export { InputDate } from "./InputDate";
 export { CustomCard } from "./CustomCard";
 export * from "./FeedBack";

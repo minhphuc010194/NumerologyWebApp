@@ -22,7 +22,8 @@ import {
    MdArrowBackIosNew,
    InputRightElement,
    useColorModeValue,
-} from "Components";
+} from "components";
+import { useTranslations } from "next-intl";
 
 type Data = {
    role: string;
@@ -31,6 +32,7 @@ type Data = {
    content_type: string;
 };
 export default function Chat() {
+   const t = useTranslations("Chat");
    const [size, setSize] = useState({ w: 0, h: 0 });
    const [data, setData] = useState<Data[]>([]);
    const inputRef = useRef<HTMLInputElement>(null);
@@ -237,13 +239,13 @@ export default function Chat() {
                            mb={3}
                            fontFamily="fantasy"
                         >
-                           🔮 Numerology AI Assistant
+                           {t("title")}
                         </Heading>
                         <Text
                            color={useColorModeValue("gray.600", "gray.300")}
                            fontSize="sm"
                         >
-                           Nhập tên và ngày sinh để bắt đầu tra cứu thần số học
+                           {t("subtitle")}
                         </Text>
                         <Text
                            color={useColorModeValue("gray.500", "gray.400")}
@@ -251,7 +253,7 @@ export default function Chat() {
                            mt={2}
                            fontStyle="italic"
                         >
-                           Ví dụ: "Dương Văn Nghĩa sinh 11 - 06 - 1976"
+                           {t("exampleText")}
                         </Text>
                      </Box>
 
@@ -275,7 +277,7 @@ export default function Chat() {
                            color={useColorModeValue("yellow.800", "yellow.200")}
                            mb={2}
                         >
-                           ⚠️ Thông Báo / Notice
+                           {t("noticeTitle")}
                         </Text>
                         <VStack spacing={2} align="stretch">
                            <Text
@@ -283,16 +285,7 @@ export default function Chat() {
                               color={useColorModeValue("gray.700", "gray.200")}
                               fontWeight={500}
                            >
-                              <strong>Tiếng Việt:</strong> Hệ thống AI đang phát
-                              triển, sẽ đến sớm trong tương lai
-                           </Text>
-                           <Text
-                              fontSize="sm"
-                              color={useColorModeValue("gray.700", "gray.200")}
-                              fontWeight={500}
-                           >
-                              <strong>English:</strong> AI system is under
-                              development, coming soon in the future
+                              {t("noticeText")}
                            </Text>
                         </VStack>
                      </Box>
@@ -469,7 +462,7 @@ export default function Chat() {
                            ref={inputRef}
                            autoFocus
                            pr="3.5rem"
-                           placeholder="Nhập tên và ngày sinh (VD: Nguyễn Văn A sinh 01-01-2000)..."
+                           placeholder={t("inputPlaceholder")}
                            borderRadius="full"
                            bg={inputBg}
                            borderWidth={1}
@@ -522,8 +515,7 @@ export default function Chat() {
                         color={useColorModeValue("gray.500", "gray.400")}
                         fontStyle="italic"
                      >
-                        💡 Tip: Nhập đầy đủ tên và ngày sinh để có kết quả chính
-                        xác nhất
+                        {t("tip")}
                      </Text>
                   </VStack>
                </Box>

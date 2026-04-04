@@ -24,7 +24,9 @@ import {
    useToast,
    RiBnbFill,
    Divider,
-} from "Components";
+} from "components";
+
+import { useTranslations } from "next-intl";
 
 type AddressWallet = {
    name: string;
@@ -35,6 +37,7 @@ type AddressWallet = {
 export const Donate = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const toast = useToast();
+   const t = useTranslations("Donate");
    const [address] = useState<AddressWallet[]>([
       {
          name: "Bitcoin",
@@ -59,7 +62,7 @@ export const Donate = () => {
    const copyAddress = (item: AddressWallet) => {
       navigator.clipboard.writeText(item.address);
       toast({
-         title: "Copied successfully " + item.name + " address",
+         title: t("copySuccess", { name: item.name }),
          status: "success",
          duration: 2_500,
          isClosable: true,
@@ -76,7 +79,7 @@ export const Donate = () => {
             <ModalOverlay />
             <ModalContent>
                <ModalHeader display="flex">
-                  <Box as="span">Buy me a coffee</Box>
+                  <Box as="span">{t("buyCoffee")}</Box>
                   <Box>
                      <Icon as={PiCoffeeBold} boxSize={6} mt="2px" ml="3px" />
                   </Box>
@@ -120,7 +123,7 @@ export const Donate = () => {
             </ModalContent>
          </Modal>
 
-         <Tooltip label="By me a coffee" hasArrow>
+         <Tooltip label={t("buyCoffee")} hasArrow>
             <CustomCard as="button" onClick={onOpen} color="orange.600">
                <Icon
                   as={FaDonate}
