@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/lodash": "4.17.20",
     "@types/node": "^24.9.2",
-    "@types/nodemailer": "7.0.3",
+    "@types/nodemailer": "7.0.11",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "8.58.0",
