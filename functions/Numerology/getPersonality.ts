@@ -12,8 +12,5 @@ export const getPersonality = (strArray: string[]): number => {
       },
       0
    );
-   const strSum = soulNumber.toString().split("");
-   const str1 = strSum[0];
-   const str2 = strSum.splice(1, strSum.length - 1).toString();
-   return sumAdjacent(str1, str2);
+   return sumAdjacent(soulNumber, 0);
 };

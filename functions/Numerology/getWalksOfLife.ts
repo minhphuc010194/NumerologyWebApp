@@ -4,19 +4,19 @@ import { sumAdjacent } from "./sumAdjacent";
 export const getWalksOfLife = (
    birthDay: string = new Date().toISOString()
 ): number => {
-   const date = dayjs(birthDay).format("DD").split(""); // Array string
-   const month = dayjs(birthDay).format("MM").split(""); // Array string
-   const year = dayjs(birthDay)
-      .format("YYYY")
-      .split("")
-      .reduce((a, c) => a + Number(c), 0)
-      .toString()
-      .split(""); // Array string
+   const dateStr = dayjs(birthDay).format("DDMMYYYY");
+   let sum = 0;
+   for (let i = 0; i < dateStr.length; i++) {
+       sum += parseInt(dateStr[i], 10);
+   }
 
-   const sumDate = sumAdjacent(date[0], date?.[1] ?? 0, "walksOfLife");
-   const sumMonth = sumAdjacent(month[0], month?.[1] ?? 0, "walksOfLife");
-   const sumYear = sumAdjacent(year[0], year?.[1] ?? 0);
-   const sumAll = sumAdjacent(sumDate + sumMonth, sumYear, "walksOfLife");
-
-   return sumAll;
+   while (sum >= 10 && sum !== 10 && sum !== 11 && sum !== 22) {
+       const strSum = String(sum);
+       let tempSum = 0;
+       for (let i = 0; i < strSum.length; i++) {
+           tempSum += parseInt(strSum[i], 10);
+       }
+       sum = tempSum;
+   }
+   return sum;
 };
