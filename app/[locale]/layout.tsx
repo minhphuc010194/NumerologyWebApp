@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
 import Script from 'next/script';
-import { ColorModeScript } from '@chakra-ui/react';
-import { theme } from 'utils/themes';
 import { NextIntlClientProvider } from 'next-intl';
 
 import { notFound } from 'next/navigation';
@@ -36,9 +34,6 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <ColorModeScript
-          initialColorMode={theme.config?.initialColorMode || 'light'}
-        />
         <Providers>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}

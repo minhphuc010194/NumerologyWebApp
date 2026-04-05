@@ -5,7 +5,13 @@
   },
   "Home": {
     "title": "Ứng Dụng Xem Thần Số Học",
-    "chatNotice": "👉 Đang triển khai server cho AI với kiến thức từ các tài liệu uy tín"
+    "subtitle": "Khám phá bản đồ số của bạn thông qua ngày sinh và tên — giải mã các chỉ số cuộc sống, sứ mệnh và tiềm năng ẩn giấu.",
+    "chatNotice": "Đang triển khai server AI với kiến thức từ tài liệu uy tín",
+    "chatBadgeLabel": "AI",
+    "logoAlt": "Logo Thần Số Học",
+    "videoTitle": "Giải Mã Thần Số Học",
+    "videoCaption": "Xem video hướng dẫn cách đọc và hiểu các chỉ số thần số học của bạn",
+    "videoToggleLabel": "Ẩn/hiện video hướng dẫn"
   },
   "Numerology": {
     "namePlaceholder": "Nhập họ tên đầy đủ, VD: 'Nguyễn Văn A'",
