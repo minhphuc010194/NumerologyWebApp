@@ -49,13 +49,26 @@ export async function POST(req: NextRequest) {
 
     const userQuery = latestUserMessage.content.trim();
 
+    // Build base persona prompt (without RAG context — that comes after retrieval)
+    const baseSystemPrompt = buildSystemPrompt();
+
+    // Recent history for query expansion context (last 4 messages)
+    const recentHistoryForExpansion = messages.slice(-4).map((message) => ({
+      role: message.role,
+      content: message.content
+    }));
+
     // --- RAG Pipeline ---
     console.time('[Perf] Total RAG Retrieval');
     let ragContext = '';
     let sources: RetrievalSource[] = [];
 
     try {
-      const retrievalResult = await retrieveContext(userQuery);
+      const retrievalResult = await retrieveContext(
+        userQuery,
+        baseSystemPrompt,
+        recentHistoryForExpansion
+      );
       console.timeEnd('[Perf] Total RAG Retrieval');
       console.log(
         'retrievalResult.content length',
@@ -82,7 +95,7 @@ export async function POST(req: NextRequest) {
     // Build system prompt with RAG context
     const systemPrompt = buildSystemPrompt(ragContext);
 
-    // Prepare conversation history (limit to last 10 messages to control token usage)
+    // Prepare conversation history (limit to last 15 messages to control token usage)
     const conversationHistory = messages.slice(-15).map((message) => ({
       role: message.role,
       content: message.content
