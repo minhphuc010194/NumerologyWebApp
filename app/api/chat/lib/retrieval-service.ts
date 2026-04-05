@@ -12,6 +12,7 @@ import {
   SEARCH_FIELDS
 } from './milvus-client';
 import { generateEmbedding } from './embedding-service';
+import { expandQueryForRetrieval } from './query-expansion';
 
 // --- Types ---
 
@@ -48,25 +49,42 @@ const MAX_CONTEXT_CHARS = 128_000; // ~32000 tokens
  * Performs parallel hybrid search across all 3 collections.
  * Returns merged context string and source references.
  */
-export async function retrieveContext(query: string): Promise<RetrievalResult> {
+export async function retrieveContext(
+  query: string,
+  systemPrompt: string,
+  conversationHistory: Array<{ role: string; content: string }>
+): Promise<RetrievalResult> {
+  // Step 1: Expand short queries with context-aware keywords
+  const expandedQuery = await expandQueryForRetrieval({
+    originalQuery: query,
+    systemPrompt,
+    recentHistory: conversationHistory
+  });
+  // Step 2: Generate embedding from expanded query
   console.time('[Perf] Embedding Generation');
-  const queryEmbedding = await generateEmbedding(query);
+  const queryEmbedding = await generateEmbedding(expandedQuery);
   console.timeEnd('[Perf] Embedding Generation');
 
+  // Step 3: Parallel hybrid search using expanded query
   const [chunkResults, summaryResults, qaResults] = await Promise.allSettled([
     searchCollection(
       COLLECTION_CHUNK,
-      query,
+      expandedQuery,
       queryEmbedding,
       SEARCH_LIMITS.chunk
     ),
     searchCollection(
       COLLECTION_SUMMARY,
-      query,
+      expandedQuery,
       queryEmbedding,
       SEARCH_LIMITS.summary
     ),
-    searchCollection(COLLECTION_QA, query, queryEmbedding, SEARCH_LIMITS.qa)
+    searchCollection(
+      COLLECTION_QA,
+      expandedQuery,
+      queryEmbedding,
+      SEARCH_LIMITS.qa
+    )
   ]);
 
   const chunks = extractResults(chunkResults, 'chunk');
@@ -219,10 +237,7 @@ function buildContextString(sources: RetrievalSource[]): string {
 
 function buildSection(heading: string, sources: RetrievalSource[]): string {
   const entries = sources
-    .map(
-      (source) =>
-        `# ${source.title}\n${source.content.trim()}`
-    )
+    .map((source) => `# ${source.title}\n${source.content.trim()}`)
     .join('\n\n---\n\n');
 
   return `### ${heading}\n${entries}`;
