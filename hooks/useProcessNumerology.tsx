@@ -70,8 +70,20 @@ export const useProcessNumerology = (
       const challenge3 = Math.abs(challenge1 - challenge2);
       const challenge4 = substractAdjacent(month, year);
       const challenges = ` ${challenge1} ${challenge2} ${challenge3} ${challenge4}`;
-      const yearIndividual = sumAdjacent(Number(currentYear), date + month);
-      const monthIndividual = sumAdjacent(yearIndividual, Number(currentMonth));
+      const reduceToSingleDigit = (num: number | string): number => {
+         let sum = Number(num);
+         while (sum > 9) {
+             sum = String(sum).split("").reduce((a, b) => a + Number(b), 0);
+         }
+         return sum;
+      };
+
+      const dateRoot = reduceToSingleDigit(date);
+      const monthRoot = reduceToSingleDigit(month);
+      const currentYearRoot = reduceToSingleDigit(currentYear);
+
+      const yearIndividual = reduceToSingleDigit(currentYearRoot + dateRoot + monthRoot);
+      const monthIndividual = reduceToSingleDigit(yearIndividual + reduceToSingleDigit(currentMonth));
       const linkPersonalityAndSoul = substractAdjacent(personality, soul);
       const dateOfBirth = sumAdjacent(date, 0);
       return [

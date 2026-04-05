@@ -17,12 +17,5 @@ export const getMission = (fullName: string): number => {
       sum += sumCharactor;
    });
 
-   const strSum = sum.toString().split("");
-
-   const str1 = strSum[0];
-   const str2 = strSum
-      .splice(1, strSum.length - 1)
-      .toString()
-      .replace(/\,/g, "");
-   return sumAdjacent(str1, str2, "mission");
+   return sumAdjacent(sum, 0, "mission");
 };
