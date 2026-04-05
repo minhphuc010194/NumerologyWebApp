@@ -10,9 +10,19 @@ export function createStreamingResponse(
     'https://generativelanguage.googleapis.com/v1beta/openai';
   const model = process.env.CHAT_MODEL ?? 'gemma-3-27b-it';
 
+  // Most OpenAI-compatible models support "system" role (GPT, DeepSeek, Qwen, Claude, Gemini...).
+  // Only specific model families (e.g., Gemma on Google AI) do NOT support it.
+  const MODELS_WITHOUT_SYSTEM_ROLE = ['gemma-'];
+  const supportsSystemRole = !MODELS_WITHOUT_SYSTEM_ROLE.some((prefix) =>
+    model.startsWith(prefix)
+  );
+  const messages = supportsSystemRole
+    ? [{ role: 'system', content: systemPrompt }, ...history]
+    : injectSystemPromptIntoHistory(systemPrompt, history);
+
   const payload = {
-    model: model,
-    messages: [{ role: 'system', content: systemPrompt }, ...history],
+    model,
+    messages,
     stream: true
   };
 
@@ -134,3 +144,33 @@ export function createStreamingResponse(
 
   return stream;
 }
+
+/**
+ * For models that don't support "system" role, inject the system prompt
+ * into the first user message as a clearly-delimited preamble.
+ */
+function injectSystemPromptIntoHistory(
+  systemPrompt: string,
+  history: Array<{ role: string; content: string }>
+): Array<{ role: string; content: string }> {
+  const historyClone = history.map((message) => ({ ...message }));
+
+  const firstUserIndex = historyClone.findIndex(
+    (message) => message.role === 'user'
+  );
+
+  const systemPreamble = `<system_instructions>\n${systemPrompt}\n</system_instructions>\n\n`;
+
+  if (firstUserIndex >= 0) {
+    historyClone[firstUserIndex] = {
+      ...historyClone[firstUserIndex],
+      content: systemPreamble + historyClone[firstUserIndex].content
+    };
+  } else {
+    // No user message found — prepend as a standalone user message
+    historyClone.unshift({ role: 'user', content: systemPreamble });
+  }
+
+  return historyClone;
+}
+
