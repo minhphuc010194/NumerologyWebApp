@@ -24,6 +24,7 @@ import {
    useToast,
    RiBnbFill,
    Divider,
+   Flex,
 } from "components";
 
 import { useTranslations } from "next-intl";
@@ -34,7 +35,7 @@ type AddressWallet = {
    color: string;
    icon: any;
 };
-export const Donate = () => {
+export const Donate = ({ isHeader = false }: { isHeader?: boolean }) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const toast = useToast();
    const t = useTranslations("Donate");
@@ -124,14 +125,20 @@ export const Donate = () => {
          </Modal>
 
          <Tooltip label={t("buyCoffee")} hasArrow>
-            <CustomCard as="button" onClick={onOpen} color="orange.600">
-               <Icon
-                  as={FaDonate}
-                  boxSize={12}
-                  border="3px solid"
-                  rounded="100%"
-                  _hover={{ color: "orange" }}
-               />
+            <CustomCard as="button" onClick={onOpen} color={isHeader ? undefined : "orange.600"} p={isHeader ? 0 : undefined} m={isHeader ? 0 : 1} bg={isHeader ? "transparent" : undefined} shadow={isHeader ? "none" : undefined} border={isHeader ? "none" : undefined}>
+               {isHeader ? (
+                  <Flex boxSize={9} align="center" justify="center" rounded="full" _hover={{ bg: "blackAlpha.100", _dark: { bg: "whiteAlpha.200" } }} transition="all 0.2s" color="gray.700" _dark={{ color: "whiteAlpha.900" }}>
+                     <Icon as={FaDonate} boxSize={5} />
+                  </Flex>
+               ) : (
+                  <Icon
+                     as={FaDonate}
+                     boxSize={12}
+                     border="3px solid"
+                     rounded="100%"
+                     _hover={{ color: "orange" }}
+                  />
+               )}
             </CustomCard>
          </Tooltip>
       </Box>

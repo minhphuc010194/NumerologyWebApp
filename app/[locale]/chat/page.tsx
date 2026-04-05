@@ -1,526 +1,313 @@
 "use client";
-import { useEffect, useMemo, useState, useRef } from "react";
-import { useChat, UseChatHelpers } from "ai/react";
-import _ from "lodash";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
-   Box,
-   VStack,
-   Text,
-   Flex,
-   Icon,
-   Divider,
-   Badge,
-   Spacer,
-   Input,
-   HStack,
-   Button,
-   Heading,
-   Container,
-   InputGroup,
-   AiOutlineSend,
-   MdArrowBackIosNew,
-   InputRightElement,
-   useColorModeValue,
+  Box,
+  VStack,
+  Text,
+  Flex,
+  Icon,
+  Badge,
+  Spacer,
+  HStack,
+  Button,
+  Heading,
+  Container,
+  useColorModeValue,
+  MdArrowBackIosNew,
+  MdDeleteOutline,
+  LanguageSwitcher,
+  CustomCard,
+  useColorMode,
+  AiFillGithub,
+  Feeacback,
+  Donate,
+  Tooltip,
 } from "components";
+import { ChatMessageBubble, ChatInput, StreamingIndicator } from "components";
 import { useTranslations } from "next-intl";
+import { useChatRAG } from "hooks/use-chat-rag";
 
-type Data = {
-   role: string;
-   type: string;
-   content: string;
-   content_type: string;
-};
 export default function Chat() {
-   const t = useTranslations("Chat");
-   const [size, setSize] = useState({ w: 0, h: 0 });
-   const [data, setData] = useState<Data[]>([]);
-   const inputRef = useRef<HTMLInputElement>(null);
-   const { input, handleSubmit, isLoading, setInput } = useChat({
-      api: "/api/chat",
-      onResponse: async (response: Response) => {
-         if (!response.ok) {
-            throw new Error("Failed to fetch response");
-         }
-         const stream = new TextDecoderStream();
-         const streamReader = response.body?.getReader();
-         if (!streamReader) {
-            throw new Error("Response body is null");
-         }
-         const readableStream = new ReadableStream({
-            async start(controller) {
-               try {
-                  while (true) {
-                     const { done, value } = await streamReader.read();
-                     if (done) break;
-                     controller.enqueue(value);
-                  }
-               } finally {
-                  streamReader.releaseLock();
-                  controller.close();
-               }
-            },
-         });
+  const t = useTranslations("Chat");
+  const tHeader = useTranslations("Header");
+  const tFooter = useTranslations("Footer");
+  const router = useRouter();
 
-         const reader = readableStream.pipeThrough(stream).getReader();
-         let buffer = "";
+  const { messages, sendMessage, isStreaming, phase, error, clearMessages, retryLastMessage } =
+    useChatRAG();
 
-         try {
-            while (true) {
-               const { done, value } = await reader.read();
-               if (done) break;
+  const { toggleColorMode, colorMode } = useColorMode();
 
-               buffer += value;
-               const lines = buffer.split("\n");
-               buffer = lines.pop() || "";
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-               for (const line of lines) {
-                  if (line.startsWith("data: ")) {
-                     const jsonStr = line.slice(6);
-                     if (jsonStr === "[DONE]") break;
+  // Auto-scroll on new messages
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
-                     try {
-                        const json = JSON.parse(jsonStr);
-                        setData((prev) => [...prev, json]);
-                     } catch (e) {
-                        console.warn("Parse error:", e);
-                     }
-                  }
-               }
-            }
-         } catch (error) {
-            console.error("Stream error:", error);
-            throw error;
-         } finally {
-            reader.releaseLock();
-         }
-      },
-      onError: (error: any) => {
-         console.error("Chat error:", error);
-      },
-   }) as UseChatHelpers;
-   const lastMessageRef = useRef<HTMLDivElement>(null);
-   const router = useRouter();
+  // Color tokens — brand palette
+  const bgGradient = useColorModeValue(
+    "linear(to-b, orange.50, gray.50)",
+    "linear(to-b, gray.900, gray.850)"
+  );
+  // Clean, transparent glassmorphism for header
+  const headerBg = useColorModeValue(
+    "whiteAlpha.800",
+    "blackAlpha.600"
+  );
+  const headerBorder = useColorModeValue(
+    "blackAlpha.100",
+    "whiteAlpha.100"
+  );
+  const emptyBg = useColorModeValue("whiteAlpha.800", "gray.800");
+  const emptyBorder = useColorModeValue("brand.200", "brand.700");
+  const scrollbarThumbBg = useColorModeValue("#DD6B20", "#ED8936");
+  const scrollbarThumbHoverBg = useColorModeValue("#C05621", "#F6AD55");
 
-   useEffect(() => {
-      setSize({ w: window.innerWidth, h: window.innerHeight });
-   }, []);
-   useEffect(() => {
-      if (lastMessageRef.current) {
-         lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-   }, [data]);
-   const isDisabled = useMemo(() => isLoading || !input, [isLoading, input]);
-   const debouncedHandleInputChange = _.debounce(function (e) {
-      const value = e.target.value?.trim();
-      setInput(value);
-   }, 50);
+  const hasMessages = messages.length > 0;
 
-   const formatResponse = (text: string) => {
-      return (
-         text
-            // Format section headers (both with and without content after colon)
-            .replace(
-               /^(\d+)\. ([^:\n]+):?(.*)$/gm,
-               "<div><strong>$1. $2:</strong>$3</div>"
-            )
-            // Format calculations
-            .replace(
-               /([:=]>?\s*)(\d+(?:\s*[+=\-]\s*\d+)*\s*=\s*\d+)/g,
-               '$1<span style="color: #666">$2</span>'
-            )
-            // Format bold conclusions
-            .replace(/\*\*([^*]+)\*\*\.?/g, "<strong>$1</strong>")
-            // Preserve line breaks
-            .replace(/\n{2,}/g, "<br /><br />")
-      );
-   };
-   const bgGradient = useColorModeValue(
-      "linear(to-b, gray.50, gray.100)",
-      "linear(to-b, gray.900, gray.800)"
-   );
-   const headerBg = useColorModeValue(
-      "linear(to-r, red.600, orange.500)",
-      "linear(to-r, red.800, orange.700)"
-   );
-   const userBubbleBg = useColorModeValue("red.600", "red.500");
-   const aiBubbleBg = useColorModeValue("white", "gray.800");
-   const aiBubbleBorder = useColorModeValue("red.300", "red.600");
-   const inputBg = useColorModeValue("white", "gray.800");
-   const inputBorder = useColorModeValue("gray.300", "gray.600");
-
-   return (
-      <Box minH="100vh" bgGradient={bgGradient}>
-         {/* Header */}
-         <Flex
-            pos="sticky"
-            top={0}
-            w="100%"
-            bgGradient={headerBg}
-            color="white"
-            shadow="lg"
-            zIndex={10}
-            backdropFilter="blur(10px)"
-         >
-            <HStack p={4} spacing={3} flex={1}>
-               <Button
-                  onClick={() => router.push("/")}
-                  variant="solid"
-                  bg="whiteAlpha.200"
-                  color="white"
-                  leftIcon={<Icon as={MdArrowBackIosNew} />}
-                  size="sm"
-                  fontWeight={700}
-                  borderRadius="full"
-                  borderWidth={1}
-                  borderColor="whiteAlpha.300"
-                  _hover={{
-                     bg: "whiteAlpha.300",
-                     borderColor: "whiteAlpha.400",
-                     transform: "translateX(-2px)",
-                  }}
-                  _active={{
-                     bg: "whiteAlpha.400",
-                  }}
-                  transition="all 0.2s"
-               >
-                  Home
-               </Button>
-               <Spacer />
-               <Badge
-                  bg="yellow.400"
-                  color="gray.800"
-                  variant="solid"
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                  fontSize="xs"
-                  fontWeight={700}
-                  textTransform="none"
-                  shadow="sm"
-               >
-                  AI Numerology
-               </Badge>
-            </HStack>
-         </Flex>
-
-         {/* Chat Container */}
-         <Container
-            onSubmit={(e) => {
-               handleSubmit(e);
-               if (inputRef.current) {
-                  inputRef.current.value = "";
-                  inputRef.current?.focus();
-               }
+  return (
+    <Box h="100dvh" overflow="hidden" bgGradient={bgGradient} display="flex" flexDir="column">
+      {/* Header */}
+      <Flex
+        pos="sticky"
+        top={0}
+        w="100%"
+        bg={headerBg}
+        borderBottom="1px solid"
+        borderColor={headerBorder}
+        shadow="sm"
+        zIndex={10}
+        backdropFilter="blur(20px)"
+      >
+        <HStack p={2} spacing={3} flex={1}>
+          <Button
+            onClick={() => router.push("/")}
+            variant="ghost"
+            color="gray.700"
+            _dark={{ color: "whiteAlpha.900" }}
+            leftIcon={<Icon as={MdArrowBackIosNew} />}
+            size="sm"
+            fontWeight={600}
+            borderRadius="full"
+            _hover={{
+              bg: "blackAlpha.100",
+              _dark: { bg: "whiteAlpha.200" },
+              transform: "translateX(-2px)",
             }}
-            maxW="container.lg"
-            as="form"
-            py={6}
-            px={4}
-         >
-            <VStack spacing={4} align="stretch">
-               {/* Welcome Message */}
-               {data.length === 0 && (
-                  <VStack spacing={6} align="stretch">
-                     <Box
-                        textAlign="center"
-                        py={12}
-                        px={4}
-                        borderRadius="xl"
-                        bg={useColorModeValue("whiteAlpha.800", "gray.800")}
-                        backdropFilter="blur(10px)"
-                        shadow="md"
-                        borderWidth={1}
-                        borderColor={useColorModeValue("red.200", "red.700")}
-                     >
-                        <Heading
-                           size="lg"
-                           color={useColorModeValue("red.500", "red.400")}
-                           mb={3}
-                           fontFamily="fantasy"
-                        >
-                           {t("title")}
-                        </Heading>
-                        <Text
-                           color={useColorModeValue("gray.600", "gray.300")}
-                           fontSize="sm"
-                        >
-                           {t("subtitle")}
-                        </Text>
-                        <Text
-                           color={useColorModeValue("gray.500", "gray.400")}
-                           fontSize="xs"
-                           mt={2}
-                           fontStyle="italic"
-                        >
-                           {t("exampleText")}
-                        </Text>
-                     </Box>
+            transition="all 0.2s"
+          >
+            {tHeader("home")}
+          </Button>
 
-                     {/* Development Notice */}
-                     <Box
-                        textAlign="center"
-                        py={6}
-                        px={4}
-                        borderRadius="xl"
-                        bg={useColorModeValue("yellow.50", "yellow.900")}
-                        borderWidth={2}
-                        borderColor={useColorModeValue(
-                           "yellow.300",
-                           "yellow.700"
-                        )}
-                        shadow="sm"
-                     >
-                        <Text
-                           fontSize="md"
-                           fontWeight={600}
-                           color={useColorModeValue("yellow.800", "yellow.200")}
-                           mb={2}
-                        >
-                           {t("noticeTitle")}
-                        </Text>
-                        <VStack spacing={2} align="stretch">
-                           <Text
-                              fontSize="sm"
-                              color={useColorModeValue("gray.700", "gray.200")}
-                              fontWeight={500}
-                           >
-                              {t("noticeText")}
-                           </Text>
-                        </VStack>
-                     </Box>
-                  </VStack>
-               )}
+          <Spacer />
 
-               {/* Messages */}
-               <Box
-                  h={size.h ? `${size.h - 280}px` : "calc(100vh - 280px)"}
-                  w="100%"
-                  overflowY="auto"
-                  pr={2}
-                  css={{
-                     "&::-webkit-scrollbar": {
-                        width: "6px",
-                     },
-                     "&::-webkit-scrollbar-track": {
-                        background: "transparent",
-                     },
-                     "&::-webkit-scrollbar-thumb": {
-                        background: useColorModeValue("#E53E3E", "#FC8181"),
-                        borderRadius: "10px",
-                     },
-                     "&::-webkit-scrollbar-thumb:hover": {
-                        background: useColorModeValue("#C53030", "#F56565"),
-                     },
-                  }}
+          <HStack spacing={2} display={{ base: "none", md: "flex" }}>
+            <LanguageSwitcher isHeader />
+            
+            <Tooltip label={tFooter("mode", { mode: colorMode })} hasArrow>
+               <CustomCard as="button" onClick={toggleColorMode} p={0} m={0} bg="transparent" border="none" shadow="none">
+                  <Flex boxSize={9} align="center" justify="center" rounded="full" _hover={{ bg: "blackAlpha.100", _dark: { bg: "whiteAlpha.200" } }} transition="all 0.2s">
+                     <Image
+                        src="/Images/numerologyPNG.png"
+                        alt={tFooter("logoAlt")}
+                        placeholder="blur"
+                        blurDataURL="/Images/numerologyPNG.png"
+                        style={{ borderRadius: "50%" }}
+                        width={24}
+                        height={24}
+                     />
+                  </Flex>
+               </CustomCard>
+            </Tooltip>
+
+            <Tooltip label={tFooter("sourceCode")} hasArrow>
+               <CustomCard
+                  as="a"
+                  href="https://github.com/minhphuc010194/NumerologyWebApp"
+                  target="_blank"
+                  p={0} m={0} bg="transparent" border="none" shadow="none"
                >
-                  <VStack spacing={4} align="stretch" py={2}>
-                     {data.map((message, index) => (
-                        <Box
-                           ref={
-                              index === data.length - 1 ? lastMessageRef : null
-                           }
-                           key={index}
-                           display="flex"
-                           justifyContent={
-                              message.role === "user"
-                                 ? "flex-end"
-                                 : "flex-start"
-                           }
-                           sx={{
-                              animation: "fadeIn 0.3s ease-in",
-                           }}
-                        >
-                           {message.role === "user" &&
-                           message.content.trim() ? (
-                              <Box
-                                 maxW={{ base: "85%", md: "70%" }}
-                                 p={3}
-                                 bg={userBubbleBg}
-                                 color="white"
-                                 borderRadius="xl"
-                                 borderTopRightRadius="sm"
-                                 shadow="lg"
-                                 wordBreak="break-word"
-                                 borderWidth={1}
-                                 borderColor={useColorModeValue(
-                                    "red.700",
-                                    "red.800"
-                                 )}
-                              >
-                                 <Text fontSize="sm" fontWeight={500}>
-                                    {message.content}
-                                 </Text>
-                              </Box>
-                           ) : (
-                              <Box
-                                 maxW={{ base: "90%", md: "75%" }}
-                                 p={4}
-                                 bg={aiBubbleBg}
-                                 borderRadius="xl"
-                                 borderTopLeftRadius="sm"
-                                 borderWidth={1}
-                                 borderColor={aiBubbleBorder}
-                                 shadow="md"
-                                 wordBreak="break-word"
-                              >
-                                 <Box
-                                    as="span"
-                                    whiteSpace="pre-wrap"
-                                    dangerouslySetInnerHTML={{
-                                       __html: formatResponse(message.content),
-                                    }}
-                                    fontSize="sm"
-                                    lineHeight="tall"
-                                    color={useColorModeValue(
-                                       "gray.700",
-                                       "gray.200"
-                                    )}
-                                    css={{
-                                       "& strong": {
-                                          color: useColorModeValue(
-                                             "red.500",
-                                             "red.400"
-                                          ),
-                                          fontWeight: 600,
-                                       },
-                                       "& div": {
-                                          marginBottom: "8px",
-                                       },
-                                    }}
-                                 />
-                              </Box>
-                           )}
-                        </Box>
-                     ))}
-                     {isLoading && (
-                        <Box
-                           display="flex"
-                           justifyContent="flex-start"
-                           maxW={{ base: "90%", md: "75%" }}
-                        >
-                           <Box
-                              p={4}
-                              bg={aiBubbleBg}
-                              borderRadius="2xl"
-                              borderWidth={2}
-                              borderColor={aiBubbleBorder}
-                              shadow="sm"
-                           >
-                              <HStack spacing={2}>
-                                 <Box
-                                    w={2}
-                                    h={2}
-                                    bg="red.400"
-                                    borderRadius="full"
-                                    sx={{
-                                       animation:
-                                          "pulse 1.4s ease-in-out infinite",
-                                    }}
-                                 />
-                                 <Box
-                                    w={2}
-                                    h={2}
-                                    bg="red.400"
-                                    borderRadius="full"
-                                    sx={{
-                                       animation:
-                                          "pulse 1.4s ease-in-out 0.2s infinite",
-                                    }}
-                                 />
-                                 <Box
-                                    w={2}
-                                    h={2}
-                                    bg="red.400"
-                                    borderRadius="full"
-                                    sx={{
-                                       animation:
-                                          "pulse 1.4s ease-in-out 0.4s infinite",
-                                    }}
-                                 />
-                              </HStack>
-                           </Box>
-                        </Box>
-                     )}
-                  </VStack>
-               </Box>
+                  <Flex boxSize={9} align="center" justify="center" rounded="full" color="gray.700" _dark={{ color: "whiteAlpha.900" }} _hover={{ bg: "blackAlpha.100", _dark: { bg: "whiteAlpha.200" } }} transition="all 0.2s">
+                     <Icon
+                        as={AiFillGithub}
+                        boxSize={5}
+                     />
+                  </Flex>
+               </CustomCard>
+            </Tooltip>
+            
+            <Feeacback isHeader />
+            <Donate isHeader />
+          </HStack>
 
-               <Divider borderColor={useColorModeValue("red.200", "red.700")} />
+          <Spacer display={{ base: "none", md: "block" }} />
 
-               {/* Input Area */}
-               <Box
-                  bg={useColorModeValue("white", "gray.800")}
-                  p={4}
-                  borderRadius="xl"
-                  shadow="xl"
-                  borderWidth={1}
-                  borderColor={inputBorder}
-               >
-                  <VStack spacing={3}>
-                     <InputGroup size="lg">
-                        <Input
-                           ref={inputRef}
-                           autoFocus
-                           pr="3.5rem"
-                           placeholder={t("inputPlaceholder")}
-                           borderRadius="full"
-                           bg={inputBg}
-                           borderWidth={1}
-                           borderColor={inputBorder}
-                           _focus={{
-                              borderColor: "red.500",
-                              boxShadow: "0 0 0 3px rgba(229, 62, 62, 0.1)",
-                           }}
-                           _hover={{
-                              borderColor: "red.400",
-                           }}
-                           onChange={debouncedHandleInputChange}
-                           fontSize="sm"
-                           py={6}
-                        />
-                        <InputRightElement width="4.5rem" pr={2}>
-                           <Button
-                              size="md"
-                              rounded="full"
-                              bg={useColorModeValue("red.500", "red.600")}
-                              color="white"
-                              disabled={isDisabled}
-                              type="submit"
-                              minW="40px"
-                              h="40px"
-                              shadow="md"
-                              _hover={{
-                                 bg: useColorModeValue("red.600", "red.500"),
-                                 transform: "scale(1.1)",
-                                 shadow: "lg",
-                              }}
-                              _active={{
-                                 transform: "scale(0.95)",
-                              }}
-                              _disabled={{
-                                 opacity: 0.4,
-                                 cursor: "not-allowed",
-                                 bg: useColorModeValue("gray.300", "gray.600"),
-                              }}
-                              transition="all 0.2s"
-                           >
-                              <Icon as={AiOutlineSend} boxSize={5} />
-                           </Button>
-                        </InputRightElement>
-                     </InputGroup>
+          {hasMessages && (
+            <Button
+              onClick={clearMessages}
+              variant="ghost"
+              color="gray.600"
+              _dark={{ color: "whiteAlpha.800" }}
+              size="sm"
+              leftIcon={<Icon as={MdDeleteOutline} />}
+              fontWeight={500}
+              borderRadius="full"
+              _hover={{
+                bg: "blackAlpha.100",
+                _dark: { bg: "whiteAlpha.200", color: "white" },
+                color: "gray.800",
+              }}
+              transition="all 0.2s"
+            >
+              {t("clearChat")}
+            </Button>
+          )}
+          <Badge
+            bgGradient="linear(to-r, yellow.400, orange.400)"
+            color="gray.900"
+            variant="solid"
+            px={3}
+            py={1}
+            borderRadius="full"
+            fontSize="xs"
+            fontWeight={800}
+            textTransform="none"
+            shadow="sm"
+          >
+            AI Numerology
+          </Badge>
+        </HStack>
+      </Flex>
 
-                     <Text
-                        textAlign="center"
-                        fontSize="xs"
-                        color={useColorModeValue("gray.500", "gray.400")}
-                        fontStyle="italic"
-                     >
-                        {t("tip")}
-                     </Text>
-                  </VStack>
-               </Box>
+      {/* Messages Scroll Area - Full Width */}
+      <Box
+        flex={1}
+        overflowY="auto"
+        w="100%"
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: scrollbarThumbBg,
+            borderRadius: "10px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: scrollbarThumbHoverBg,
+          },
+        }}
+      >
+        <Container maxW="container.lg" py={4} px={4} display="flex" flexDir="column" minH="100%">
+          {/* Empty State */}
+          {!hasMessages && (
+            <VStack spacing={6} align="stretch" flex={1} justify="center" py={8}>
+              <Box
+                textAlign="center"
+                py={12}
+                px={6}
+                borderRadius="2xl"
+                bg={emptyBg}
+                backdropFilter="blur(10px)"
+                shadow="md"
+                borderWidth={1}
+                borderColor={emptyBorder}
+              >
+                <Heading
+                  size="lg"
+                  bgGradient="linear(to-r, brand.500, brand.300)"
+                  bgClip="text"
+                  mb={4}
+                  fontFamily="fantasy"
+                >
+                  {t("emptyStateTitle")}
+                </Heading>
+                <Text
+                  color={useColorModeValue("gray.600", "gray.300")}
+                  fontSize="sm"
+                  maxW="md"
+                  mx="auto"
+                  mb={3}
+                >
+                  {t("emptyStateSubtitle")}
+                </Text>
+                <Text
+                  color={useColorModeValue("gray.500", "gray.400")}
+                  fontSize="xs"
+                  fontStyle="italic"
+                >
+                  {t("emptyStateExample")}
+                </Text>
+              </Box>
             </VStack>
-         </Container>
+          )}
+
+          {/* Messages */}
+          {hasMessages && (
+            <VStack spacing={4} align="stretch" py={2}>
+              {messages.map((message) => {
+                // Hide empty assistant placeholder while searching
+                if (message.role === "assistant" && !message.content && phase === "searching") {
+                  return null;
+                }
+                return <ChatMessageBubble key={message.id} message={message} t={t} />;
+              })}
+
+              {/* Streaming Indicator */}
+              {isStreaming && phase === "searching" && (
+                <StreamingIndicator
+                  phase="searching"
+                  t={t}
+                />
+              )}
+
+              {/* Error + Retry */}
+              {phase === "error" && error && (
+                <HStack justify="center" py={2}>
+                  <Button
+                    onClick={retryLastMessage}
+                    size="sm"
+                    colorScheme="brand"
+                    variant="outline"
+                    borderRadius="full"
+                  >
+                    {t("retryButton")}
+                  </Button>
+                </HStack>
+              )}
+
+              <div ref={messagesEndRef} />
+            </VStack>
+          )}
+        </Container>
       </Box>
-   );
+
+      {/* Input Area - Full Width Wrapper */}
+      <Box w="100%" pt={2} pb={4} flexShrink={0} bg="transparent">
+        <Container maxW="container.lg" px={4}>
+          <ChatInput
+            onSend={sendMessage}
+            isDisabled={isStreaming}
+            placeholder={t("inputPlaceholder")}
+          />
+          <Text
+            textAlign="center"
+            fontSize="xs"
+            color={useColorModeValue("gray.500", "gray.400")}
+            fontStyle="italic"
+            mt={2}
+          >
+            {t("tip")}
+          </Text>
+        </Container>
+      </Box>
+    </Box>
+  );
 }

@@ -17,3 +17,4 @@ export { InputDate } from "./InputDate";
 export { CustomCard } from "./CustomCard";
 export * from "./FeedBack";
 export * from "./Donate";
+export * from "./Chat";

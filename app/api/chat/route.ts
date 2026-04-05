@@ -1,88 +1,156 @@
-import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
-import { prompt as contentPrompt } from "./prompt";
+/**
+ * Chat API route — RAG pipeline.
+ * Flow: validate → embed → retrieve → generate (stream)
+ *
+ * POST /api/chat
+ * Body: { messages: Array<{ role: string, content: string }> }
+ * Response: SSE stream
+ */
+import { NextRequest } from 'next/server';
+import { retrieveContext } from './lib/retrieval-service';
+import { createStreamingResponse } from './lib/response-generator';
+import { buildSystemPrompt } from './prompt';
+import type { RetrievalSource } from './lib/retrieval-service';
+
+interface IncomingMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+interface ChatRequestBody {
+  messages: IncomingMessage[];
+}
 
 export async function POST(req: NextRequest) {
-   try {
-      const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-      const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  try {
+    const body: ChatRequestBody = await req.json();
+    const { messages } = body;
 
-      const { messages } = await req.json();
-      // Add system prompt
-      const systemPrompt = {
-         role: "system",
-         content: contentPrompt,
-      };
-      // Combine system prompt with user messages
-      const completeMessages = [systemPrompt, ...messages];
-      if (!baseURL || !apiKey) {
-         return new Response("Missing API configuration", { status: 500 });
+    if (!messages?.length) {
+      return new Response('Messages array is required', { status: 400 });
+    }
+
+    // Extract latest user message for retrieval
+    const latestUserMessage = [...messages]
+      .reverse()
+      .find((message) => message.role === 'user');
+
+    if (!latestUserMessage?.content?.trim()) {
+      return new Response('No user message found', { status: 400 });
+    }
+
+    const userQuery = latestUserMessage.content.trim();
+
+    // --- RAG Pipeline ---
+    console.time('[Perf] Total RAG Retrieval');
+    let ragContext = '';
+    let sources: RetrievalSource[] = [];
+
+    try {
+      const retrievalResult = await retrieveContext(userQuery);
+      console.timeEnd('[Perf] Total RAG Retrieval');
+      console.log(
+        'retrievalResult.content length',
+        retrievalResult.context.length
+      );
+      console.log(
+        'retrievalResult.sources length',
+        retrievalResult.sources.length
+      );
+      ragContext = retrievalResult.context;
+      sources = retrievalResult.sources;
+
+      console.log(
+        `[RAG] Retrieved ${sources.length} sources for query: "${userQuery.slice(0, 50)}..."`
+      );
+    } catch (error) {
+      console.error(
+        '[RAG] Retrieval failed, proceeding without context:',
+        error
+      );
+      // Continue without RAG context — fallback to base knowledge
+    }
+
+    // Build system prompt with RAG context
+    const systemPrompt = buildSystemPrompt(ragContext);
+
+    // Prepare conversation history (limit to last 10 messages to control token usage)
+    const conversationHistory = messages.slice(-15).map((message) => ({
+      role: message.role,
+      content: message.content
+    }));
+
+    // Create SSE stream
+    const encoder = new TextEncoder();
+    const llmStream = createStreamingResponse(
+      systemPrompt,
+      conversationHistory
+    );
+
+    // Wrap LLM stream to prepend sources metadata
+    const outputStream = new ReadableStream({
+      async start(controller) {
+        // Send retrieval sources as first SSE event
+        if (sources.length > 0) {
+          const sourcesPayload = sources.map((source) => ({
+            title: source.title,
+            refLink: source.refLink,
+            collection: source.collection,
+            score: Math.round(source.score * 100) / 100
+          }));
+
+          controller.enqueue(
+            encoder.encode(
+              `data: ${JSON.stringify({
+                type: 'sources',
+                sources: sourcesPayload
+              })}\n\n`
+            )
+          );
+        }
+
+        // Pipe LLM stream
+        const reader = llmStream.getReader();
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            controller.enqueue(value);
+          }
+        } finally {
+          reader.releaseLock();
+          controller.close();
+        }
       }
+    });
 
-      const client = new OpenAI({
-         apiKey: apiKey,
-         baseURL: baseURL,
-      });
-      const model = process.env.NEXT_PUBLIC_MODEL || "";
-      // First, send user message
-      const userMessage = messages[messages.length - 1];
-      // Create stream with proper encoding for useChat
-      const encoder = new TextEncoder();
-      const stream = new ReadableStream({
-         async start(controller) {
-            try {
-               // Send user message first
-               controller.enqueue(
-                  encoder.encode(
-                     `data: ${JSON.stringify({
-                        id: crypto.randomUUID(),
-                        role: "user",
-                        content: userMessage.content,
-                        createdAt: new Date(),
-                     })}\n\n`
-                  )
-               );
-               const response = await client.chat.completions.create({
-                  model: model,
-                  messages: completeMessages,
-                  stream: true,
-               });
-               for await (const chunk of response) {
-                  const content = chunk.choices[0]?.delta?.content || "";
-                  controller.enqueue(
-                     encoder.encode(
-                        `data: ${JSON.stringify({
-                           id: chunk.id,
-                           role: "assistant",
-                           content: content,
-                           createdAt: new Date(),
-                        })}\n\n`
-                     )
-                  );
-               }
-               controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-               controller.close();
-            } catch (error) {
-               controller.error(error);
-            }
-         },
-      });
-
-      return new Response(stream, {
-         headers: {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache",
-            Connection: "keep-alive",
-         },
-      });
-   } catch (error) {
-      console.error("Error:==>", error);
-      return new Response("Error processing request", { status: 500 });
-   }
+    return new Response(outputStream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'X-Content-Type-Options': 'nosniff'
+      }
+    });
+  } catch (error) {
+    console.error('[Chat API] Error:', error);
+    const errorMessage =
+      error instanceof Error ? error.message : 'Internal server error';
+    return new Response(JSON.stringify({ error: errorMessage }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 }
 
 export async function GET() {
-   return NextResponse.json({
-      message: "This endpoint only supports POST requests.",
-   });
+  return new Response(
+    JSON.stringify({
+      status: 'ok',
+      message: 'Chat RAG API. Use POST to send messages.'
+    }),
+    {
+      headers: { 'Content-Type': 'application/json' }
+    }
+  );
 }
