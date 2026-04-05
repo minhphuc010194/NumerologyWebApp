@@ -67,7 +67,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 
   // Gemini Path (Rotator)
   const rotator = getApiKeyRotator();
-  const maxRetries = Math.min(rotator.totalKeys, 3);
+  const maxRetries = rotator.totalKeys;
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     const apiKey = rotator.getNextApiKey();

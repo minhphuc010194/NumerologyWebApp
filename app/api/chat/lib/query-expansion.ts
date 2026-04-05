@@ -5,11 +5,12 @@
  * Uses system prompt + recent conversation history to understand the full context,
  * then generates additional search keywords appended to the original query.
  *
- * Example: "Xuân Ngọc Tường Vy ngày 1/3/1995"
- * → "Xuân Ngọc Tường Vy ngày 1/3/1995 con số chủ đạo đường đời biểu đồ ngày sinh
+ * Example: "Nguyen Van A 10/3/1995"
+ * → "Nguyen Van A 10/3/1995 con số chủ đạo đường đời biểu đồ ngày sinh
  *    năm cá nhân sứ mệnh linh hồn nhân cách life path number birth chart"
  */
 import { getApiKeyRotator } from './api-key-rotator';
+import { getChatModels, supportsSystemRole } from './model-config';
 
 // --- Types ---
 
@@ -53,6 +54,7 @@ Rules:
 /**
  * Expands a short user query by appending LLM-generated search keywords.
  * Uses system prompt + conversation history for context-aware expansion.
+ * Tries all available API keys and model fallbacks before giving up.
  * Falls back to original query on any error (non-blocking).
  */
 export async function expandQueryForRetrieval(
@@ -69,7 +71,7 @@ export async function expandQueryForRetrieval(
   }
 
   const rotator = getApiKeyRotator();
-  const apiKey = rotator.getNextApiKey();
+  const models = getChatModels();
   const baseUrl =
     process.env.API_BASE_URL ??
     'https://generativelanguage.googleapis.com/v1beta/openai';
@@ -77,58 +79,94 @@ export async function expandQueryForRetrieval(
   try {
     console.time('[Perf] Query Expansion');
 
-    // Build context-aware messages for the expansion LLM
-    const expansionMessages = buildExpansionMessages(
-      systemPrompt,
-      recentHistory,
-      originalQuery
-    );
+    for (const model of models) {
+      const expansionMessages = buildExpansionMessages(
+        systemPrompt,
+        recentHistory,
+        originalQuery,
+        model
+      );
 
-    const response = await fetch(
-      `${baseUrl.replace(/\/$/, '')}/chat/completions`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: process.env.CHAT_MODEL ?? 'gemma-3-27b-it',
-          messages: expansionMessages,
-          max_tokens: 200,
-          temperature: 0.2
-        })
+      for (let attempt = 0; attempt < rotator.totalKeys; attempt++) {
+        const apiKey = rotator.getNextApiKey();
+
+        try {
+          const response = await fetch(
+            `${baseUrl.replace(/\/$/, '')}/chat/completions`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${apiKey}`
+              },
+              body: JSON.stringify({
+                model,
+                messages: expansionMessages,
+                max_tokens: 200,
+                temperature: 0.2
+              })
+            }
+          );
+
+          if (response.status === 429) {
+            rotator.reportFailure(apiKey);
+            console.warn(
+              `[QueryExpansion] Rate limited on key ...${apiKey.slice(-6)} with model ${model}, rotating`
+            );
+            continue;
+          }
+
+          if (!response.ok) {
+            rotator.reportFailure(apiKey);
+            console.warn(
+              `[QueryExpansion] API error (status ${response.status}) on key ...${apiKey.slice(-6)} with model ${model}`
+            );
+            continue;
+          }
+
+          rotator.reportSuccess(apiKey);
+          const data = await response.json();
+          const generatedKeywords =
+            data.choices?.[0]?.message?.content?.trim() ?? '';
+
+          console.timeEnd('[Perf] Query Expansion');
+
+          if (!generatedKeywords) {
+            console.log(
+              '[QueryExpansion] No keywords generated, using original query'
+            );
+            return originalQuery;
+          }
+
+          // Append keywords to original query (not replace)
+          const expandedQuery = `${originalQuery} ${generatedKeywords}`;
+          console.log(
+            `[QueryExpansion] model="${model}" | "${originalQuery.slice(0, 40)}..." + keywords: "${generatedKeywords.slice(0, 80)}..."`
+          );
+
+          return expandedQuery;
+        } catch (error) {
+          rotator.reportFailure(apiKey);
+          console.warn(
+            `[QueryExpansion] Error on key ...${apiKey.slice(-6)} with model ${model}:`,
+            error
+          );
+          continue;
+        }
       }
-    );
 
-    if (!response.ok) {
-      rotator.reportFailure(apiKey);
+      // All keys exhausted for this model
       console.warn(
-        `[QueryExpansion] LLM call failed (status ${response.status}), using original query`
+        `[QueryExpansion] All keys exhausted for model "${model}", trying next model`
       );
-      return originalQuery;
     }
 
-    rotator.reportSuccess(apiKey);
-    const data = await response.json();
-    const generatedKeywords = data.choices?.[0]?.message?.content?.trim() ?? '';
-
+    // All models + keys exhausted — non-critical, fall back gracefully
     console.timeEnd('[Perf] Query Expansion');
-
-    if (!generatedKeywords) {
-      console.log(
-        '[QueryExpansion] No keywords generated, using original query'
-      );
-      return originalQuery;
-    }
-
-    // Append keywords to original query (not replace)
-    const expandedQuery = `${originalQuery} ${generatedKeywords}`;
-    console.log(
-      `[QueryExpansion] "${originalQuery.slice(0, 40)}..." + keywords: "${generatedKeywords.slice(0, 80)}..."`
+    console.warn(
+      '[QueryExpansion] All models and keys exhausted, using original query'
     );
-
-    return expandedQuery;
+    return originalQuery;
   } catch (error) {
     console.warn(
       '[QueryExpansion] Expansion failed, using original query:',
@@ -144,25 +182,20 @@ export async function expandQueryForRetrieval(
  * Builds the message array for the expansion LLM call.
  * Includes a condensed system context + recent history so the LLM
  * understands the domain and ongoing conversation.
+ * Adapts message structure based on model's system role support.
  */
 function buildExpansionMessages(
   systemPrompt: string,
   history: ChatMessage[],
-  currentQuery: string
+  currentQuery: string,
+  model: string
 ): ChatMessage[] {
   const messages: ChatMessage[] = [];
-  const model = process.env.CHAT_MODEL ?? 'gemma-3-27b-it';
-
-  // Models that don't support "system" role (same list as response-generator)
-  const MODELS_WITHOUT_SYSTEM_ROLE = ['gemma-'];
-  const supportsSystemRole = !MODELS_WITHOUT_SYSTEM_ROLE.some((prefix) =>
-    model.startsWith(prefix)
-  );
 
   // Inject domain context as a condensed reference (truncate to save tokens)
   const condensedSystemPrompt = systemPrompt.slice(0, 2000);
 
-  if (supportsSystemRole) {
+  if (supportsSystemRole(model)) {
     messages.push({ role: 'system', content: EXPANSION_INSTRUCTION });
     messages.push({
       role: 'user',
