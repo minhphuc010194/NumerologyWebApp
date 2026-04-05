@@ -18,7 +18,7 @@ import {
   MdPlayCircleOutline,
   MdExpandMore,
   MdExpandLess
-} from 'components';
+} from '@/components';
 import '@/styles/globals.css';
 import { useTranslations, useLocale } from 'next-intl';
 
