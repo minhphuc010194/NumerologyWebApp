@@ -5,7 +5,13 @@
   },
   "Home": {
     "title": "Numerology Application",
-    "chatNotice": "👉 Server deployment in progress for AI with knowledge from reputable books"
+    "subtitle": "Explore your number map through your birth date and name — decode life path, mission, and hidden potential.",
+    "chatNotice": "Server deployment in progress for AI with knowledge from reputable books",
+    "chatBadgeLabel": "AI",
+    "logoAlt": "Numerology Logo",
+    "videoTitle": "Decoding Numerology",
+    "videoCaption": "Watch the guide on how to read and understand your numerology indices",
+    "videoToggleLabel": "Show/hide tutorial video"
   },
   "Numerology": {
     "namePlaceholder": "Your full name, ex: 'Nguyen Van A'",
