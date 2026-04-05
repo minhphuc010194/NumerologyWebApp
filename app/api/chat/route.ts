@@ -7,6 +7,14 @@
  * Response: SSE stream
  */
 import { NextRequest } from 'next/server';
+
+/**
+ * Vercel Serverless config:
+ * - maxDuration: Hobby = 60s max, Pro = 300s max. Prevents streaming from being killed mid-response.
+ * - dynamic: Forces this route to always run as a serverless function, never statically cached.
+ */
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
 import { retrieveContext } from './lib/retrieval-service';
 import { createStreamingResponse } from './lib/response-generator';
 import { buildSystemPrompt } from './prompt';
