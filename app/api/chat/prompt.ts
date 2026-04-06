@@ -55,13 +55,22 @@ function getRawSystemPrompt(): string {
 }
 
 /**
- * Builds the complete system prompt with RAG context injection.
+ * Builds the complete system prompt with RAG context injection
+ * and a language directive based on the detected user language.
  */
-export function buildSystemPrompt(ragContext?: string): string {
+export function buildSystemPrompt(
+  ragContext?: string,
+  detectedLanguage?: string
+): string {
   let prompt = getRawSystemPrompt();
 
   if (ragContext?.trim()) {
     prompt += `\n\n---\n\n### KNOWLEDGE BASE CONTEXT (USE THIS DATA AS PRIMARY SOURCE):\n${ragContext}`;
+  }
+
+  // Inject language directive so the LLM responds in the user's language
+  if (detectedLanguage) {
+    prompt += `\n\n---\n\n### RESPONSE LANGUAGE DIRECTIVE:\nThe user is writing in **${detectedLanguage}**. You MUST respond entirely in **${detectedLanguage}**. Do not switch to another language unless the user explicitly requests it.`;
   }
 
   return prompt;
