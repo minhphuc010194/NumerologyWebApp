@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
     console.time('[Perf] Total RAG Retrieval');
     let ragContext = '';
     let sources: RetrievalSource[] = [];
+    let detectedLanguage = 'Vietnamese'; // default fallback
 
     try {
       const retrievalResult = await retrieveContext(
@@ -80,9 +81,10 @@ export async function POST(req: NextRequest) {
       );
       ragContext = retrievalResult.context;
       sources = retrievalResult.sources;
+      detectedLanguage = retrievalResult.detectedLanguage;
 
       console.log(
-        `[RAG] Retrieved ${sources.length} sources for query: "${userQuery.slice(0, 50)}..."`
+        `[RAG] Retrieved ${sources.length} sources for query: "${userQuery.slice(0, 50)}..." | Language: ${detectedLanguage}`
       );
     } catch (error) {
       console.error(
@@ -92,8 +94,8 @@ export async function POST(req: NextRequest) {
       // Continue without RAG context — fallback to base knowledge
     }
 
-    // Build system prompt with RAG context
-    const systemPrompt = buildSystemPrompt(ragContext);
+    // Build system prompt with RAG context + language directive
+    const systemPrompt = buildSystemPrompt(ragContext, detectedLanguage);
 
     // Prepare conversation history (limit to last 15 messages to control token usage)
     const conversationHistory = messages.slice(-15).map((message) => ({

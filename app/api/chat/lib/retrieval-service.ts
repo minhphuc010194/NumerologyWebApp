@@ -28,6 +28,8 @@ export interface RetrievalSource {
 interface RetrievalResult {
   context: string;
   sources: RetrievalSource[];
+  /** Language detected from the user's query during expansion */
+  detectedLanguage: string;
 }
 
 // --- Configuration ---
@@ -54,8 +56,8 @@ export async function retrieveContext(
   systemPrompt: string,
   conversationHistory: Array<{ role: string; content: string }>
 ): Promise<RetrievalResult> {
-  // Step 1: Expand short queries with context-aware keywords
-  const expandedQuery = await expandQueryForRetrieval({
+  // Step 1: Expand short queries with context-aware keywords + detect language
+  const { expandedQuery, detectedLanguage } = await expandQueryForRetrieval({
     originalQuery: query,
     systemPrompt,
     recentHistory: conversationHistory
@@ -101,7 +103,8 @@ export async function retrieveContext(
 
   return {
     context,
-    sources: deduplicatedSources
+    sources: deduplicatedSources,
+    detectedLanguage
   };
 }
 

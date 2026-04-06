@@ -1,13 +1,16 @@
 /**
  * Query Expansion Service — enriches short user queries with numerology-specific
  * keywords to improve hybrid search quality in Milvus.
+ * Also detects the user's input language in the same LLM call (zero extra latency)
+ * so downstream components can instruct the response LLM to reply in the user's language.
  *
  * Uses system prompt + recent conversation history to understand the full context,
  * then generates additional search keywords appended to the original query.
  *
  * Example: "Nguyen Van A 10/3/1995"
- * → "Nguyen Van A 10/3/1995 con số chủ đạo đường đời biểu đồ ngày sinh
+ * → expandedQuery: "Nguyen Van A 10/3/1995 con số chủ đạo đường đời biểu đồ ngày sinh
  *    năm cá nhân sứ mệnh linh hồn nhân cách life path number birth chart"
+ * → detectedLanguage: "Vietnamese"
  */
 import { getApiKeyRotator } from './api-key-rotator';
 import { getChatModels, supportsSystemRole } from './model-config';
@@ -28,6 +31,13 @@ interface QueryExpansionContext {
   recentHistory: ChatMessage[];
 }
 
+export interface QueryExpansionResult {
+  /** Original query + appended keywords (or just the original if skipped) */
+  expandedQuery: string;
+  /** Language name detected from user input (e.g. "Vietnamese", "English") */
+  detectedLanguage: string;
+}
+
 // --- Configuration ---
 
 /** Short queries below this threshold trigger expansion */
@@ -36,38 +46,47 @@ const EXPANSION_THRESHOLD = 80;
 /** Max recent messages to include for context */
 const MAX_HISTORY_ITEMS = 4;
 
+/** Fallback language when detection fails or is skipped */
+const DEFAULT_LANGUAGE = 'Vietnamese';
+
 const EXPANSION_INSTRUCTION = `You are a search keyword generator for a knowledge base retrieval system.
 
-Your task: Given the domain context (provided as <domain_context>) and the user's latest query, generate ONLY additional search keywords that will help retrieve the most relevant documents.
+Your task: Given the domain context (provided as <domain_context>) and the user's latest query:
+1. DETECT the language the user is writing in.
+2. Generate additional search keywords to help retrieve the most relevant documents.
 
-Rules:
-- Output ONLY search keywords/phrases separated by spaces. No explanation, no markdown, no punctuation, no numbering.
+Rules for keywords:
 - DO NOT repeat the user's original query. Your output will be APPENDED to it.
 - Analyze the <domain_context> to understand the domain and its terminology, then generate domain-specific keywords relevant to the user's query.
 - Generate keywords in both the user's language and English for cross-language retrieval.
 - If conversation history is provided, use it to understand what the user is specifically asking about and narrow the keywords accordingly.
-- Keep output under 100 words.
-- If the user query is already rich with keywords, output an empty string.`;
+- Keep keywords under 100 words.
+- If the user query is already rich with keywords, leave "keywords" as an empty string.
+
+IMPORTANT: You MUST respond with ONLY a valid JSON object in this exact format (no markdown, no code fences, no explanation):
+{"language":"<detected language name in English, e.g. Vietnamese, English, Japanese>","keywords":"<space-separated search keywords>"}`;
 
 // --- Main ---
 
 /**
  * Expands a short user query by appending LLM-generated search keywords.
+ * Simultaneously detects the user's input language (zero extra API calls).
  * Uses system prompt + conversation history for context-aware expansion.
  * Tries all available API keys and model fallbacks before giving up.
  * Falls back to original query on any error (non-blocking).
  */
 export async function expandQueryForRetrieval(
   context: QueryExpansionContext
-): Promise<string> {
+): Promise<QueryExpansionResult> {
   const { originalQuery, systemPrompt, recentHistory } = context;
 
-  // Skip expansion for already-detailed queries
+  // Skip expansion for already-detailed queries but still detect language
   if (originalQuery.length >= EXPANSION_THRESHOLD) {
     console.log(
-      '[QueryExpansion] Query is detailed enough, skipping expansion'
+      '[QueryExpansion] Query is detailed enough, skipping expansion (language detection only)'
     );
-    return originalQuery;
+    const detectedLanguage = detectLanguageHeuristic(originalQuery);
+    return { expandedQuery: originalQuery, detectedLanguage };
   }
 
   const rotator = getApiKeyRotator();
@@ -102,7 +121,7 @@ export async function expandQueryForRetrieval(
               body: JSON.stringify({
                 model,
                 messages: expansionMessages,
-                max_tokens: 200,
+                max_tokens: 250,
                 temperature: 0.2
               })
             }
@@ -126,25 +145,25 @@ export async function expandQueryForRetrieval(
 
           rotator.reportSuccess(apiKey);
           const data = await response.json();
-          const generatedKeywords =
-            data.choices?.[0]?.message?.content?.trim() ?? '';
+          const rawOutput = data.choices?.[0]?.message?.content?.trim() ?? '';
 
           console.timeEnd('[Perf] Query Expansion');
 
-          if (!generatedKeywords) {
-            console.log(
-              '[QueryExpansion] No keywords generated, using original query'
-            );
-            return originalQuery;
-          }
-
-          // Append keywords to original query (not replace)
-          const expandedQuery = `${originalQuery} ${generatedKeywords}`;
-          console.log(
-            `[QueryExpansion] model="${model}" | "${originalQuery.slice(0, 40)}..." + keywords: "${generatedKeywords.slice(0, 80)}..."`
+          // Parse structured JSON response
+          const { keywords, language } = parseExpansionResponse(
+            rawOutput,
+            originalQuery
           );
 
-          return expandedQuery;
+          const expandedQuery = keywords
+            ? `${originalQuery} ${keywords}`
+            : originalQuery;
+
+          console.log(
+            `[QueryExpansion] model="${model}" | lang="${language}" | "${originalQuery}..." + keywords: "${keywords || '(none)'}"`
+          );
+
+          return { expandedQuery, detectedLanguage: language };
         } catch (error) {
           rotator.reportFailure(apiKey);
           console.warn(
@@ -166,17 +185,109 @@ export async function expandQueryForRetrieval(
     console.warn(
       '[QueryExpansion] All models and keys exhausted, using original query'
     );
-    return originalQuery;
+    return {
+      expandedQuery: originalQuery,
+      detectedLanguage: detectLanguageHeuristic(originalQuery)
+    };
   } catch (error) {
     console.warn(
       '[QueryExpansion] Expansion failed, using original query:',
       error
     );
-    return originalQuery;
+    return {
+      expandedQuery: originalQuery,
+      detectedLanguage: detectLanguageHeuristic(originalQuery)
+    };
   }
 }
 
 // --- Helpers ---
+
+/**
+ * Parses the structured JSON response from the LLM.
+ * Handles edge cases: markdown fences, malformed JSON, plain text fallback.
+ */
+function parseExpansionResponse(
+  rawOutput: string,
+  originalQuery: string
+): { keywords: string; language: string } {
+  if (!rawOutput) {
+    return { keywords: '', language: detectLanguageHeuristic(originalQuery) };
+  }
+
+  try {
+    // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
+    const cleanedOutput = rawOutput
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+
+    const parsed = JSON.parse(cleanedOutput);
+
+    return {
+      keywords: (parsed.keywords ?? '').trim(),
+      language: (parsed.language ?? DEFAULT_LANGUAGE).trim()
+    };
+  } catch {
+    // JSON parse failed — treat entire output as keywords (backward compatible)
+    console.warn(
+      '[QueryExpansion] Failed to parse structured response, treating as plain keywords'
+    );
+    return {
+      keywords: rawOutput,
+      language: detectLanguageHeuristic(originalQuery)
+    };
+  }
+}
+
+/**
+ * Lightweight heuristic language detection for fallback scenarios.
+ * Checks for Vietnamese diacritics, CJK ranges, Cyrillic, etc.
+ * Returns a human-readable language name.
+ */
+function detectLanguageHeuristic(text: string): string {
+  // Vietnamese: check for common diacritical marks
+  if (
+    /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(
+      text
+    )
+  ) {
+    return 'Vietnamese';
+  }
+
+  // Japanese (Hiragana/Katakana)
+  if (/[\u3040-\u309F\u30A0-\u30FF]/.test(text)) {
+    return 'Japanese';
+  }
+
+  // Korean (Hangul)
+  if (/[\uAC00-\uD7AF\u1100-\u11FF]/.test(text)) {
+    return 'Korean';
+  }
+
+  // Chinese (CJK Unified Ideographs — after Japanese check)
+  if (/[\u4E00-\u9FFF]/.test(text)) {
+    return 'Chinese';
+  }
+
+  // Thai
+  if (/[\u0E00-\u0E7F]/.test(text)) {
+    return 'Thai';
+  }
+
+  // Cyrillic (Russian, etc.)
+  if (/[\u0400-\u04FF]/.test(text)) {
+    return 'Russian';
+  }
+
+  // Arabic
+  if (/[\u0600-\u06FF]/.test(text)) {
+    return 'Arabic';
+  }
+
+  // Default to English for Latin scripts without diacritics
+  return 'English';
+}
 
 /**
  * Builds the message array for the expansion LLM call.
@@ -212,7 +323,7 @@ function buildExpansionMessages(
   messages.push({
     role: 'assistant',
     content:
-      'Understood. I will generate search keywords based on this domain context.'
+      'Understood. I will detect the language and generate search keywords based on this domain context. I will respond with a JSON object only.'
   });
 
   // Include recent conversation history for continuity
@@ -229,14 +340,14 @@ function buildExpansionMessages(
     messages.push({
       role: 'assistant',
       content:
-        'Noted. I will consider this conversation context for keyword generation.'
+        'Noted. I will consider this conversation context for keyword generation and language detection.'
     });
   }
 
   // The actual query to expand
   messages.push({
     role: 'user',
-    content: `Generate search keywords for this user query: "${currentQuery}"`
+    content: `Detect language and generate search keywords for this user query: "${currentQuery}"`
   });
 
   return messages;
