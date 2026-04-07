@@ -1,5 +1,6 @@
 /**
  * Custom hook for RAG chat — manages multi-sessions, streaming, and SSE parsing.
+ * Supports optional user-provided AI provider config (BYOK).
  */
 'use client';
 import { useState, useCallback, useRef, useEffect } from 'react';
@@ -10,6 +11,7 @@ import type {
   SSEEvent,
   ChatSession
 } from './chat-types';
+import type { ProviderRequestConfig } from './provider-types';
 
 type ChatPhase = 'idle' | 'searching' | 'generating' | 'error';
 
@@ -35,7 +37,9 @@ interface UseChatRAGReturn {
 
 const CHAT_STORE_KEY = 'numerology-chat-history';
 
-export function useChatRAG(): UseChatRAGReturn {
+export function useChatRAG(
+  activeProviderConfig?: ProviderRequestConfig | null
+): UseChatRAGReturn {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -230,10 +234,15 @@ export function useChatRAG(): UseChatRAGReturn {
           content: m.content
         }));
 
+        const requestBody: Record<string, unknown> = { messages: apiMessages };
+        if (activeProviderConfig) {
+          requestBody.providerConfig = activeProviderConfig;
+        }
+
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: apiMessages }),
+          body: JSON.stringify(requestBody),
           signal: abortController.signal
         });
 
@@ -329,7 +338,7 @@ export function useChatRAG(): UseChatRAGReturn {
         updateActiveSession(currentMessages);
       }
     },
-    [messages, isStreaming, updateActiveSession]
+    [messages, isStreaming, updateActiveSession, activeProviderConfig]
   );
 
   const retryLastMessage = useCallback(async () => {
