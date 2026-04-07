@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
       detectedLanguage = retrievalResult.detectedLanguage;
 
       console.log(
-        `[RAG] Retrieved ${sources.length} sources for query: "${userQuery.slice(0, 50)}..." | Language: ${detectedLanguage}`
+        `[RAG] Retrieved ${sources.length} sources for query: "${userQuery}" | Language: ${detectedLanguage}`
       );
     } catch (error) {
       console.error(
