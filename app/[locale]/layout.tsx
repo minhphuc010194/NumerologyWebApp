@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Metadata } from 'next';
 import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 
@@ -7,6 +8,57 @@ import { routing } from '@/src/i18n/routing';
 
 import { Providers } from '@/app/providers';
 import { getMessages, getTranslations } from 'next-intl/server';
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://numerology-web-app.vercel.app';
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+
+  const alternates = routing.locales.reduce((acc, l) => {
+    acc[l] = `${baseUrl}/${l}`;
+    return acc;
+  }, {} as Record<string, string>);
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: `${baseUrl}/${locale}`,
+      languages: alternates,
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+      url: `${baseUrl}/${locale}`,
+      siteName: 'TaiZenAI Numerology',
+      images: [
+        {
+          url: '/Images/numerologyPNG.png',
+          width: 512,
+          height: 512,
+          alt: 'TaiZenAI Numerology Logo',
+        },
+      ],
+      locale: locale,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'),
+      description: t('description'),
+      images: ['/Images/numerologyPNG.png'],
+    },
+    icons: {
+      icon: '/Images/numerologyPNG.png',
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -23,14 +75,28 @@ export default async function RootLayout({
 
   const messages = await getMessages();
 
-  const t = await getTranslations('Metadata');
-
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <title>{t('title')}</title>
-        <meta name="description" content={t('description')} />
-        <link rel="icon" href="/Images/numerologyPNG.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "TaiZenAI Numerology",
+              "url": baseUrl,
+              "applicationCategory": "LifestyleApplication",
+              "operatingSystem": "All",
+              "description": "Professional Numerology Analysis and RAG AI Chatbot.",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            })
+          }}
+        />
       </head>
 
       <body suppressHydrationWarning>
