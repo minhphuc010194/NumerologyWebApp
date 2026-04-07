@@ -249,7 +249,7 @@ export default function Chat() {
         />
 
         {/* Drawer for History & Settings */}
-        <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <Drawer placement="left" onClose={onClose} isOpen={isOpen} size={{ base: 'full', md: 'sm' }}>
           <DrawerOverlay />
           <DrawerContent bg={drawerBg}>
             <DrawerCloseButton mt={1} />

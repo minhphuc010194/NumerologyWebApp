@@ -101,6 +101,7 @@
     "providerTestFailed": "Kết nối thất bại. Kiểm tra lại cấu hình.",
     "providerSave": "Lưu",
     "providerMultiKeyHint": "Nhiều key sẽ được xoay vòng (round-robin) để tránh giới hạn tốc độ.",
+    "providerMultiKeyPlaceholder": " (Nhấn Enter để thêm nhiều key)",
     "providerDeleteConfirm": "Xoá provider này?",
     "providerUsingCustom": "Đang dùng: {name}",
     "providerUsingDefault": "Đang dùng mặc định hệ thống",

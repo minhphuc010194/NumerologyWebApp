@@ -48,6 +48,7 @@ import {
   MdClose,
   MdDelete,
   MdEdit,
+  MdInfoOutline,
   MdRefresh,
   MdSettings,
   MdVisibility,
@@ -341,9 +342,9 @@ export function ProviderSettings({ providerHook, t }: ProviderSettingsProps) {
           borderRadius="md"
           _hover={{ bg: 'blackAlpha.50', _dark: { bg: 'whiteAlpha.100' } }}
         >
-          <HStack flex={1} spacing={2}>
-            <Icon as={MdSettings} color="brand.500" />
-            <Text fontSize="sm" fontWeight="medium">
+          <HStack flex={1} spacing={2} overflow="hidden">
+            <Icon as={MdSettings} color="brand.500" flexShrink={0} />
+            <Text fontSize="sm" fontWeight="medium" whiteSpace="nowrap" isTruncated>
               {t('providerSettings')}
             </Text>
             {activeProvider ? (
@@ -546,19 +547,21 @@ export function ProviderSettings({ providerHook, t }: ProviderSettingsProps) {
 
                   {/* API Keys */}
                   <FormControl size="sm">
-                    <FormLabel fontSize="xs">
+                    <FormLabel fontSize="xs" display="flex" alignItems="center">
                       {t('providerApiKeys')}
+                      <Tooltip label={t('providerMultiKeyHint')} placement="top" hasArrow>
+                        <Box as="span" ml={1} display="inline-flex" alignItems="center">
+                          <Icon as={MdInfoOutline} boxSize={3.5} color="gray.400" _dark={{ color: 'gray.500' }} cursor="help" />
+                        </Box>
+                      </Tooltip>
                       {formState.apiKeys.length > 1 && (
-                        <Tooltip label={t('providerMultiKeyHint')} hasArrow>
-                          <Badge
-                            ml={2}
-                            fontSize="2xs"
-                            colorScheme="blue"
-                            cursor="help"
-                          >
-                            Round-robin ×{formState.apiKeys.length}
-                          </Badge>
-                        </Tooltip>
+                        <Badge
+                          ml={2}
+                          fontSize="2xs"
+                          colorScheme="blue"
+                        >
+                          Round-robin ×{formState.apiKeys.length}
+                        </Badge>
                       )}
                     </FormLabel>
 
@@ -592,7 +595,8 @@ export function ProviderSettings({ providerHook, t }: ProviderSettingsProps) {
                         value={keyInput}
                         onChange={(e) => setKeyInput(e.target.value)}
                         placeholder={
-                          PROVIDER_PRESETS[formState.type].keyPlaceholder
+                          PROVIDER_PRESETS[formState.type].keyPlaceholder +
+                          t('providerMultiKeyPlaceholder')
                         }
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {

@@ -101,6 +101,7 @@
     "providerTestFailed": "Connection failed. Check your configuration.",
     "providerSave": "Save",
     "providerMultiKeyHint": "Multiple keys will be rotated (round-robin) to avoid rate limits.",
+    "providerMultiKeyPlaceholder": " (Press Enter to add multiple keys)",
     "providerDeleteConfirm": "Delete this provider?",
     "providerUsingCustom": "Using: {name}",
     "providerUsingDefault": "Using system default",
