@@ -9,7 +9,7 @@ import { routing } from '@/src/i18n/routing';
 import { Providers } from '@/app/providers';
 import { getMessages, getTranslations } from 'next-intl/server';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://numerology-web-app.vercel.app';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://numerology-app.site';
 
 export async function generateMetadata({
   params

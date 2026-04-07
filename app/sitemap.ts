@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { routing } from '@/src/i18n/routing';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://numerology-web-app.vercel.app';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://numerology-app.site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Routes to include in the sitemap
