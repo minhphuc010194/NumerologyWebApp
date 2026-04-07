@@ -69,8 +69,7 @@ export default function AdminMilvusPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             collection,
-            data: item,
-            secret: 'numerology-admin-123'
+            data: item
           })
         });
         
@@ -134,8 +133,7 @@ export default function AdminMilvusPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           collection,
-          data: formData,
-          secret: 'numerology-admin-123', // Hardcoded simple secret
+          data: formData
         }),
       });
 
