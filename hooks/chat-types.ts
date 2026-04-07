@@ -11,6 +11,13 @@ export interface ChatMessage {
   isStreaming?: boolean;
 }
 
+export interface ChatSession {
+  id: string;
+  title: string;
+  updatedAt: string; // ISO string 
+  messages: ChatMessage[];
+}
+
 export interface RetrievalSourceInfo {
   title: string;
   refLink?: string;

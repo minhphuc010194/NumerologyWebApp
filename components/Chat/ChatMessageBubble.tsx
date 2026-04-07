@@ -86,7 +86,7 @@ function ChatMessageBubbleInner({ message, t }: ChatMessageBubbleProps) {
       sx={{ animation: 'fadeIn 0.3s ease-in' }}
     >
       <Box
-        maxW={{ base: '92%', md: '78%' }}
+        w="100%"
         display="flex"
         flexDir="column"
         gap={2}

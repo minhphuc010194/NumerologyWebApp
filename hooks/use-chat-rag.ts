@@ -1,13 +1,14 @@
 /**
- * Custom hook for RAG chat — manages messages, streaming, and SSE parsing.
- * Replaces the previous `useChat` from ai/react with a purpose-built solution.
+ * Custom hook for RAG chat — manages multi-sessions, streaming, and SSE parsing.
  */
 "use client";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { get, set, del } from "idb-keyval";
 import type {
   ChatMessage,
   RetrievalSourceInfo,
   SSEEvent,
+  ChatSession
 } from "./chat-types";
 
 type ChatPhase = "idle" | "searching" | "generating" | "error";
@@ -18,18 +19,153 @@ interface UseChatRAGReturn {
   isStreaming: boolean;
   phase: ChatPhase;
   error: string | null;
-  clearMessages: () => void;
   retryLastMessage: () => Promise<void>;
+  
+  sessions: ChatSession[];
+  currentSessionId: string | null;
+  createNewSession: () => void;
+  switchSession: (id: string) => void;
+  deleteSession: (id: string) => void;
+  renameSession: (id: string, newTitle: string) => void;
+  clearAllSessions: () => void;
+  
+  exportSessions: () => void;
+  importSessions: (file: File) => Promise<void>;
 }
 
+const CHAT_STORE_KEY = "numerology-chat-history";
+
 export function useChatRAG(): UseChatRAGReturn {
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  
   const [phase, setPhase] = useState<ChatPhase>("idle");
   const [error, setError] = useState<string | null>(null);
+  
   const abortControllerRef = useRef<AbortController | null>(null);
   const lastUserMessageRef = useRef<string>("");
 
   const isStreaming = phase === "searching" || phase === "generating";
+
+  const saveToIDB = useCallback((newSessions: ChatSession[]) => {
+    set(CHAT_STORE_KEY, newSessions).catch(console.error);
+  }, []);
+
+  // Sync hot messages to the active session
+  const updateActiveSession = useCallback((newMessages: ChatMessage[]) => {
+    setMessages(newMessages);
+    setSessions((prev) => {
+      let nextSessions = [...prev];
+      const idx = nextSessions.findIndex((s) => s.id === currentSessionId);
+      
+      if (idx >= 0) {
+        nextSessions[idx] = {
+          ...nextSessions[idx],
+          messages: newMessages,
+          updatedAt: new Date().toISOString()
+        };
+      } else if (currentSessionId && newMessages.length > 0) {
+        // Create new session lazily on first message
+        const title = newMessages.find(m => m.role === 'user')?.content || "New Chat";
+        nextSessions.unshift({
+          id: currentSessionId,
+          title: title.slice(0, 40) + (title.length > 40 ? "..." : ""),
+          updatedAt: new Date().toISOString(),
+          messages: newMessages
+        });
+      }
+      saveToIDB(nextSessions);
+      return nextSessions;
+    });
+  }, [currentSessionId, saveToIDB]);
+
+  // Load from IndexedDB on mount
+  useEffect(() => {
+    get(CHAT_STORE_KEY).then((data) => {
+      if (data && Array.isArray(data) && data.length > 0) {
+        if ("role" in data[0]) {
+          // Legacy format migration
+          const legacySession: ChatSession = {
+            id: crypto.randomUUID(),
+            title: "Legacy Chat",
+            updatedAt: new Date().toISOString(),
+            messages: data as ChatMessage[]
+          };
+          setSessions([legacySession]);
+          setCurrentSessionId(legacySession.id);
+          setMessages(legacySession.messages);
+          saveToIDB([legacySession]);
+        } else {
+          // New format
+          const loaded = data as ChatSession[];
+          setSessions(loaded);
+          setCurrentSessionId(loaded[0].id);
+          setMessages(loaded[0].messages);
+        }
+      } else {
+        createNewSession();
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const createNewSession = useCallback(() => {
+    abortControllerRef.current?.abort();
+    setPhase("idle");
+    setError(null);
+    setMessages([]);
+    setCurrentSessionId(crypto.randomUUID());
+  }, []);
+
+  const switchSession = useCallback((id: string) => {
+    abortControllerRef.current?.abort();
+    const target = sessions.find((s) => s.id === id);
+    if (target) {
+      setCurrentSessionId(target.id);
+      setMessages(target.messages);
+      setPhase("idle");
+      setError(null);
+    }
+  }, [sessions]);
+
+  const deleteSession = useCallback((id: string) => {
+    setSessions((prev) => {
+      const next = prev.filter((s) => s.id !== id);
+      saveToIDB(next);
+      if (currentSessionId === id) {
+        if (next.length > 0) {
+          setCurrentSessionId(next[0].id);
+          setMessages(next[0].messages);
+        } else {
+          setCurrentSessionId(crypto.randomUUID());
+          setMessages([]);
+        }
+      }
+      return next;
+    });
+  }, [currentSessionId, saveToIDB]);
+
+  const renameSession = useCallback((id: string, newTitle: string) => {
+    if (!newTitle.trim()) return;
+    setSessions((prev) => {
+      const next = prev.map((s) => 
+        s.id === id ? { ...s, title: newTitle.trim(), updatedAt: new Date().toISOString() } : s
+      );
+      saveToIDB(next);
+      return next;
+    });
+  }, [saveToIDB]);
+
+  const clearAllSessions = useCallback(() => {
+    abortControllerRef.current?.abort();
+    setSessions([]);
+    setMessages([]);
+    setCurrentSessionId(crypto.randomUUID());
+    setPhase("idle");
+    setError(null);
+    del(CHAT_STORE_KEY).catch(console.error);
+  }, []);
 
   const sendMessage = useCallback(
     async (content: string) => {
@@ -46,7 +182,8 @@ export function useChatRAG(): UseChatRAGReturn {
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, userMessage]);
+      let currentMessages = [...messages, userMessage];
+      updateActiveSession(currentMessages);
       setPhase("searching");
       setError(null);
 
@@ -60,7 +197,8 @@ export function useChatRAG(): UseChatRAGReturn {
         isStreaming: true,
       };
 
-      setMessages((prev) => [...prev, assistantMessage]);
+      currentMessages = [...currentMessages, assistantMessage];
+      updateActiveSession(currentMessages);
 
       // Abort previous request if any
       abortControllerRef.current?.abort();
@@ -68,8 +206,7 @@ export function useChatRAG(): UseChatRAGReturn {
       abortControllerRef.current = abortController;
 
       try {
-        // Build messages payload (all messages for context)
-        const apiMessages = [...messages, userMessage].map((m) => ({
+        const apiMessages = currentMessages.slice(0, -1).map((m) => ({
           role: m.role,
           content: m.content,
         }));
@@ -116,12 +253,10 @@ export function useChatRAG(): UseChatRAGReturn {
                 sources = event.sources;
                 setPhase("generating");
 
-                // Update assistant message with sources
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId ? { ...m, sources } : m
-                  )
+                currentMessages = currentMessages.map((m) =>
+                  m.id === assistantId ? { ...m, sources } : m
                 );
+                updateActiveSession(currentMessages);
                 continue;
               }
 
@@ -131,34 +266,30 @@ export function useChatRAG(): UseChatRAGReturn {
                   hasStartedGenerating = true;
                   setPhase("generating");
                 }
-
                 accumulatedContent += event.content;
 
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? { ...m, content: accumulatedContent, sources }
-                      : m
-                  )
+                currentMessages = currentMessages.map((m) =>
+                  m.id === assistantId
+                    ? { ...m, content: accumulatedContent, sources }
+                    : m
                 );
+                updateActiveSession(currentMessages);
               }
 
               // Handle done signal
               if ("done" in event && event.done) {
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? { ...m, isStreaming: false, sources }
-                      : m
-                  )
+                currentMessages = currentMessages.map((m) =>
+                  m.id === assistantId
+                    ? { ...m, isStreaming: false, sources }
+                    : m
                 );
+                updateActiveSession(currentMessages);
               }
             } catch {
-              // Skip malformed JSON
+               // Skip malformed JSON
             }
           }
         }
-
         setPhase("idle");
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") {
@@ -171,55 +302,62 @@ export function useChatRAG(): UseChatRAGReturn {
         setError(errorMessage);
         setPhase("error");
 
-        // Update assistant message to show error
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId
-              ? {
-                  ...m,
-                  content: `⚠️ ${errorMessage}`,
-                  isStreaming: false,
-                }
-              : m
-          )
+        currentMessages = currentMessages.map((m) =>
+          m.id === assistantId
+            ? { ...m, content: `⚠️ ${errorMessage}`, isStreaming: false }
+            : m
         );
+        updateActiveSession(currentMessages);
       }
     },
-    [messages, isStreaming, phase]
+    [messages, isStreaming, updateActiveSession]
   );
-
-  const clearMessages = useCallback(() => {
-    abortControllerRef.current?.abort();
-    setMessages([]);
-    setPhase("idle");
-    setError(null);
-  }, []);
 
   const retryLastMessage = useCallback(async () => {
     if (!lastUserMessageRef.current) return;
 
-    // Remove last assistant message (the error one)
-    setMessages((prev) => {
-      const lastAssistantIndex = prev.findLastIndex(
-        (m) => m.role === "assistant"
-      );
-      if (lastAssistantIndex >= 0) {
-        return prev.slice(0, lastAssistantIndex);
-      }
-      return prev;
-    });
+    let newMessages = [...messages];
+    const lastAssistantIdx = newMessages.findLastIndex((m) => m.role === "assistant");
+    if (lastAssistantIdx >= 0) newMessages.splice(lastAssistantIdx, 1);
+    
+    const lastUserIdx = newMessages.findLastIndex((m) => m.role === "user");
+    if (lastUserIdx >= 0) newMessages.splice(lastUserIdx, 1);
 
-    // Also remove the last user message since sendMessage will re-add it
-    setMessages((prev) => {
-      const lastUserIndex = prev.findLastIndex((m) => m.role === "user");
-      if (lastUserIndex >= 0) {
-        return prev.slice(0, lastUserIndex);
-      }
-      return prev;
-    });
-
+    updateActiveSession(newMessages);
     await sendMessage(lastUserMessageRef.current);
-  }, [sendMessage]);
+  }, [messages, updateActiveSession, sendMessage]);
+
+  const exportSessions = useCallback(() => {
+    if (sessions.length === 0) return;
+    const dataStr = JSON.stringify(sessions, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `numerology-chat-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [sessions]);
+
+  const importSessions = useCallback(async (file: File) => {
+    try {
+      const text = await file.text();
+      const importedSessions = JSON.parse(text) as ChatSession[];
+      if (!Array.isArray(importedSessions) || (importedSessions.length > 0 && !importedSessions[0].updatedAt)) {
+        throw new Error("Invalid format");
+      }
+      setSessions(importedSessions);
+      saveToIDB(importedSessions);
+      if (importedSessions.length > 0) {
+        setCurrentSessionId(importedSessions[0].id);
+        setMessages(importedSessions[0].messages);
+      }
+    } catch (e) {
+      throw new Error("Failed to parse chat memory file");
+    }
+  }, [saveToIDB]);
 
   return {
     messages,
@@ -227,7 +365,17 @@ export function useChatRAG(): UseChatRAGReturn {
     isStreaming,
     phase,
     error,
-    clearMessages,
     retryLastMessage,
+    
+    sessions,
+    currentSessionId,
+    createNewSession,
+    switchSession,
+    deleteSession,
+    renameSession,
+    clearAllSessions,
+    
+    exportSessions,
+    importSessions,
   };
 }
