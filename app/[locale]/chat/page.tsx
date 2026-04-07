@@ -8,14 +8,12 @@ import {
   Text,
   Flex,
   Icon,
-  Badge,
-  Spacer,
   HStack,
   Button,
   Heading,
   Container,
   useColorModeValue,
-  MdArrowBackIosNew,
+  MdHome,
   MdDeleteOutline,
   LanguageSwitcher,
   CustomCard,
@@ -26,10 +24,6 @@ import {
   Tooltip
 } from '@/components';
 import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   IconButton,
   useToast,
   Drawer,
@@ -39,10 +33,32 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Input
+  Input,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react';
-import { MdFileDownload, MdFileUpload, MdMoreVert, MdMenu, MdAdd, MdOutlineChat, MdEdit, MdCheck, MdClose, MdLockOutline } from 'react-icons/md';
-import { ChatMessageBubble, ChatInput, StreamingIndicator } from '@/components';
+import {
+  MdFileDownload,
+  MdFileUpload,
+  MdMenu,
+  MdAdd,
+  MdOutlineChat,
+  MdEdit,
+  MdCheck,
+  MdClose,
+  MdLockOutline,
+  MdHelpOutline
+} from 'react-icons/md';
+import {
+  ChatMessageBubble,
+  ChatInput,
+  StreamingIndicator,
+  ChatGuideModal
+} from '@/components';
 import { useTranslations } from 'next-intl';
 import { useChatRAG } from '@/hooks/use-chat-rag';
 
@@ -73,9 +89,16 @@ export default function Chat() {
   const { toggleColorMode, colorMode } = useColorMode();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+  const {
+    isOpen: isGuideOpen,
+    onOpen: onGuideOpen,
+    onClose: onGuideClose
+  } = useDisclosure();
+
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
   const [editTitleValue, setEditTitleValue] = useState<string>('');
+  const [deleteTarget, setDeleteTarget] = useState<string | 'all' | null>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -84,7 +107,9 @@ export default function Chat() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
@@ -131,7 +156,10 @@ export default function Chat() {
   const scrollbarThumbHoverBg = useColorModeValue('#C05621', '#F6AD55');
 
   const drawerBg = useColorModeValue('white', 'gray.900');
-  const sessionItemBgHover = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
+  const sessionItemBgHover = useColorModeValue(
+    'blackAlpha.50',
+    'whiteAlpha.100'
+  );
   const sessionActiveBg = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
   const drawerFooterBg = useColorModeValue('gray.50', 'whiteAlpha.50');
   const textMuted = useColorModeValue('gray.600', 'gray.300');
@@ -159,218 +187,179 @@ export default function Chat() {
         zIndex={10}
         backdropFilter="blur(20px)"
       >
-        <HStack p={2} spacing={3} flex={1}>
-          <IconButton
-            icon={<Icon as={MdMenu} boxSize={5} />}
-            variant="ghost"
-            size="sm"
-            rounded="full"
-            color="gray.700"
-            _dark={{ color: 'whiteAlpha.900' }}
-            onClick={onOpen}
-            aria-label="Menu"
-            _hover={{
-              bg: 'blackAlpha.100',
-              _dark: { bg: 'whiteAlpha.200' }
-            }}
-          />
-          <Button
-            onClick={() => router.push('/')}
-            variant="ghost"
-            color="gray.700"
-            _dark={{ color: 'whiteAlpha.900' }}
-            leftIcon={<Icon as={MdArrowBackIosNew} />}
-            size="sm"
-            fontWeight={600}
-            borderRadius="full"
-            _hover={{
-              bg: 'blackAlpha.100',
-              _dark: { bg: 'whiteAlpha.200' },
-              transform: 'translateX(-2px)'
-            }}
-            transition="all 0.2s"
-          >
-            {tHeader('home')}
-          </Button>
-
-          <Spacer />
-
-          <HStack spacing={{ base: 1, md: 2 }}>
-            <LanguageSwitcher isHeader />
-
-            <Tooltip label={tFooter('mode', { mode: colorMode })} hasArrow>
-              <CustomCard
-                as="button"
-                onClick={toggleColorMode}
-                p={0}
-                m={0}
-                bg="transparent"
-                border="none"
-                shadow="none"
-              >
-                <Flex
-                  boxSize={9}
-                  align="center"
-                  justify="center"
-                  rounded="full"
-                  _hover={{
-                    bg: 'blackAlpha.100',
-                    _dark: { bg: 'whiteAlpha.200' }
-                  }}
-                  transition="all 0.2s"
-                >
-                  <Image
-                    src="/Images/numerologyPNG.png"
-                    alt={tFooter('logoAlt')}
-                    style={{ borderRadius: '50%' }}
-                    width={24}
-                    height={24}
-                  />
-                </Flex>
-              </CustomCard>
+        <Flex p={2} align="center" justify="space-between" flex={1}>
+          <Box flex={1} display="flex" justifyContent="flex-start">
+            <Tooltip label={t('chatHistory')} hasArrow>
+              <IconButton
+                icon={<Icon as={MdMenu} boxSize={5} />}
+                variant="ghost"
+                size="sm"
+                rounded="full"
+                color="gray.700"
+                _dark={{ color: 'whiteAlpha.900' }}
+                onClick={onOpen}
+                aria-label="Menu"
+                _hover={{
+                  bg: 'blackAlpha.100',
+                  _dark: { bg: 'whiteAlpha.200' }
+                }}
+              />
             </Tooltip>
+          </Box>
 
-            <Tooltip label={tFooter('sourceCode')} hasArrow>
-              <CustomCard
-                as="a"
-                href="https://github.com/minhphuc010194/NumerologyWebApp"
-                target="_blank"
-                p={0}
-                m={0}
-                bg="transparent"
-                border="none"
-                shadow="none"
-              >
-                <Flex
-                  boxSize={9}
-                  align="center"
-                  justify="center"
-                  rounded="full"
-                  color="gray.700"
-                  _dark={{ color: 'whiteAlpha.900' }}
-                  _hover={{
-                    bg: 'blackAlpha.100',
-                    _dark: { bg: 'whiteAlpha.200' }
-                  }}
-                  transition="all 0.2s"
-                >
-                  <Icon as={AiFillGithub} boxSize={5} />
-                </Flex>
-              </CustomCard>
+          <Box flex={1} display="flex" justifyContent="center">
+            <Tooltip label={tHeader('home')} hasArrow>
+              <IconButton
+                icon={<Icon as={MdHome} boxSize={5} />}
+                variant="ghost"
+                size="sm"
+                rounded="full"
+                color="gray.700"
+                _dark={{ color: 'whiteAlpha.900' }}
+                onClick={() => router.push('/')}
+                aria-label="Home"
+                _hover={{
+                  bg: 'blackAlpha.100',
+                  _dark: { bg: 'whiteAlpha.200' },
+                  transform: 'scale(1.1)'
+                }}
+                transition="all 0.2s"
+              />
             </Tooltip>
+          </Box>
 
-            <Feeacback isHeader />
-            <Donate isHeader />
-          </HStack>
-          <Spacer />
+          <Box flex={1} display="flex" justifyContent="flex-end">
+            <HStack spacing={{ base: 1, md: 2 }}>
+              <Donate isHeader />
+            </HStack>
+          </Box>
+        </Flex>
 
-          {/* Hidden File Input */}
-          <input
-            type="file"
-            accept=".json"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
+        {/* Hidden File Input */}
+        <input
+          type="file"
+          accept=".json"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
 
-          {/* Drawer for History & Settings */}
-          <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-            <DrawerOverlay />
-            <DrawerContent bg={drawerBg}>
-              <DrawerCloseButton mt={1} />
-              <DrawerHeader borderBottomWidth="1px" borderColor={headerBorder}>
-                {t('chatHistory')}
-              </DrawerHeader>
-              <DrawerBody p={0} display="flex" flexDir="column">
-                <Box p={3}>
-                  <Button
-                    w="100%"
-                    colorScheme="brand"
-                    leftIcon={<Icon as={MdAdd} />}
+        {/* Drawer for History & Settings */}
+        <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+          <DrawerOverlay />
+          <DrawerContent bg={drawerBg}>
+            <DrawerCloseButton mt={1} />
+            <DrawerHeader borderBottomWidth="1px" borderColor={headerBorder}>
+              {t('chatHistory')}
+            </DrawerHeader>
+            <DrawerBody p={0} display="flex" flexDir="column">
+              <Box p={3}>
+                <Button
+                  w="100%"
+                  colorScheme="brand"
+                  leftIcon={<Icon as={MdAdd} />}
+                  onClick={() => {
+                    createNewSession();
+                    onClose();
+                  }}
+                >
+                  {t('newChat')}
+                </Button>
+              </Box>
+
+              <VStack
+                flex={1}
+                overflowY="auto"
+                align="stretch"
+                spacing={0}
+                px={2}
+                pb={2}
+              >
+                {sessions.map((s) => (
+                  <Flex
+                    key={s.id}
+                    p={3}
+                    align="center"
+                    cursor="pointer"
+                    borderRadius="md"
+                    bg={
+                      s.id === currentSessionId
+                        ? sessionActiveBg
+                        : 'transparent'
+                    }
+                    _hover={{ bg: sessionItemBgHover }}
                     onClick={() => {
-                      createNewSession();
+                      switchSession(s.id);
                       onClose();
                     }}
                   >
-                    {t('newChat')}
-                  </Button>
-                </Box>
-                
-                <VStack flex={1} overflowY="auto" align="stretch" spacing={0} px={2} pb={2}>
-                  {sessions.map(s => (
-                    <Flex
-                      key={s.id}
-                      p={3}
-                      align="center"
-                      cursor="pointer"
-                      borderRadius="md"
-                      bg={s.id === currentSessionId ? sessionActiveBg : 'transparent'}
-                      _hover={{ bg: sessionItemBgHover }}
-                      onClick={() => {
-                        switchSession(s.id);
-                        onClose();
-                      }}
-                    >
-                      <Icon as={MdOutlineChat} mr={3} color="gray.500" />
-                      <Box flex={1} overflow="hidden">
-                        {editingSessionId === s.id ? (
-                          <HStack flex={1} onClick={(e) => e.stopPropagation()}>
-                            <Input 
-                              size="xs" 
-                              value={editTitleValue} 
-                              onChange={(e) => setEditTitleValue(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  renameSession(s.id, editTitleValue);
-                                  setEditingSessionId(null);
-                                } else if (e.key === 'Escape') {
-                                  setEditingSessionId(null);
-                                }
-                              }}
-                              autoFocus
-                            />
-                            <IconButton
-                              icon={<Icon as={MdCheck} />}
-                              size="xs"
-                              aria-label="Save"
-                              colorScheme="green"
-                              onClick={() => {
+                    <Icon as={MdOutlineChat} mr={3} color="gray.500" />
+                    <Box flex={1} overflow="hidden">
+                      {editingSessionId === s.id ? (
+                        <HStack flex={1} onClick={(e) => e.stopPropagation()}>
+                          <Input
+                            size="xs"
+                            value={editTitleValue}
+                            onChange={(e) => setEditTitleValue(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
                                 renameSession(s.id, editTitleValue);
                                 setEditingSessionId(null);
-                              }}
-                            />
-                            <IconButton
-                              icon={<Icon as={MdClose} />}
-                              size="xs"
-                              aria-label="Cancel"
-                              onClick={() => setEditingSessionId(null)}
-                            />
-                          </HStack>
-                        ) : (
-                          <>
-                            <Text fontSize="sm" fontWeight={s.id === currentSessionId ? "bold" : "medium"} noOfLines={1}>
-                              {s.title}
-                            </Text>
-                            <Text fontSize="xs" color="gray.500">
-                              {new Date(s.updatedAt).toLocaleTimeString()} - {new Date(s.updatedAt).toLocaleDateString()}
-                            </Text>
-                          </>
-                        )}
-                      </Box>
-                      {!editingSessionId && (
-                        <>
+                              } else if (e.key === 'Escape') {
+                                setEditingSessionId(null);
+                              }
+                            }}
+                            autoFocus
+                          />
                           <IconButton
-                            icon={<Icon as={MdEdit} />}
+                            icon={<Icon as={MdCheck} />}
                             size="xs"
-                            aria-label={t('renameSession')}
-                            variant="ghost"
-                            colorScheme="blue"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setEditingSessionId(s.id);
-                              setEditTitleValue(s.title);
+                            aria-label="Save"
+                            colorScheme="green"
+                            onClick={() => {
+                              renameSession(s.id, editTitleValue);
+                              setEditingSessionId(null);
                             }}
                           />
+                          <IconButton
+                            icon={<Icon as={MdClose} />}
+                            size="xs"
+                            aria-label="Cancel"
+                            onClick={() => setEditingSessionId(null)}
+                          />
+                        </HStack>
+                      ) : (
+                        <>
+                          <Text
+                            fontSize="sm"
+                            fontWeight={
+                              s.id === currentSessionId ? 'bold' : 'medium'
+                            }
+                            noOfLines={1}
+                          >
+                            {s.title}
+                          </Text>
+                          <Text fontSize="xs" color="gray.500">
+                            {new Date(s.updatedAt).toLocaleTimeString()} -{' '}
+                            {new Date(s.updatedAt).toLocaleDateString()}
+                          </Text>
+                        </>
+                      )}
+                    </Box>
+                    {!editingSessionId && (
+                      <>
+                        <IconButton
+                          icon={<Icon as={MdEdit} />}
+                          size="xs"
+                          aria-label={t('renameSession')}
+                          variant="ghost"
+                          colorScheme="blue"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingSessionId(s.id);
+                            setEditTitleValue(s.title);
+                          }}
+                        />
                           <IconButton
                             icon={<Icon as={MdDeleteOutline} />}
                             size="xs"
@@ -379,57 +368,110 @@ export default function Chat() {
                             colorScheme="red"
                             onClick={(e) => {
                               e.stopPropagation();
-                              deleteSession(s.id);
+                              setDeleteTarget(s.id);
                             }}
                           />
-                        </>
-                      )}
-                    </Flex>
-                  ))}
-                </VStack>
+                      </>
+                    )}
+                  </Flex>
+                ))}
+              </VStack>
 
-                <VStack p={3} borderTop="1px solid" borderColor={headerBorder} spacing={2} align="stretch" bg={drawerFooterBg}>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    justifyContent="flex-start"
-                    leftIcon={<Icon as={MdFileUpload} />}
-                    onClick={handleImportClick}
-                  >
-                    {t('importChat')}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    justifyContent="flex-start"
-                    leftIcon={<Icon as={MdFileDownload} />}
-                    onClick={() => { exportSessions(); onClose(); }}
-                    isDisabled={sessions.length === 0}
-                  >
-                    {t('exportChat')}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    colorScheme="red"
-                    justifyContent="flex-start"
-                    leftIcon={<Icon as={MdDeleteOutline} />}
-                    onClick={() => { clearAllSessions(); onClose(); }}
-                    isDisabled={sessions.length === 0}
-                  >
-                    {t('clearAllSessions')}
-                  </Button>
-                  <HStack px={2} pt={2} pb={1} spacing={2} align="flex-start">
-                    <Icon as={MdLockOutline} color="green.500" mt={0.5} boxSize={3.5} />
-                    <Text fontSize="xs" color={textHint} lineHeight="shorter">
-                      {t('privacyNotice')}
-                    </Text>
-                  </HStack>
-                </VStack>
-              </DrawerBody>
-            </DrawerContent>
-          </Drawer>
-        </HStack>
+              <VStack
+                p={3}
+                borderTop="1px solid"
+                borderColor={headerBorder}
+                spacing={2}
+                align="stretch"
+                bg={drawerFooterBg}
+              >
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  justifyContent="flex-start"
+                  leftIcon={<Icon as={MdFileUpload} />}
+                  onClick={handleImportClick}
+                >
+                  {t('importChat')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  justifyContent="flex-start"
+                  leftIcon={<Icon as={MdFileDownload} />}
+                  onClick={() => {
+                    exportSessions();
+                    onClose();
+                  }}
+                  isDisabled={sessions.length === 0}
+                >
+                  {t('exportChat')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  colorScheme="red"
+                  justifyContent="flex-start"
+                  leftIcon={<Icon as={MdDeleteOutline} />}
+                  onClick={() => setDeleteTarget('all')}
+                  isDisabled={sessions.length === 0}
+                >
+                  {t('clearAllSessions')}
+                </Button>
+                <HStack px={2} pt={2} pb={1} spacing={2} align="flex-start">
+                  <Icon
+                    as={MdLockOutline}
+                    color="green.500"
+                    mt={0.5}
+                    boxSize={3.5}
+                  />
+                  <Text fontSize="xs" color={textHint} lineHeight="shorter">
+                    {t('privacyNotice')}
+                  </Text>
+                </HStack>
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog
+          isOpen={deleteTarget !== null}
+          leastDestructiveRef={cancelRef}
+          onClose={() => setDeleteTarget(null)}
+          isCentered
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent bg={drawerBg}>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                {t('confirmDeleteTitle')}
+              </AlertDialogHeader>
+              <AlertDialogBody>
+                {deleteTarget === 'all' ? t('confirmClearAllMsg') : t('confirmDeleteMsg')}
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={() => setDeleteTarget(null)}>
+                  {t('cancel')}
+                </Button>
+                <Button 
+                  colorScheme="red" 
+                  onClick={() => {
+                    if (deleteTarget === 'all') {
+                      clearAllSessions();
+                      onClose();
+                    } else if (deleteTarget) {
+                      deleteSession(deleteTarget);
+                    }
+                    setDeleteTarget(null);
+                  }} 
+                  ml={3}
+                >
+                  {t('confirm')}
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       </Flex>
 
       {/* Messages Scroll Area - Full Width */}
@@ -554,24 +596,94 @@ export default function Chat() {
       </Box>
 
       {/* Input Area - Full Width Wrapper */}
-      <Box w="100%" pt={2} pb={4} flexShrink={0} bg="transparent">
+      <Box w="100%" flexShrink={0} bg="transparent">
         <Container maxW="container.lg" px={4}>
           <ChatInput
             onSend={sendMessage}
             isDisabled={isStreaming}
-            placeholder={t('inputPlaceholder')}
+            placeholder={`${t('inputPlaceholder')} - ${t('tip')}`}
           />
-          <Text
-            textAlign="center"
-            fontSize="xs"
-            color={textHint}
-            fontStyle="italic"
-            mt={2}
-          >
-            {t('tip')}
-          </Text>
+          {/* Bottom Utility Tools */}
+          <HStack justify="center" spacing={4}>
+            <Tooltip label={t('guideTitle')} hasArrow>
+              <IconButton
+                icon={<Icon as={MdHelpOutline} boxSize={5} />}
+                variant="ghost"
+                size="sm"
+                rounded="full"
+                color="gray.700"
+                _dark={{ color: 'whiteAlpha.900' }}
+                onClick={onGuideOpen}
+                aria-label="Guide"
+                _hover={{
+                  bg: 'blackAlpha.100',
+                  _dark: { bg: 'whiteAlpha.200' }
+                }}
+              />
+            </Tooltip>
+
+            <Tooltip label={tFooter('sourceCode')} hasArrow>
+              <CustomCard
+                as="a"
+                href="https://github.com/minhphuc010194/NumerologyWebApp"
+                target="_blank"
+                p={0}
+                m={0}
+                bg="transparent"
+                border="none"
+                shadow="none"
+              >
+                <Flex
+                  boxSize={9}
+                  align="center"
+                  justify="center"
+                  rounded="full"
+                  color="gray.700"
+                  _dark={{ color: 'whiteAlpha.900' }}
+                  _hover={{
+                    bg: 'blackAlpha.100',
+                    _dark: { bg: 'whiteAlpha.200' }
+                  }}
+                  transition="all 0.2s"
+                >
+                  <Icon as={AiFillGithub} boxSize={5} />
+                </Flex>
+              </CustomCard>
+            </Tooltip>
+
+            <Feeacback isHeader />
+
+            <LanguageSwitcher isHeader />
+
+            <Tooltip label={tFooter('mode', { mode: colorMode })} hasArrow>
+              <Flex
+                as="button"
+                onClick={toggleColorMode}
+                boxSize={9}
+                align="center"
+                justify="center"
+                rounded="full"
+                _hover={{
+                  bg: 'blackAlpha.100',
+                  _dark: { bg: 'whiteAlpha.200' }
+                }}
+                transition="all 0.2s"
+              >
+                <Image
+                  src="/Images/numerologyPNG.png"
+                  alt={tFooter('logoAlt')}
+                  style={{ borderRadius: '50%' }}
+                  width={24}
+                  height={24}
+                />
+              </Flex>
+            </Tooltip>
+          </HStack>
         </Container>
       </Box>
+
+      {/* Guide Modal Component */}
+      <ChatGuideModal isOpen={isGuideOpen} onClose={onGuideClose} t={t} />
     </Box>
   );
 }

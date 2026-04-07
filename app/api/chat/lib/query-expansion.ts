@@ -160,7 +160,7 @@ export async function expandQueryForRetrieval(
             : originalQuery;
 
           console.log(
-            `[QueryExpansion] model="${model}" | lang="${language}" | "${originalQuery}..." + keywords: "${keywords || '(none)'}"`
+            `[QueryExpansion] model="${model}" | lang="${language}" | "${originalQuery}" + keywords: "${keywords || '(none)'}"`
           );
 
           return { expandedQuery, detectedLanguage: language };
