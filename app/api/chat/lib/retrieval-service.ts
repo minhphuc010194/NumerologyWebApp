@@ -13,6 +13,7 @@ import {
 } from './milvus-client';
 import { generateEmbedding } from './embedding-service';
 import { expandQueryForRetrieval } from './query-expansion';
+import type { UserProviderConfig } from './response-generator';
 
 // --- Types ---
 
@@ -54,14 +55,15 @@ const MAX_CONTEXT_CHARS = 128_000; // ~32000 tokens
 export async function retrieveContext(
   query: string,
   systemPrompt: string,
-  conversationHistory: Array<{ role: string; content: string }>
+  conversationHistory: Array<{ role: string; content: string }>,
+  userProviderConfig?: UserProviderConfig
 ): Promise<RetrievalResult> {
   // Step 1: Expand short queries with context-aware keywords + detect language
   const { expandedQuery, detectedLanguage } = await expandQueryForRetrieval({
     originalQuery: query,
     systemPrompt,
     recentHistory: conversationHistory
-  });
+  }, userProviderConfig);
   // Step 2: Generate embedding from expanded query
   console.time('[Perf] Embedding Generation');
   const queryEmbedding = await generateEmbedding(expandedQuery);

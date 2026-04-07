@@ -1,7 +1,9 @@
 /**
- * Round-robin API key rotator for Google AI Studio.
+ * Round-robin API key rotator.
  * Distributes requests across multiple API keys to avoid rate limits.
- * Keys are parsed from the GEMINI_API_KEYS environment variable (comma-separated).
+ * Supports two modes:
+ *   1. Environment keys: parsed from API_KEYS env var (comma-separated) — default for system usage.
+ *   2. External keys: passed directly via constructor — used for user-provided BYOK keys.
  */
 
 interface ApiKeyState {
@@ -17,20 +19,28 @@ class ApiKeyRotator {
   private keys: ApiKeyState[] = [];
   private currentIndex = 0;
 
-  constructor() {
-    this.initialize();
+  /**
+   * @param externalKeys — Optional array of API keys to use directly.
+   *   When provided, env vars are ignored (BYOK mode).
+   *   When omitted, keys are parsed from API_KEYS env var (system default).
+   */
+  constructor(externalKeys?: string[]) {
+    this.initialize(externalKeys);
   }
 
-  private initialize(): void {
-    const rawKeys = process.env.API_KEYS ?? "";
-    const parsedKeys = rawKeys
-      .split(",")
-      .map((key) => key.trim())
-      .filter(Boolean);
+  private initialize(externalKeys?: string[]): void {
+    const parsedKeys = externalKeys && externalKeys.length > 0
+      ? externalKeys
+      : (process.env.API_KEYS ?? "")
+          .split(",")
+          .map((key) => key.trim())
+          .filter(Boolean);
 
     if (parsedKeys.length === 0) {
       throw new Error(
-        "API_KEYS environment variable is missing or empty"
+        externalKeys
+          ? "No API keys provided"
+          : "API_KEYS environment variable is missing or empty"
       );
     }
 
@@ -103,6 +113,7 @@ class ApiKeyRotator {
 // Singleton instance — survives across API route invocations in the same process
 let rotatorInstance: ApiKeyRotator | null = null;
 
+/** Returns the singleton system rotator (reads from API_KEYS env var). */
 export function getApiKeyRotator(): ApiKeyRotator {
   if (!rotatorInstance) {
     rotatorInstance = new ApiKeyRotator();
@@ -110,4 +121,12 @@ export function getApiKeyRotator(): ApiKeyRotator {
   return rotatorInstance;
 }
 
-export type { ApiKeyRotator };
+/**
+ * Creates a fresh rotator for user-provided keys (BYOK).
+ * Each call returns a new instance — NOT the singleton.
+ */
+export function createUserKeyRotator(apiKeys: string[]): ApiKeyRotator {
+  return new ApiKeyRotator(apiKeys);
+}
+
+export { ApiKeyRotator };

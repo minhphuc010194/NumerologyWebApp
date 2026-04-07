@@ -1,16 +1,32 @@
-import { getApiKeyRotator } from './api-key-rotator';
+import { getApiKeyRotator, createUserKeyRotator } from './api-key-rotator';
 import { getChatModels, supportsSystemRole } from './model-config';
+
+/** Optional user-provided provider config (BYOK) */
+export interface UserProviderConfig {
+  type?: string;
+  baseUrl: string;
+  apiKeys: string[];
+  model: string;
+}
 
 export function createStreamingResponse(
   systemPrompt: string,
-  history: Array<{ role: string; content: string }>
+  history: Array<{ role: string; content: string }>,
+  userProviderConfig?: UserProviderConfig
 ): ReadableStream<Uint8Array> {
-  const rotator = getApiKeyRotator();
-  const baseUrl =
-    (process.env.API_BASE_URL && process.env.API_BASE_URL.trim() !== '')
-      ? process.env.API_BASE_URL.trim()
-      : 'https://generativelanguage.googleapis.com/v1beta/openai';
-  const models = getChatModels();
+  // When user provides their own config, use their keys/model/url
+  const isUserProvider = userProviderConfig && userProviderConfig.apiKeys.length > 0;
+  const rotator = isUserProvider
+    ? createUserKeyRotator(userProviderConfig.apiKeys)
+    : getApiKeyRotator();
+  const baseUrl = isUserProvider
+    ? userProviderConfig.baseUrl.replace(/\/$/, '')
+    : ((process.env.API_BASE_URL && process.env.API_BASE_URL.trim() !== '')
+        ? process.env.API_BASE_URL.trim()
+        : 'https://generativelanguage.googleapis.com/v1beta/openai');
+  const models = isUserProvider
+    ? [userProviderConfig.model]
+    : getChatModels();
 
   const stream = new ReadableStream({
     async start(controller) {

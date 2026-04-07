@@ -12,8 +12,9 @@
  *    năm cá nhân sứ mệnh linh hồn nhân cách life path number birth chart"
  * → detectedLanguage: "Vietnamese"
  */
-import { getApiKeyRotator } from './api-key-rotator';
+import { getApiKeyRotator, createUserKeyRotator } from './api-key-rotator';
 import { getChatModels, supportsSystemRole } from './model-config';
+import type { UserProviderConfig } from './response-generator';
 
 // --- Types ---
 
@@ -76,7 +77,8 @@ IMPORTANT: You MUST respond with ONLY a valid JSON object in this exact format (
  * Falls back to original query on any error (non-blocking).
  */
 export async function expandQueryForRetrieval(
-  context: QueryExpansionContext
+  context: QueryExpansionContext,
+  userProviderConfig?: UserProviderConfig
 ): Promise<QueryExpansionResult> {
   const { originalQuery, systemPrompt, recentHistory } = context;
 
@@ -89,12 +91,19 @@ export async function expandQueryForRetrieval(
     return { expandedQuery: originalQuery, detectedLanguage };
   }
 
-  const rotator = getApiKeyRotator();
-  const models = getChatModels();
-  const baseUrl =
-    (process.env.API_BASE_URL && process.env.API_BASE_URL.trim() !== '')
-      ? process.env.API_BASE_URL.trim()
-      : 'https://generativelanguage.googleapis.com/v1beta/openai';
+  // Use user's provider if available, otherwise use system defaults
+  const isUserProvider = userProviderConfig && userProviderConfig.apiKeys.length > 0;
+  const rotator = isUserProvider
+    ? createUserKeyRotator(userProviderConfig.apiKeys)
+    : getApiKeyRotator();
+  const models = isUserProvider
+    ? [userProviderConfig.model]
+    : getChatModels();
+  const baseUrl = isUserProvider
+    ? userProviderConfig.baseUrl.replace(/\/$/, '')
+    : ((process.env.API_BASE_URL && process.env.API_BASE_URL.trim() !== '')
+        ? process.env.API_BASE_URL.trim()
+        : 'https://generativelanguage.googleapis.com/v1beta/openai');
 
   try {
     console.time('[Perf] Query Expansion');

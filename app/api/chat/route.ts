@@ -26,8 +26,17 @@ interface IncomingMessage {
   content: string;
 }
 
+/** Config sent by the client when user has a custom AI provider (BYOK) */
+interface UserProviderConfig {
+  type: string;
+  baseUrl: string;
+  apiKeys: string[];
+  model: string;
+}
+
 interface ChatRequestBody {
   messages: IncomingMessage[];
+  providerConfig?: UserProviderConfig;
 }
 
 export async function POST(req: NextRequest) {
@@ -60,7 +69,7 @@ export async function POST(req: NextRequest) {
     // ------------------------
 
     const body: ChatRequestBody = await req.json();
-    const { messages } = body;
+    const { messages, providerConfig } = body;
 
     if (!messages?.length) {
       return new Response('Messages array is required', { status: 400 });
@@ -96,7 +105,8 @@ export async function POST(req: NextRequest) {
       const retrievalResult = await retrieveContext(
         userQuery,
         baseSystemPrompt,
-        recentHistoryForExpansion
+        recentHistoryForExpansion,
+        providerConfig
       );
       console.timeEnd('[Perf] Total RAG Retrieval');
       console.log(
@@ -135,7 +145,8 @@ export async function POST(req: NextRequest) {
     const encoder = new TextEncoder();
     const llmStream = createStreamingResponse(
       systemPrompt,
-      conversationHistory
+      conversationHistory,
+      providerConfig
     );
 
     // Wrap LLM stream to prepend sources metadata

@@ -57,16 +57,20 @@ import {
   ChatMessageBubble,
   ChatInput,
   StreamingIndicator,
-  ChatGuideModal
+  ChatGuideModal,
+  ProviderSettings
 } from '@/components';
 import { useTranslations } from 'next-intl';
 import { useChatRAG } from '@/hooks/use-chat-rag';
+import { useProviderSettings } from '@/hooks/use-provider-settings';
 
 export default function Chat() {
   const t = useTranslations('Chat');
   const tHeader = useTranslations('Header');
   const tFooter = useTranslations('Footer');
   const router = useRouter();
+  const providerHook = useProviderSettings();
+  const activeProviderConfig = providerHook.getActiveProviderForRequest();
 
   const {
     messages,
@@ -84,7 +88,7 @@ export default function Chat() {
     clearAllSessions,
     exportSessions,
     importSessions
-  } = useChatRAG();
+  } = useChatRAG(activeProviderConfig);
 
   const { toggleColorMode, colorMode } = useColorMode();
   const toast = useToast();
@@ -418,6 +422,10 @@ export default function Chat() {
                 >
                   {t('clearAllSessions')}
                 </Button>
+
+                {/* Provider Settings (BYOK) */}
+                <ProviderSettings providerHook={providerHook} t={t} />
+
                 <HStack px={2} pt={2} pb={1} spacing={2} align="flex-start">
                   <Icon
                     as={MdLockOutline}
