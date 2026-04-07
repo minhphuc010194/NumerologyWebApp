@@ -9,12 +9,7 @@ import { generateEmbedding } from '@/app/api/chat/lib/embedding-service';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { collection, data, secret } = body;
-
-    // Simple protection for the ingest endpoint
-    if (secret !== 'numerology-admin-123') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const { collection, data } = body;
 
     if (!collection || !data) {
       return NextResponse.json(
