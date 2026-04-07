@@ -1,17 +1,17 @@
 /**
  * Custom hook for RAG chat — manages multi-sessions, streaming, and SSE parsing.
  */
-"use client";
-import { useState, useCallback, useRef, useEffect } from "react";
-import { get, set, del } from "idb-keyval";
+'use client';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { get, set, del } from 'idb-keyval';
 import type {
   ChatMessage,
   RetrievalSourceInfo,
   SSEEvent,
   ChatSession
-} from "./chat-types";
+} from './chat-types';
 
-type ChatPhase = "idle" | "searching" | "generating" | "error";
+type ChatPhase = 'idle' | 'searching' | 'generating' | 'error';
 
 interface UseChatRAGReturn {
   messages: ChatMessage[];
@@ -20,7 +20,7 @@ interface UseChatRAGReturn {
   phase: ChatPhase;
   error: string | null;
   retryLastMessage: () => Promise<void>;
-  
+
   sessions: ChatSession[];
   currentSessionId: string | null;
   createNewSession: () => void;
@@ -28,67 +28,71 @@ interface UseChatRAGReturn {
   deleteSession: (id: string) => void;
   renameSession: (id: string, newTitle: string) => void;
   clearAllSessions: () => void;
-  
+
   exportSessions: () => void;
   importSessions: (file: File) => Promise<void>;
 }
 
-const CHAT_STORE_KEY = "numerology-chat-history";
+const CHAT_STORE_KEY = 'numerology-chat-history';
 
 export function useChatRAG(): UseChatRAGReturn {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  
-  const [phase, setPhase] = useState<ChatPhase>("idle");
-  const [error, setError] = useState<string | null>(null);
-  
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const lastUserMessageRef = useRef<string>("");
 
-  const isStreaming = phase === "searching" || phase === "generating";
+  const [phase, setPhase] = useState<ChatPhase>('idle');
+  const [error, setError] = useState<string | null>(null);
+
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const lastUserMessageRef = useRef<string>('');
+
+  const isStreaming = phase === 'searching' || phase === 'generating';
 
   const saveToIDB = useCallback((newSessions: ChatSession[]) => {
     set(CHAT_STORE_KEY, newSessions).catch(console.error);
   }, []);
 
   // Sync hot messages to the active session
-  const updateActiveSession = useCallback((newMessages: ChatMessage[]) => {
-    setMessages(newMessages);
-    setSessions((prev) => {
-      let nextSessions = [...prev];
-      const idx = nextSessions.findIndex((s) => s.id === currentSessionId);
-      
-      if (idx >= 0) {
-        nextSessions[idx] = {
-          ...nextSessions[idx],
-          messages: newMessages,
-          updatedAt: new Date().toISOString()
-        };
-      } else if (currentSessionId && newMessages.length > 0) {
-        // Create new session lazily on first message
-        const title = newMessages.find(m => m.role === 'user')?.content || "New Chat";
-        nextSessions.unshift({
-          id: currentSessionId,
-          title: title.slice(0, 40) + (title.length > 40 ? "..." : ""),
-          updatedAt: new Date().toISOString(),
-          messages: newMessages
-        });
-      }
-      saveToIDB(nextSessions);
-      return nextSessions;
-    });
-  }, [currentSessionId, saveToIDB]);
+  const updateActiveSession = useCallback(
+    (newMessages: ChatMessage[]) => {
+      setMessages(newMessages);
+      setSessions((prev) => {
+        let nextSessions = [...prev];
+        const idx = nextSessions.findIndex((s) => s.id === currentSessionId);
+
+        if (idx >= 0) {
+          nextSessions[idx] = {
+            ...nextSessions[idx],
+            messages: newMessages,
+            updatedAt: new Date().toISOString()
+          };
+        } else if (currentSessionId && newMessages.length > 0) {
+          // Create new session lazily on first message
+          const title =
+            newMessages.find((m) => m.role === 'user')?.content || 'New Chat';
+          nextSessions.unshift({
+            id: currentSessionId,
+            title: title.slice(0, 40) + (title.length > 40 ? '...' : ''),
+            updatedAt: new Date().toISOString(),
+            messages: newMessages
+          });
+        }
+        saveToIDB(nextSessions);
+        return nextSessions;
+      });
+    },
+    [currentSessionId, saveToIDB]
+  );
 
   // Load from IndexedDB on mount
   useEffect(() => {
     get(CHAT_STORE_KEY).then((data) => {
       if (data && Array.isArray(data) && data.length > 0) {
-        if ("role" in data[0]) {
+        if ('role' in data[0]) {
           // Legacy format migration
           const legacySession: ChatSession = {
             id: crypto.randomUUID(),
-            title: "Legacy Chat",
+            title: 'Legacy Chat',
             updatedAt: new Date().toISOString(),
             messages: data as ChatMessage[]
           };
@@ -107,62 +111,77 @@ export function useChatRAG(): UseChatRAGReturn {
         createNewSession();
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createNewSession = useCallback(() => {
     abortControllerRef.current?.abort();
-    setPhase("idle");
+    setPhase('idle');
     setError(null);
     setMessages([]);
     setCurrentSessionId(crypto.randomUUID());
   }, []);
 
-  const switchSession = useCallback((id: string) => {
-    abortControllerRef.current?.abort();
-    const target = sessions.find((s) => s.id === id);
-    if (target) {
-      setCurrentSessionId(target.id);
-      setMessages(target.messages);
-      setPhase("idle");
-      setError(null);
-    }
-  }, [sessions]);
-
-  const deleteSession = useCallback((id: string) => {
-    setSessions((prev) => {
-      const next = prev.filter((s) => s.id !== id);
-      saveToIDB(next);
-      if (currentSessionId === id) {
-        if (next.length > 0) {
-          setCurrentSessionId(next[0].id);
-          setMessages(next[0].messages);
-        } else {
-          setCurrentSessionId(crypto.randomUUID());
-          setMessages([]);
-        }
+  const switchSession = useCallback(
+    (id: string) => {
+      abortControllerRef.current?.abort();
+      const target = sessions.find((s) => s.id === id);
+      if (target) {
+        setCurrentSessionId(target.id);
+        setMessages(target.messages);
+        setPhase('idle');
+        setError(null);
       }
-      return next;
-    });
-  }, [currentSessionId, saveToIDB]);
+    },
+    [sessions]
+  );
 
-  const renameSession = useCallback((id: string, newTitle: string) => {
-    if (!newTitle.trim()) return;
-    setSessions((prev) => {
-      const next = prev.map((s) => 
-        s.id === id ? { ...s, title: newTitle.trim(), updatedAt: new Date().toISOString() } : s
-      );
-      saveToIDB(next);
-      return next;
-    });
-  }, [saveToIDB]);
+  const deleteSession = useCallback(
+    (id: string) => {
+      setSessions((prev) => {
+        const next = prev.filter((s) => s.id !== id);
+        saveToIDB(next);
+        if (currentSessionId === id) {
+          if (next.length > 0) {
+            setCurrentSessionId(next[0].id);
+            setMessages(next[0].messages);
+          } else {
+            setCurrentSessionId(crypto.randomUUID());
+            setMessages([]);
+          }
+        }
+        return next;
+      });
+    },
+    [currentSessionId, saveToIDB]
+  );
+
+  const renameSession = useCallback(
+    (id: string, newTitle: string) => {
+      if (!newTitle.trim()) return;
+      setSessions((prev) => {
+        const next = prev.map((s) =>
+          s.id === id
+            ? {
+                ...s,
+                title: newTitle.trim(),
+                updatedAt: new Date().toISOString()
+              }
+            : s
+        );
+        saveToIDB(next);
+        return next;
+      });
+    },
+    [saveToIDB]
+  );
 
   const clearAllSessions = useCallback(() => {
     abortControllerRef.current?.abort();
     setSessions([]);
     setMessages([]);
     setCurrentSessionId(crypto.randomUUID());
-    setPhase("idle");
+    setPhase('idle');
     setError(null);
     del(CHAT_STORE_KEY).catch(console.error);
   }, []);
@@ -177,24 +196,24 @@ export function useChatRAG(): UseChatRAGReturn {
       // Add user message
       const userMessage: ChatMessage = {
         id: crypto.randomUUID(),
-        role: "user",
+        role: 'user',
         content: trimmedContent,
-        timestamp: new Date(),
+        timestamp: new Date()
       };
 
       let currentMessages = [...messages, userMessage];
       updateActiveSession(currentMessages);
-      setPhase("searching");
+      setPhase('searching');
       setError(null);
 
       // Prepare assistant placeholder
       const assistantId = crypto.randomUUID();
       const assistantMessage: ChatMessage = {
         id: assistantId,
-        role: "assistant",
-        content: "",
+        role: 'assistant',
+        content: '',
         timestamp: new Date(),
-        isStreaming: true,
+        isStreaming: true
       };
 
       currentMessages = [...currentMessages, assistantMessage];
@@ -208,14 +227,14 @@ export function useChatRAG(): UseChatRAGReturn {
       try {
         const apiMessages = currentMessages.slice(0, -1).map((m) => ({
           role: m.role,
-          content: m.content,
+          content: m.content
         }));
 
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: apiMessages }),
-          signal: abortController.signal,
+          signal: abortController.signal
         });
 
         if (!response.ok) {
@@ -223,11 +242,11 @@ export function useChatRAG(): UseChatRAGReturn {
         }
 
         const reader = response.body?.getReader();
-        if (!reader) throw new Error("Response body is null");
+        if (!reader) throw new Error('Response body is null');
 
         const decoder = new TextDecoder();
-        let buffer = "";
-        let accumulatedContent = "";
+        let buffer = '';
+        let accumulatedContent = '';
         let sources: RetrievalSourceInfo[] = [];
         let hasStartedGenerating = false;
 
@@ -236,22 +255,22 @@ export function useChatRAG(): UseChatRAGReturn {
           if (done) break;
 
           buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() ?? "";
+          const lines = buffer.split('\n');
+          buffer = lines.pop() ?? '';
 
           for (const line of lines) {
-            if (!line.startsWith("data: ")) continue;
+            if (!line.startsWith('data: ')) continue;
 
             const jsonStr = line.slice(6).trim();
-            if (jsonStr === "[DONE]") break;
+            if (jsonStr === '[DONE]') break;
 
             try {
               const event: SSEEvent = JSON.parse(jsonStr);
 
               // Handle sources event
-              if ("type" in event && event.type === "sources") {
+              if ('type' in event && event.type === 'sources') {
                 sources = event.sources;
-                setPhase("generating");
+                setPhase('generating');
 
                 currentMessages = currentMessages.map((m) =>
                   m.id === assistantId ? { ...m, sources } : m
@@ -261,10 +280,10 @@ export function useChatRAG(): UseChatRAGReturn {
               }
 
               // Handle content chunk
-              if ("content" in event && event.content) {
+              if ('content' in event && event.content) {
                 if (!hasStartedGenerating) {
                   hasStartedGenerating = true;
-                  setPhase("generating");
+                  setPhase('generating');
                 }
                 accumulatedContent += event.content;
 
@@ -277,7 +296,7 @@ export function useChatRAG(): UseChatRAGReturn {
               }
 
               // Handle done signal
-              if ("done" in event && event.done) {
+              if ('done' in event && event.done) {
                 currentMessages = currentMessages.map((m) =>
                   m.id === assistantId
                     ? { ...m, isStreaming: false, sources }
@@ -286,21 +305,21 @@ export function useChatRAG(): UseChatRAGReturn {
                 updateActiveSession(currentMessages);
               }
             } catch {
-               // Skip malformed JSON
+              // Skip malformed JSON
             }
           }
         }
-        setPhase("idle");
+        setPhase('idle');
       } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          setPhase("idle");
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          setPhase('idle');
           return;
         }
 
         const errorMessage =
-          err instanceof Error ? err.message : "An unexpected error occurred";
+          err instanceof Error ? err.message : 'An unexpected error occurred';
         setError(errorMessage);
-        setPhase("error");
+        setPhase('error');
 
         currentMessages = currentMessages.map((m) =>
           m.id === assistantId
@@ -317,10 +336,12 @@ export function useChatRAG(): UseChatRAGReturn {
     if (!lastUserMessageRef.current) return;
 
     let newMessages = [...messages];
-    const lastAssistantIdx = newMessages.findLastIndex((m) => m.role === "assistant");
+    const lastAssistantIdx = newMessages.findLastIndex(
+      (m) => m.role === 'assistant'
+    );
     if (lastAssistantIdx >= 0) newMessages.splice(lastAssistantIdx, 1);
-    
-    const lastUserIdx = newMessages.findLastIndex((m) => m.role === "user");
+
+    const lastUserIdx = newMessages.findLastIndex((m) => m.role === 'user');
     if (lastUserIdx >= 0) newMessages.splice(lastUserIdx, 1);
 
     updateActiveSession(newMessages);
@@ -329,10 +350,20 @@ export function useChatRAG(): UseChatRAGReturn {
 
   const exportSessions = useCallback(() => {
     if (sessions.length === 0) return;
-    const dataStr = JSON.stringify(sessions, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
+
+    // Strip metadata from exported messages (only keep chat history)
+    const cleanSessions: ChatSession[] = sessions.map((session) => ({
+      ...session,
+      messages: session.messages.map((msg) => {
+        const { sources, isStreaming, ...cleanMsg } = msg;
+        return cleanMsg as ChatMessage;
+      })
+    }));
+
+    const dataStr = JSON.stringify(cleanSessions, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = `numerology-chat-backup-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
@@ -341,23 +372,39 @@ export function useChatRAG(): UseChatRAGReturn {
     URL.revokeObjectURL(url);
   }, [sessions]);
 
-  const importSessions = useCallback(async (file: File) => {
-    try {
-      const text = await file.text();
-      const importedSessions = JSON.parse(text) as ChatSession[];
-      if (!Array.isArray(importedSessions) || (importedSessions.length > 0 && !importedSessions[0].updatedAt)) {
-        throw new Error("Invalid format");
+  const importSessions = useCallback(
+    async (file: File) => {
+      try {
+        const text = await file.text();
+        const parsedData = JSON.parse(text) as ChatSession[];
+        if (
+          !Array.isArray(parsedData) ||
+          (parsedData.length > 0 && !parsedData[0].updatedAt)
+        ) {
+          throw new Error('Invalid format');
+        }
+
+        // Sanitize incoming sessions by stripping any existing metadata
+        const importedSessions: ChatSession[] = parsedData.map((session) => ({
+          ...session,
+          messages: session.messages.map((msg) => {
+            const { sources, isStreaming, ...cleanMsg } = msg;
+            return cleanMsg as ChatMessage;
+          })
+        }));
+
+        setSessions(importedSessions);
+        saveToIDB(importedSessions);
+        if (importedSessions.length > 0) {
+          setCurrentSessionId(importedSessions[0].id);
+          setMessages(importedSessions[0].messages);
+        }
+      } catch (e) {
+        throw new Error('Failed to parse chat memory file');
       }
-      setSessions(importedSessions);
-      saveToIDB(importedSessions);
-      if (importedSessions.length > 0) {
-        setCurrentSessionId(importedSessions[0].id);
-        setMessages(importedSessions[0].messages);
-      }
-    } catch (e) {
-      throw new Error("Failed to parse chat memory file");
-    }
-  }, [saveToIDB]);
+    },
+    [saveToIDB]
+  );
 
   return {
     messages,
@@ -366,7 +413,7 @@ export function useChatRAG(): UseChatRAGReturn {
     phase,
     error,
     retryLastMessage,
-    
+
     sessions,
     currentSessionId,
     createNewSession,
@@ -374,8 +421,8 @@ export function useChatRAG(): UseChatRAGReturn {
     deleteSession,
     renameSession,
     clearAllSessions,
-    
+
     exportSessions,
-    importSessions,
+    importSessions
   };
 }
