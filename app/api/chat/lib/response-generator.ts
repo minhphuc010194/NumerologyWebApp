@@ -7,8 +7,9 @@ export function createStreamingResponse(
 ): ReadableStream<Uint8Array> {
   const rotator = getApiKeyRotator();
   const baseUrl =
-    process.env.API_BASE_URL ??
-    'https://generativelanguage.googleapis.com/v1beta/openai';
+    (process.env.API_BASE_URL && process.env.API_BASE_URL.trim() !== '')
+      ? process.env.API_BASE_URL.trim()
+      : 'https://generativelanguage.googleapis.com/v1beta/openai';
   const models = getChatModels();
 
   const stream = new ReadableStream({

@@ -92,8 +92,9 @@ export async function expandQueryForRetrieval(
   const rotator = getApiKeyRotator();
   const models = getChatModels();
   const baseUrl =
-    process.env.API_BASE_URL ??
-    'https://generativelanguage.googleapis.com/v1beta/openai';
+    (process.env.API_BASE_URL && process.env.API_BASE_URL.trim() !== '')
+      ? process.env.API_BASE_URL.trim()
+      : 'https://generativelanguage.googleapis.com/v1beta/openai';
 
   try {
     console.time('[Perf] Query Expansion');

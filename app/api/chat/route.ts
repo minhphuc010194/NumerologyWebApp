@@ -19,6 +19,7 @@ import { retrieveContext } from './lib/retrieval-service';
 import { createStreamingResponse } from './lib/response-generator';
 import { buildSystemPrompt } from './prompt';
 import type { RetrievalSource } from './lib/retrieval-service';
+import { checkRateLimit } from './lib/rate-limit';
 
 interface IncomingMessage {
   role: 'user' | 'assistant' | 'system';
@@ -31,6 +32,33 @@ interface ChatRequestBody {
 
 export async function POST(req: NextRequest) {
   try {
+    // --- Rate Limit Check ---
+    // Get IP address for rate limiting
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      req.headers.get('x-real-ip') ??
+      '127.0.0.1';
+    
+    // Check local in-memory limit: 5 requests / 60 giây
+    const { success, limit, reset, remaining } = checkRateLimit(ip, 5, 60000);
+    
+    if (!success) {
+      console.warn(`[RateLimit] IP ${ip} exceeded limit.`);
+      return new Response(
+        JSON.stringify({ error: 'Quá nhiều yêu cầu. Vui lòng thử lại sau một lát.' }),
+        {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'X-RateLimit-Reset': reset.toString()
+          }
+        }
+      );
+    }
+    // ------------------------
+
     const body: ChatRequestBody = await req.json();
     const { messages } = body;
 
