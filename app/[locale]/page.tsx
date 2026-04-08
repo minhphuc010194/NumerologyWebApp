@@ -21,6 +21,7 @@ import {
 } from '@/components';
 import '@/styles/globals.css';
 import { useTranslations, useLocale } from 'next-intl';
+import { PyraMascot } from '@/components/Chat/PyraMascot';
 
 const Link = NextLink as any;
 
@@ -104,24 +105,18 @@ export default function HomePage() {
           />
 
           <VStack spacing={5} position="relative" zIndex={1}>
-            {/* Logo */}
-            <Box
-              borderRadius="full"
-              overflow="hidden"
-              boxShadow={accentGlow}
-              sx={{ animation: 'heroFloat 3s ease-in-out infinite' }}
-            >
-              <Image
-                src="/Images/numerologyPNG.png"
-                alt={t('logoAlt')}
-                width={72}
-                height={72}
-                priority
-                style={{
-                  borderRadius: '50%'
-                }}
-              />
-            </Box>
+            {/* Logo Mascot */}
+            <Link href="/chat" style={{ textDecoration: 'none' }}>
+              <Box
+                cursor="pointer"
+                transition="transform 0.2s"
+                _hover={{ transform: 'scale(1.1)' }}
+                zIndex={2}
+                position="relative"
+              >
+                <PyraMascot size={{ base: '90px', md: 100 }} state="idle" />
+              </Box>
+            </Link>
 
             {/* Title */}
             <Heading
@@ -155,7 +150,7 @@ export default function HomePage() {
                 borderWidth="1px"
                 borderColor={heroCardBorder}
                 borderRadius="full"
-                px={5}
+                px={{ base: 3, md: 5 }}
                 py={2.5}
                 backdropFilter="blur(10px)"
                 cursor="pointer"
@@ -169,7 +164,7 @@ export default function HomePage() {
                   transform: 'translateY(0)'
                 }}
               >
-                <HStack spacing={2}>
+                <HStack spacing={{ base: 1.5, md: 2 }}>
                   <Badge
                     bg={chatBadgeBg}
                     color="white"
@@ -179,6 +174,7 @@ export default function HomePage() {
                     fontSize="2xs"
                     fontWeight={700}
                     textTransform="uppercase"
+                    display={{ base: 'none', sm: 'inline-block' }}
                     sx={{
                       animation: 'heroPulse 2s ease-in-out infinite'
                     }}
@@ -186,13 +182,20 @@ export default function HomePage() {
                     {t('chatBadgeLabel')}
                   </Badge>
                   <Text
-                    fontSize="sm"
+                    fontSize={{ base: '13px', md: 'sm' }}
                     fontWeight={600}
                     color={useColorModeValue('gray.700', 'gray.200')}
+                    textAlign="center"
+                    whiteSpace={{ base: 'normal', sm: 'nowrap' }}
                   >
                     {t('chatNotice')}
                   </Text>
-                  <Icon as={MdAutoAwesome} color="brand.400" boxSize={4} />
+                  <Icon
+                    as={MdAutoAwesome}
+                    color="brand.400"
+                    boxSize={4}
+                    display={{ base: 'none', sm: 'block' }}
+                  />
                 </HStack>
               </Box>
             </Link>
