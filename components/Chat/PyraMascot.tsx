@@ -5,7 +5,7 @@ import { motion, Variants } from 'framer-motion';
 
 interface PyraMascotProps {
   state?: 'idle' | 'thinking' | 'speaking' | 'playful' | 'static';
-  size?: number;
+  size?: number | string | Record<string, string | number>;
 }
 
 export function PyraMascot({ state = 'idle', size = 150 }: PyraMascotProps) {
@@ -62,8 +62,10 @@ export function PyraMascot({ state = 'idle', size = 150 }: PyraMascotProps) {
     static: { rotate: 0 }
   };
 
+  const boxSize = typeof size === 'number' ? `${size}px` : size;
+
   return (
-    <Box w={`${size}px`} h={`${size}px`} display="flex" alignItems="center" justifyContent="center">
+    <Box w={boxSize} h={boxSize} display="flex" alignItems="center" justifyContent="center">
       <motion.div
         variants={floatAnimation}
         animate={state}
