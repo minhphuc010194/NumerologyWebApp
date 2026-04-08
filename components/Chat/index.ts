@@ -5,3 +5,4 @@ export { StreamingIndicator } from "./StreamingIndicator";
 export { SourceReferences } from "./SourceReferences";
 export * from './ChatGuideModal';
 export { ProviderSettings } from './ProviderSettings';
+export { PyraMascot } from './PyraMascot';

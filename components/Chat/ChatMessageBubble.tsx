@@ -4,6 +4,8 @@ import ReactMarkdown from 'react-markdown';
 import { Box, Text, useColorModeValue } from '@chakra-ui/react';
 import type { ChatMessage } from 'hooks/chat-types';
 import { SourceReferences } from './SourceReferences';
+import { motion } from 'framer-motion';
+import { PyraMascot } from './PyraMascot';
 
 import 'katex/dist/katex.min.css';
 import remarkMath from 'remark-math';
@@ -83,10 +85,26 @@ function ChatMessageBubbleInner({ message, t }: ChatMessageBubbleProps) {
     <Box
       display="flex"
       justifyContent="flex-start"
+      mb={4}
       sx={{ animation: 'fadeIn 0.3s ease-in' }}
     >
       <Box
-        w="100%"
+        w={{ base: '32px', md: '40px' }}
+        h={{ base: '32px', md: '40px' }}
+        mr={3}
+        flexShrink={0}
+      >
+        {message.isStreaming ? (
+          <Box as={motion.div} layoutId="shared-pyra">
+            <PyraMascot size={32} state="speaking" />
+          </Box>
+        ) : (
+          <PyraMascot size={32} state="static" />
+        )}
+      </Box>
+
+      <Box
+        maxW="calc(100% - 50px)"
         display="flex"
         flexDir="column"
         gap={2}

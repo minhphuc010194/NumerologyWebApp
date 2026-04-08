@@ -58,8 +58,10 @@ import {
   ChatInput,
   StreamingIndicator,
   ChatGuideModal,
-  ProviderSettings
+  ProviderSettings,
+  PyraMascot
 } from '@/components';
+import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useChatRAG } from '@/hooks/use-chat-rag';
 import { useProviderSettings } from '@/hooks/use-provider-settings';
@@ -140,6 +142,12 @@ export default function Chat() {
   };
 
   // Auto-scroll on new messages
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -484,6 +492,7 @@ export default function Chat() {
 
       {/* Messages Scroll Area - Full Width */}
       <Box
+        id="chat-scroll-area"
         flex={1}
         overflowY="auto"
         w="100%"
@@ -520,18 +529,27 @@ export default function Chat() {
               justify="center"
               py={8}
             >
-              <Box
-                textAlign="center"
-                py={12}
-                px={6}
-                borderRadius="2xl"
-                bg={emptyBg}
-                backdropFilter="blur(10px)"
-                shadow="md"
-                borderWidth={1}
-                borderColor={emptyBorder}
-              >
-                <Heading
+                <Box
+                  id="pyra-empty-box"
+                  textAlign="center"
+                  py={{ base: 10, md: 12 }}
+                  px={6}
+                  borderRadius="2xl"
+                  bg={emptyBg}
+                  backdropFilter="blur(10px)"
+                  shadow="md"
+                  borderWidth={1}
+                  borderColor={emptyBorder}
+                  display="flex"
+                  flexDir="column"
+                  alignItems="center"
+                  minH="300px"
+                  justifyContent="center"
+                >
+                  <motion.div layoutId="shared-pyra" style={{ marginBottom: '16px' }}>
+                    <PyraMascot size={150} state="playful" />
+                  </motion.div>
+                  <Heading
                   size="lg"
                   bgGradient="linear(to-r, brand.500, brand.300)"
                   bgClip="text"
@@ -689,6 +707,34 @@ export default function Chat() {
           </HStack>
         </Container>
       </Box>
+
+      {/* Floating Pyra Mascot when chatting (Idle) */}
+      {hasMessages && !isStreaming && (
+        <Tooltip label="Scroll to Top" placement="left" hasArrow bg="brand.500">
+          <motion.div
+            layoutId="shared-pyra"
+            style={{
+              position: 'fixed',
+              bottom: '110px',
+              right: '25px',
+              zIndex: 10,
+              pointerEvents: 'auto',
+              display: 'flex',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              const el = document.getElementById('chat-scroll-area');
+              if (el) {
+                el.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <PyraMascot size={80} state="idle" />
+          </motion.div>
+        </Tooltip>
+      )}
 
       {/* Guide Modal Component */}
       <ChatGuideModal isOpen={isGuideOpen} onClose={onGuideClose} t={t} />

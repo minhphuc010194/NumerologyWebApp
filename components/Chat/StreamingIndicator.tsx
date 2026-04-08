@@ -1,5 +1,7 @@
 "use client";
 import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { PyraMascot } from "./PyraMascot";
 
 type Phase = "searching" | "generating";
 
@@ -18,7 +20,17 @@ export function StreamingIndicator({ phase, t }: StreamingIndicatorProps) {
     phase === "searching" ? t("searchingKnowledge") : t("generatingResponse");
 
   return (
-    <Box display="flex" justifyContent="flex-start" maxW={{ base: "90%", md: "75%" }}>
+    <Box display="flex" justifyContent="flex-start" maxW={{ base: "90%", md: "75%" }} mb={4}>
+      <Box
+        w={{ base: '32px', md: '40px' }}
+        h={{ base: '32px', md: '40px' }}
+        mr={3}
+        flexShrink={0}
+      >
+        <Box as={motion.div} layoutId="shared-pyra">
+          <PyraMascot size={32} state="thinking" />
+        </Box>
+      </Box>
       <Box
         p={4}
         bg={bubbleBg}
