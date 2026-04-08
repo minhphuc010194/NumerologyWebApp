@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import dayjs from 'dayjs';
 import { NumerologyHookType } from '@/utils/types';
 import {
   getSoul,
@@ -12,8 +13,7 @@ import {
   getMissingNumbers,
   substractAdjacent,
   getRationalThinking
-} from '../functions';
-import dayjs from 'dayjs';
+} from '@/functions';
 
 export const useProcessNumerology = (
   fullName: string,
@@ -55,16 +55,7 @@ export const useProcessNumerology = (
     const missingNumber = getMissingNumbers(arrName).map((item) => item.value);
     const subconsciousPower = 9 - missingNumber.length;
     const rationalThinking = getRationalThinking(completedName, date);
-    const way1 = sumAdjacent(month, date),
-      way2 = sumAdjacent(year, date);
-    const way3 = sumAdjacent(way1, way2),
-      way4 = sumAdjacent(month, year, 'finalWay');
-    const way = ` ${way1} ${way2} ${way3} ${way4}`;
-    const challenge1 = substractAdjacent(month, date);
-    const challenge2 = substractAdjacent(year, date);
-    const challenge3 = Math.abs(challenge1 - challenge2);
-    const challenge4 = substractAdjacent(month, year);
-    const challenges = ` ${challenge1} ${challenge2} ${challenge3} ${challenge4}`;
+
     const reduceToSingleDigit = (num: number | string): number => {
       let sum = Number(num);
       while (sum > 9) {
@@ -77,7 +68,33 @@ export const useProcessNumerology = (
 
     const dateRoot = reduceToSingleDigit(date);
     const monthRoot = reduceToSingleDigit(month);
+    const yearRoot = reduceToSingleDigit(year);
     const currentYearRoot = reduceToSingleDigit(currentYear);
+
+    const calculatePeak = (sum: number, isPeak34: boolean) => {
+      let currentSum = sum;
+      while (currentSum >= 10) {
+        if (isPeak34 && (currentSum === 10 || currentSum === 11)) {
+          return currentSum;
+        }
+        currentSum = String(currentSum)
+          .split('')
+          .reduce((a, b) => a + Number(b), 0);
+      }
+      return currentSum;
+    };
+
+    const way1 = calculatePeak(monthRoot + dateRoot, false);
+    const way2 = calculatePeak(dateRoot + yearRoot, false);
+    const way3 = calculatePeak(way1 + way2, true);
+    const way4 = calculatePeak(monthRoot + yearRoot, true);
+    const way = ` ${way1} ${way2} ${way3} ${way4}`;
+
+    const challenge1 = substractAdjacent(month, date);
+    const challenge2 = substractAdjacent(year, date);
+    const challenge3 = Math.abs(challenge1 - challenge2);
+    const challenge4 = substractAdjacent(month, year);
+    const challenges = ` ${challenge1} ${challenge2} ${challenge3} ${challenge4}`;
 
     const yearIndividual = reduceToSingleDigit(
       currentYearRoot + dateRoot + monthRoot
