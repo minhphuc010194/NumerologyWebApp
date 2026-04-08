@@ -4,13 +4,13 @@
     "chat": "Chat AI"
   },
   "Home": {
-    "title": "Ứng Dụng Xem Thần Số Học",
+    "title": "Ứng Dụng Xem Nhân Số Học",
     "subtitle": "Khám phá bản đồ số của bạn thông qua ngày sinh và tên — giải mã các chỉ số cuộc sống, sứ mệnh và tiềm năng ẩn giấu.",
-    "chatNotice": "Đang triển khai server AI với kiến thức từ tài liệu uy tín",
-    "chatBadgeLabel": "AI",
-    "logoAlt": "Logo Thần Số Học",
-    "videoTitle": "Giải Mã Thần Số Học",
-    "videoCaption": "Xem video hướng dẫn cách đọc và hiểu các chỉ số thần số học của bạn",
+    "chatNotice": "Trải nghiệm Nhân Số Học cùng chuyên gia AI ngay",
+    "chatBadgeLabel": "MỚI",
+    "logoAlt": "Logo Nhân Số Học",
+    "videoTitle": "Giải Mã Nhân Số Học",
+    "videoCaption": "Xem video hướng dẫn cách đọc và hiểu các chỉ số Nhân Số Học của bạn",
     "videoToggleLabel": "Ẩn/hiện video hướng dẫn"
   },
   "Numerology": {
@@ -43,9 +43,9 @@
     "tooltip": "Gửi phản hồi qua: {email}"
   },
   "Chat": {
-    "title": "🔮 Trợ Lý Thần Số Học AI",
-    "subtitle": "Hỏi bất cứ điều gì về thần số học — được hỗ trợ bởi AI với cơ sở tri thức",
-    "inputPlaceholder": "Hỏi về thần số học...",
+    "title": "🔮 Trợ Lý Nhân Số Học AI",
+    "subtitle": "Hỏi bất cứ điều gì về Nhân Số Học — được hỗ trợ bởi AI với cơ sở tri thức",
+    "inputPlaceholder": "Hỏi về Nhân Số Học...",
     "searchingKnowledge": "Đang tìm kiếm tri thức...",
     "generatingResponse": "Đang tạo câu trả lời...",
     "errorMessage": "Đã xảy ra lỗi. Vui lòng thử lại.",
@@ -69,7 +69,7 @@
     "privacyNotice": "Bảo vệ riêng tư: Toàn bộ dữ liệu của bạn được lưu trữ trên thiết bị của bạn, không gửi lên máy chủ.",
     "guideTitle": "Hướng Dẫn Sử Dụng",
     "guideGotIt": "Đã Hiểu",
-    "guideDesc1": "Trợ lý AI Thần số học: Sẽ phân tích dựa trên thông tin mà bạn cung cấp. Bạn có thể hỏi sâu về các con số, năm cá nhân, biểu đồ ngày sinh,...",
+    "guideDesc1": "Trợ lý AI Nhân Số Học: Sẽ phân tích dựa trên thông tin mà bạn cung cấp. Bạn có thể hỏi sâu về các con số, năm cá nhân, biểu đồ ngày sinh,...",
     "guideDesc2": "Quản lý đa phiên: Bạn có thể tạo nhiều chủ đề chat riêng biệt. Hệ thống sẽ tự động đặt tên dựa trên tin nhắn đầu tiên của bạn.",
     "guideDesc3": "Bảo mật & Quyền riêng tư: Tất cả dữ liệu của bạn được lưu trữ trên thiết bị cục bộ, không ai có thể truy cập ngoài bạn.",
     "guideDesc4": "Sao lưu & Phục hồi: Bạn có thể Xuất (Export) và Nhập (Import) lịch sử chat bất kỳ lúc nào để chuyển lưu trữ sang thiết bị khác.",
@@ -77,8 +77,8 @@
     "sourcesFromChunk": "Tri thức",
     "sourcesFromSummary": "Tóm tắt",
     "sourcesFromQA": "Hỏi đáp",
-    "emptyStateTitle": "Hỏi tôi bất cứ điều gì về Thần Số Học!",
-    "emptyStateSubtitle": "Tôi có quyền truy cập vào cơ sở tri thức toàn diện với hàng ngàn bài viết về thần số học Pythagoras.",
+    "emptyStateTitle": "Hỏi tôi bất cứ điều gì về Nhân Số Học!",
+    "emptyStateSubtitle": "Tôi có quyền truy cập vào cơ sở tri thức toàn diện với hàng ngàn bài viết về Nhân Số Học Pythagoras.",
     "emptyStateExample": "Ví dụ: 'Nguyễn Văn A sinh 11-06-1976' hoặc 'Ý nghĩa đường đời số 7 là gì?'",
     "tip": "💡 Nhập đầy đủ tên và ngày sinh để phân tích cá nhân hóa",
     "providerSettings": "Nhà cung cấp AI",
@@ -109,10 +109,10 @@
   },
   "Metadata": {
     "title": "Numerology Web App",
-    "description": "Numerology Web App - Tra cứu thần số học"
+    "description": "Numerology Web App - Tra cứu Nhân Số Học"
   },
   "Footer": {
-    "logoAlt": "logo thần số học",
+    "logoAlt": "logo Nhân Số Học",
     "sourceCode": "Mã nguồn",
     "mode": "Chế độ {mode}"
   },
@@ -168,7 +168,7 @@
     "textLabel": "Nội dung chính (Text phục vụ gốc & Embed)",
     "noteLabel": "Ghi chú mở rộng (Note)",
     "keyConceptsLabel": "Key Concepts (phân tách bằng dấu phẩy)",
-    "keyConceptsPlaceholder": "Thần số học, Đường đời, Số 7...",
+    "keyConceptsPlaceholder": "Nhân Số Học, Đường đời, Số 7...",
     "chunkIndexLabel": "Chunk Index",
     "summaryLabel": "Nội dung Tóm Tắt (Summary)",
     "questionLabel": "Câu hỏi (Question)",
