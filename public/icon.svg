@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pyraGradLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBD38D" />
+      <stop offset="100%" stop-color="#DD6B20" />
+    </linearGradient>
+    <linearGradient id="pyraGradRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F6AD55" />
+      <stop offset="100%" stop-color="#C05621" />
+    </linearGradient>
+    <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F6E05E" />
+      <stop offset="100%" stop-color="#D69E2E" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left Wing -->
+  <path d="M 28 55 Q 5 45 10 70 Q 15 65 28 60 Z" fill="url(#wingGrad)" />
+
+  <!-- Right Wing -->
+  <path d="M 72 55 Q 95 45 90 70 Q 85 65 72 60 Z" fill="url(#wingGrad)" />
+
+  <!-- 3D Base Pyramid - Left Face -->
+  <polygon points="50,15 50,85 10,85" fill="url(#pyraGradLeft)" />
+  <!-- 3D Base Pyramid - Right Face -->
+  <polygon points="50,15 90,85 50,85" fill="url(#pyraGradRight)" />
+  
+  <!-- Base Pyramid Outline -->
+  <polygon points="50,15 90,85 10,85" fill="none" stroke="#DD6B20" stroke-width="3" stroke-linejoin="round" />
+
+  <!-- Center edge line for 3D pop -->
+  <line x1="50" y1="15" x2="50" y2="85" stroke="#DD6B20" stroke-width="1.5" opacity="0.6" />
+
+  <!-- Inner details for sacred geometry feel -->
+  <polygon points="50,30 75,75 25,75" fill="none" stroke="#FFF5F5" stroke-width="1" opacity="0.5" />
+  <circle cx="50" cy="55" r="20" fill="none" stroke="#FFF5F5" stroke-width="1" opacity="0.3" />
+
+  <!-- Left Blush -->
+  <ellipse cx="32" cy="73" rx="6" ry="3.5" fill="#FC8181" opacity="0.8" />
+  
+  <!-- Right Blush -->
+  <ellipse cx="68" cy="73" rx="6" ry="3.5" fill="#FC8181" opacity="0.8" />
+
+  <!-- Left Eye -->
+  <g>
+    <ellipse cx="40" cy="65" rx="5" ry="8" fill="#2D3748" />
+    <circle cx="38" cy="62" r="2.5" fill="white" />
+    <circle cx="42" cy="67" r="1" fill="white" />
+  </g>
+
+  <!-- Right Eye -->
+  <g>
+    <ellipse cx="60" cy="65" rx="5" ry="8" fill="#2D3748" />
+    <circle cx="58" cy="62" r="2.5" fill="white" />
+    <circle cx="62" cy="67" r="1" fill="white" />
+  </g>
+
+  <!-- Cute Mouth -->
+  <path d="M 46 76 Q 50 80 54 76" fill="none" stroke="#2D3748" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Top Diamond floating -->
+  <polygon points="50,0 55,5 50,10 45,5" fill="#F6E05E" />
+</svg>

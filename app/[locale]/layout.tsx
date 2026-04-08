@@ -39,10 +39,10 @@ export async function generateMetadata({
       siteName: 'TaiZenAI Numerology',
       images: [
         {
-          url: '/Images/numerologyPNG.png',
+          url: '/icon.svg',
           width: 512,
           height: 512,
-          alt: 'TaiZenAI Numerology Logo',
+          alt: 'TaiZenAI Numerology Logo - Pyra Mascot',
         },
       ],
       locale: locale,
@@ -52,10 +52,12 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: t('title'),
       description: t('description'),
-      images: ['/Images/numerologyPNG.png'],
+      images: ['/icon.svg'],
     },
     icons: {
-      icon: '/Images/numerologyPNG.png',
+      icon: '/icon.svg',
+      shortcut: '/icon.svg',
+      apple: '/icon.svg',
     },
   };
 }
