@@ -13,9 +13,21 @@ import {
   Icon,
   Text,
   Box,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
-import { MdOutlineAutoAwesome, MdOutlineLibraryBooks, MdShield, MdOutlineCloudUpload } from 'react-icons/md';
+import {
+  MdOutlineAutoAwesome,
+  MdOutlineLibraryBooks,
+  MdShield,
+  MdOutlineCloudUpload,
+  MdVpnKey,
+  MdArrowForward,
+  MdSettings,
+  MdMenu,
+  MdAdd,
+  MdFileDownload,
+  MdArrowDownward
+} from 'react-icons/md';
 
 interface ChatGuideModalProps {
   isOpen: boolean;
@@ -27,29 +39,125 @@ export function ChatGuideModal({ isOpen, onClose, t }: ChatGuideModalProps) {
   const iconBg = useColorModeValue('brand.100', 'brand.900');
   const iconColor = useColorModeValue('brand.600', 'brand.200');
 
-  const guides = [
+  const guides: Array<{
+    icon: any;
+    text: React.ReactNode;
+    visual?: React.ReactNode;
+  }> = [
     {
       icon: MdOutlineAutoAwesome,
-      text: t('guideDesc1'),
+      text: t('guideDesc1')
+    },
+    {
+      icon: MdShield,
+      text: t('guideDesc3')
     },
     {
       icon: MdOutlineLibraryBooks,
       text: t('guideDesc2'),
+      visual: (
+        <HStack
+          mt={1}
+          p={3}
+          bg={useColorModeValue('gray.50', 'whiteAlpha.50')}
+          borderRadius="md"
+          border="1px dashed"
+          borderColor={useColorModeValue('gray.200', 'whiteAlpha.300')}
+          w="full"
+          justify="flex-start"
+          flexWrap="wrap"
+          gap={2}
+        >
+          <Button size="xs" variant="outline" leftIcon={<Icon as={MdMenu} />} flexShrink={0}>
+            {t('chatHistory')}
+          </Button>
+          <Icon as={MdArrowForward} color="gray.500" flexShrink={0} />
+          <Button size="xs" colorScheme="brand" leftIcon={<Icon as={MdAdd} />} whiteSpace="normal" h="auto" py={1} textAlign="left">
+            {t('newChat')}
+          </Button>
+        </HStack>
+      )
     },
-    {
-      icon: MdShield,
-      text: t('guideDesc3'),
-    },
+
     {
       icon: MdOutlineCloudUpload,
       text: t('guideDesc4'),
+      visual: (
+        <HStack
+          mt={1}
+          p={3}
+          bg={useColorModeValue('gray.50', 'whiteAlpha.50')}
+          borderRadius="md"
+          border="1px dashed"
+          borderColor={useColorModeValue('gray.200', 'whiteAlpha.300')}
+          w="full"
+          justify="flex-start"
+          flexWrap="wrap"
+          gap={2}
+        >
+          <Button size="xs" variant="outline" leftIcon={<Icon as={MdMenu} />} flexShrink={0}>
+            {t('chatHistory')}
+          </Button>
+          <Icon as={MdArrowDownward} color="gray.500" flexShrink={0} />
+          <Button
+            size="xs"
+            variant="ghost"
+            border="1px solid"
+            borderColor={useColorModeValue('gray.300', 'gray.600')}
+            leftIcon={<Icon as={MdFileDownload} />}
+            whiteSpace="normal"
+            h="auto"
+            py={1.5}
+            textAlign="left"
+          >
+            {t('exportChat')} / {t('importChat')}
+          </Button>
+        </HStack>
+      )
     },
+    {
+      icon: MdVpnKey,
+      text: t('guideDesc5'),
+      visual: (
+        <HStack
+          mt={1}
+          p={3}
+          bg={useColorModeValue('gray.50', 'whiteAlpha.50')}
+          borderRadius="md"
+          border="1px dashed"
+          borderColor={useColorModeValue('gray.200', 'whiteAlpha.300')}
+          w="full"
+          justify="flex-start"
+          flexWrap="wrap"
+          gap={2}
+        >
+          <Button size="xs" variant="outline" leftIcon={<Icon as={MdMenu} />} flexShrink={0}>
+            {t('chatHistory')}
+          </Button>
+          <Icon as={MdArrowDownward} color="gray.500" flexShrink={0} />
+          <Button
+            size="xs"
+            colorScheme="brand"
+            leftIcon={<Icon as={MdVpnKey} />}
+            whiteSpace="normal"
+            h="auto"
+            py={1.5}
+            textAlign="left"
+          >
+            {t('providerSettings')}
+          </Button>
+        </HStack>
+      )
+    }
   ];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay backdropFilter="blur(3px)" />
-      <ModalContent border="1px solid" borderColor={useColorModeValue('gray.200', 'gray.700')}>
+      <ModalContent
+        border="1px solid"
+        borderColor={useColorModeValue('gray.200', 'gray.700')}
+      >
         <ModalHeader>{t('guideTitle')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody py={4}>
@@ -68,9 +176,12 @@ export function ChatGuideModal({ isOpen, onClose, t }: ChatGuideModalProps) {
                 >
                   <Icon as={guide.icon} boxSize={5} />
                 </Box>
-                <Text fontSize="sm" lineHeight="tall">
-                  {guide.text}
-                </Text>
+                <VStack align="flex-start" spacing={2} w="full">
+                  <Text fontSize="sm" lineHeight="tall">
+                    {guide.text}
+                  </Text>
+                  {guide.visual && guide.visual}
+                </VStack>
               </HStack>
             ))}
           </VStack>
