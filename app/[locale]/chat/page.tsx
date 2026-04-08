@@ -39,7 +39,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
-  AlertDialogOverlay,
+  AlertDialogOverlay
 } from '@chakra-ui/react';
 import {
   MdFileDownload,
@@ -58,8 +58,10 @@ import {
   ChatInput,
   StreamingIndicator,
   ChatGuideModal,
-  ProviderSettings
+  ProviderSettings,
+  PyraMascot
 } from '@/components';
+import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useChatRAG } from '@/hooks/use-chat-rag';
 import { useProviderSettings } from '@/hooks/use-provider-settings';
@@ -106,6 +108,7 @@ export default function Chat() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [clickSpin, setClickSpin] = useState(0);
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -140,6 +143,12 @@ export default function Chat() {
   };
 
   // Auto-scroll on new messages
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -249,7 +258,12 @@ export default function Chat() {
         />
 
         {/* Drawer for History & Settings */}
-        <Drawer placement="left" onClose={onClose} isOpen={isOpen} size={{ base: 'full', md: 'sm' }}>
+        <Drawer
+          placement="left"
+          onClose={onClose}
+          isOpen={isOpen}
+          size={{ base: 'full', md: 'sm' }}
+        >
           <DrawerOverlay />
           <DrawerContent bg={drawerBg}>
             <DrawerCloseButton mt={1} />
@@ -364,17 +378,17 @@ export default function Chat() {
                             setEditTitleValue(s.title);
                           }}
                         />
-                          <IconButton
-                            icon={<Icon as={MdDeleteOutline} />}
-                            size="xs"
-                            aria-label="Delete"
-                            variant="ghost"
-                            colorScheme="red"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setDeleteTarget(s.id);
-                            }}
-                          />
+                        <IconButton
+                          icon={<Icon as={MdDeleteOutline} />}
+                          size="xs"
+                          aria-label="Delete"
+                          variant="ghost"
+                          colorScheme="red"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteTarget(s.id);
+                          }}
+                        />
                       </>
                     )}
                   </Flex>
@@ -455,14 +469,16 @@ export default function Chat() {
                 {t('confirmDeleteTitle')}
               </AlertDialogHeader>
               <AlertDialogBody>
-                {deleteTarget === 'all' ? t('confirmClearAllMsg') : t('confirmDeleteMsg')}
+                {deleteTarget === 'all'
+                  ? t('confirmClearAllMsg')
+                  : t('confirmDeleteMsg')}
               </AlertDialogBody>
               <AlertDialogFooter>
                 <Button ref={cancelRef} onClick={() => setDeleteTarget(null)}>
                   {t('cancel')}
                 </Button>
-                <Button 
-                  colorScheme="red" 
+                <Button
+                  colorScheme="red"
                   onClick={() => {
                     if (deleteTarget === 'all') {
                       clearAllSessions();
@@ -471,7 +487,7 @@ export default function Chat() {
                       deleteSession(deleteTarget);
                     }
                     setDeleteTarget(null);
-                  }} 
+                  }}
                   ml={3}
                 >
                   {t('confirm')}
@@ -484,6 +500,7 @@ export default function Chat() {
 
       {/* Messages Scroll Area - Full Width */}
       <Box
+        id="chat-scroll-area"
         flex={1}
         overflowY="auto"
         w="100%"
@@ -521,8 +538,9 @@ export default function Chat() {
               py={8}
             >
               <Box
+                id="pyra-empty-box"
                 textAlign="center"
-                py={12}
+                py={{ base: 10, md: 12 }}
                 px={6}
                 borderRadius="2xl"
                 bg={emptyBg}
@@ -530,7 +548,23 @@ export default function Chat() {
                 shadow="md"
                 borderWidth={1}
                 borderColor={emptyBorder}
+                display="flex"
+                flexDir="column"
+                alignItems="center"
+                minH="300px"
+                justifyContent="center"
               >
+                <motion.div
+                  layoutId="shared-pyra"
+                  style={{ marginBottom: '16px', cursor: 'pointer' }}
+                  animate={{ rotate: clickSpin * 360 }}
+                  transition={{ type: 'spring', bounce: 0.5, duration: 1.5 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setClickSpin((prev) => prev + 1)}
+                >
+                  <PyraMascot size={150} state="playful" />
+                </motion.div>
                 <Heading
                   size="lg"
                   bgGradient="linear(to-r, brand.500, brand.300)"
@@ -689,6 +723,33 @@ export default function Chat() {
           </HStack>
         </Container>
       </Box>
+
+      {/* Floating Pyra Mascot when chatting (Idle) */}
+      {hasMessages && !isStreaming && (
+        <Tooltip label="Scroll to Top" placement="left" hasArrow bg="brand.500">
+          <Box
+            as={motion.div}
+            layoutId="shared-pyra"
+            position="fixed"
+            bottom={{ base: '130px', md: '150px' }}
+            right={{ base: '15px', md: '25px' }}
+            zIndex={10}
+            pointerEvents="auto"
+            display="flex"
+            cursor="pointer"
+            onClick={() => {
+              const el = document.getElementById('chat-scroll-area');
+              if (el) {
+                el.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <PyraMascot size={{ base: '55px', md: '80px' }} state="idle" />
+          </Box>
+        </Tooltip>
+      )}
 
       {/* Guide Modal Component */}
       <ChatGuideModal isOpen={isGuideOpen} onClose={onGuideClose} t={t} />
