@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import {
   Box,
   VStack,
@@ -16,7 +15,6 @@ import {
   MdHome,
   MdDeleteOutline,
   LanguageSwitcher,
-  CustomCard,
   useColorMode,
   AiFillGithub,
   Feeacback,
@@ -647,6 +645,14 @@ export default function Chat() {
             isDisabled={isStreaming}
             placeholder={`${t('inputPlaceholder')} - ${t('tip')}`}
           />
+          <Text
+            fontSize={{ base: 'xx-small', md: 'xs' }}
+            color={useColorModeValue('gray.500', 'gray.400')}
+            textAlign="center"
+            mt={2}
+          >
+            {t('reminder')}
+          </Text>
           {/* Bottom Utility Tools */}
           <HStack justify="center" spacing={4}>
             <Tooltip label={t('guideTitle')} hasArrow>
@@ -727,7 +733,7 @@ export default function Chat() {
             as={motion.div}
             layoutId="shared-pyra"
             position="fixed"
-            bottom={{ base: '130px', md: '150px' }}
+            bottom={{ base: '170px', md: '150px' }}
             right={{ base: '15px', md: '25px' }}
             zIndex={10}
             pointerEvents="auto"
