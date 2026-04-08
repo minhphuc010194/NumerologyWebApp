@@ -36,6 +36,7 @@ interface UseChatRAGReturn {
 }
 
 const CHAT_STORE_KEY = 'numerology-chat-history';
+const CHAT_ACTIVE_ID_KEY = 'numerology-active-chat-id';
 
 export function useChatRAG(
   activeProviderConfig?: ProviderRequestConfig | null
@@ -90,7 +91,7 @@ export function useChatRAG(
 
   // Load from IndexedDB on mount
   useEffect(() => {
-    get(CHAT_STORE_KEY).then((data) => {
+    Promise.all([get(CHAT_STORE_KEY), get(CHAT_ACTIVE_ID_KEY)]).then(([data, activeId]) => {
       if (data && Array.isArray(data) && data.length > 0) {
         if ('role' in data[0]) {
           // Legacy format migration
@@ -108,8 +109,27 @@ export function useChatRAG(
           // New format
           const loaded = data as ChatSession[];
           setSessions(loaded);
-          setCurrentSessionId(loaded[0].id);
-          setMessages(loaded[0].messages);
+          
+          let targetSession = loaded[0];
+          if (activeId && typeof activeId === 'string') {
+            const found = loaded.find((s) => s.id === activeId);
+            if (found) {
+              targetSession = found;
+            } else {
+              // The activeId is not found in the saved session history. 
+              // This means the user was on a "New Chat" (which is created lazily without saving).
+              // We reconstruct that empty state for them to retain the URL/UI intention.
+              targetSession = {
+                id: activeId,
+                title: 'New Chat',
+                messages: [],
+                updatedAt: new Date().toISOString()
+              };
+            }
+          }
+          
+          setCurrentSessionId(targetSession.id);
+          setMessages(targetSession.messages);
         }
       } else {
         createNewSession();
@@ -117,6 +137,13 @@ export function useChatRAG(
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Persist current session ID
+  useEffect(() => {
+    if (currentSessionId) {
+      set(CHAT_ACTIVE_ID_KEY, currentSessionId).catch(console.error);
+    }
+  }, [currentSessionId]);
 
   const createNewSession = useCallback(() => {
     abortControllerRef.current?.abort();
