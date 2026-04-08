@@ -106,7 +106,8 @@
     "providerDeleteConfirm": "Xoá provider này?",
     "providerUsingCustom": "Đang dùng: {name}",
     "providerUsingDefault": "Đang dùng mặc định hệ thống",
-    "providerNoModels": "Không tìm thấy model. Kiểm tra key/URL."
+    "providerNoModels": "Không tìm thấy model. Kiểm tra key/URL.",
+    "reminder": "AI có thể mắc sai lầm, Mọi thông tin chỉ mang tính chất giải trí và cần kiểm soát kỹ lại trong từng câu hỏi"
   },
   "Metadata": {
     "title": "Numerology Web App",
