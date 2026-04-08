@@ -11,7 +11,10 @@ import {
   useColorMode,
   AiFillGithub,
   Disclaimer,
-  LanguageSwitcher
+  LanguageSwitcher,
+  SunIcon,
+  MoonIcon,
+  Flex
 } from 'components';
 import { useTranslations } from 'next-intl';
 
@@ -24,38 +27,40 @@ export const Footer: FC = () => {
       <Wrap justify="center" my={1} align="center">
         <LanguageSwitcher />
         <Tooltip label={t('mode', { mode: colorMode })} hasArrow>
-          <CustomCard>
-            <Image
-              src="/Images/numerologyPNG.png"
-              alt={t('logoAlt')}
-              placeholder="blur"
-              blurDataURL="/Images/numerologyPNG.png"
-              style={{
-                cursor: 'pointer'
-              }}
-              width={50}
-              height={50}
-              onClick={toggleColorMode}
-            />
-          </CustomCard>
+          <Flex
+            as="button"
+            onClick={toggleColorMode}
+            boxSize={10}
+            align="center"
+            justify="center"
+            rounded="full"
+            _hover={{ bg: 'blackAlpha.100', _dark: { bg: 'whiteAlpha.200' } }}
+            transition="all 0.2s"
+          >
+            {colorMode === 'light' ? (
+              <Icon as={MoonIcon} boxSize={5} color="gray.600" />
+            ) : (
+              <Icon as={SunIcon} boxSize={5} color="yellow.400" />
+            )}
+          </Flex>
         </Tooltip>
-
+        <Donate />
         <Tooltip label={t('sourceCode')} hasArrow>
-          <CustomCard
+          <Flex
             as="a"
             href="https://github.com/minhphuc010194/NumerologyWebApp"
             target="_blank"
+            boxSize={10}
+            align="center"
+            justify="center"
+            rounded="full"
+            _hover={{ bg: 'blackAlpha.100', _dark: { bg: 'whiteAlpha.200' } }}
+            transition="all 0.2s"
           >
-            <Icon
-              as={AiFillGithub}
-              boxSize={12}
-              border="3px solid"
-              rounded="100%"
-            />
-          </CustomCard>
+            <Icon as={AiFillGithub} boxSize={5} />
+          </Flex>
         </Tooltip>
         <Feeacback />
-        <Donate />
       </Wrap>
     </footer>
   );

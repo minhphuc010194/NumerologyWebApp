@@ -145,54 +145,25 @@ export const Donate = ({ isHeader = false }: { isHeader?: boolean }) => {
       </Modal>
 
       <Tooltip label={t('buyCoffee')} hasArrow>
-        <CustomCard
+        <Flex
           as="button"
           onClick={onOpen}
-          color={isHeader ? undefined : 'orange.600'}
-          p={isHeader ? 0 : undefined}
-          m={isHeader ? 0 : 1}
-          bg={isHeader ? 'transparent' : undefined}
-          shadow={isHeader ? 'none' : undefined}
-          border={isHeader ? 'none' : undefined}
+          boxSize={10}
+          align="center"
+          justify="center"
+          rounded="full"
+          bgGradient="linear(to-r, orange.400, yellow.500)"
+          color="white"
+          shadow="sm"
+          _hover={{
+            transform: 'scale(1.1)',
+            shadow: 'md',
+            bgGradient: 'linear(to-r, orange.500, yellow.600)'
+          }}
+          transition="all 0.2s"
         >
-          {isHeader ? (
-            <Flex
-              boxSize={8}
-              align="center"
-              justify="center"
-              rounded="full"
-              bgGradient="linear(to-r, orange.400, yellow.500)"
-              color="white"
-              shadow="sm"
-              _hover={{
-                transform: 'scale(1.1)',
-                shadow: 'md',
-                bgGradient: 'linear(to-r, orange.500, yellow.600)'
-              }}
-              transition="all 0.2s"
-            >
-              <Icon as={PiCoffeeBold} boxSize={4} />
-            </Flex>
-          ) : (
-            <Flex
-              boxSize={{ base: 10, md: 12 }}
-              align="center"
-              justify="center"
-              rounded="full"
-              bgGradient="linear(to-r, orange.400, yellow.500)"
-              color="white"
-              shadow="sm"
-              _hover={{
-                transform: 'scale(1.05)',
-                shadow: 'md',
-                bgGradient: 'linear(to-r, orange.500, yellow.600)'
-              }}
-              transition="all 0.2s"
-            >
-              <Icon as={PiCoffeeBold} boxSize={{ base: 5, md: 6 }} />
-            </Flex>
-          )}
-        </CustomCard>
+          <Icon as={PiCoffeeBold} boxSize={5} />
+        </Flex>
       </Tooltip>
     </Box>
   );
