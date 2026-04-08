@@ -21,7 +21,9 @@ import {
   AiFillGithub,
   Feeacback,
   Donate,
-  Tooltip
+  Tooltip,
+  SunIcon,
+  MoonIcon
 } from '@/components';
 import {
   IconButton,
@@ -648,49 +650,45 @@ export default function Chat() {
           {/* Bottom Utility Tools */}
           <HStack justify="center" spacing={4}>
             <Tooltip label={t('guideTitle')} hasArrow>
-              <IconButton
-                icon={<Icon as={MdHelpOutline} boxSize={5} />}
-                variant="ghost"
-                size="sm"
+              <Flex
+                as="button"
+                onClick={onGuideOpen}
+                aria-label="Guide"
+                boxSize={10}
+                align="center"
+                justify="center"
                 rounded="full"
                 color="gray.700"
                 _dark={{ color: 'whiteAlpha.900' }}
-                onClick={onGuideOpen}
-                aria-label="Guide"
                 _hover={{
                   bg: 'blackAlpha.100',
                   _dark: { bg: 'whiteAlpha.200' }
                 }}
-              />
+                transition="all 0.2s"
+              >
+                <Icon as={MdHelpOutline} boxSize={5} />
+              </Flex>
             </Tooltip>
 
             <Tooltip label={tFooter('sourceCode')} hasArrow>
-              <CustomCard
+              <Flex
                 as="a"
                 href="https://github.com/minhphuc010194/NumerologyWebApp"
                 target="_blank"
-                p={0}
-                m={0}
-                bg="transparent"
-                border="none"
-                shadow="none"
+                boxSize={10}
+                align="center"
+                justify="center"
+                rounded="full"
+                color="gray.700"
+                _dark={{ color: 'whiteAlpha.900' }}
+                _hover={{
+                  bg: 'blackAlpha.100',
+                  _dark: { bg: 'whiteAlpha.200' }
+                }}
+                transition="all 0.2s"
               >
-                <Flex
-                  boxSize={9}
-                  align="center"
-                  justify="center"
-                  rounded="full"
-                  color="gray.700"
-                  _dark={{ color: 'whiteAlpha.900' }}
-                  _hover={{
-                    bg: 'blackAlpha.100',
-                    _dark: { bg: 'whiteAlpha.200' }
-                  }}
-                  transition="all 0.2s"
-                >
-                  <Icon as={AiFillGithub} boxSize={5} />
-                </Flex>
-              </CustomCard>
+                <Icon as={AiFillGithub} boxSize={5} />
+              </Flex>
             </Tooltip>
 
             <Feeacback isHeader />
@@ -701,7 +699,7 @@ export default function Chat() {
               <Flex
                 as="button"
                 onClick={toggleColorMode}
-                boxSize={9}
+                boxSize={10}
                 align="center"
                 justify="center"
                 rounded="full"
@@ -711,13 +709,11 @@ export default function Chat() {
                 }}
                 transition="all 0.2s"
               >
-                <Image
-                  src="/Images/numerologyPNG.png"
-                  alt={tFooter('logoAlt')}
-                  style={{ borderRadius: '50%' }}
-                  width={24}
-                  height={24}
-                />
+                {colorMode === 'light' ? (
+                  <Icon as={MoonIcon} boxSize={5} color="gray.600" />
+                ) : (
+                  <Icon as={SunIcon} boxSize={5} color="yellow.400" />
+                )}
               </Flex>
             </Tooltip>
           </HStack>

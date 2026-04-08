@@ -22,37 +22,21 @@ export const LanguageSwitcher = ({ isHeader = false }: { isHeader?: boolean }) =
 
   return (
     <Tooltip label={locale === "vi" ? t("switchLocaleEn") : t("switchLocaleVi")} hasArrow>
-      <CustomCard as="button" onClick={switchLocale} p={isHeader ? 0 : undefined} m={isHeader ? 0 : 1} bg={isHeader ? "transparent" : undefined} shadow={isHeader ? "none" : undefined} border={isHeader ? "none" : undefined}>
-        {isHeader ? (
-           <Flex
-             boxSize={9}
-             rounded="full"
-             align="center"
-             justify="center"
-             fontSize="xs"
-             fontWeight="bold"
-             color={textColor}
-             _hover={{ bg: hoverBg }}
-             transition="all 0.2s"
-           >
-             {locale === "vi" ? "EN" : "VI"}
-           </Flex>
-        ) : (
-           <Flex
-             boxSize={12}
-             border="3px solid"
-             rounded="100%"
-             align="center"
-             justify="center"
-             fontSize="lg"
-             fontWeight="bold"
-             _hover={{ color: "brand.700" }}
-             transition="all 0.2s"
-           >
-             {locale === "vi" ? "EN" : "VI"}
-           </Flex>
-        )}
-      </CustomCard>
+      <Flex
+        as="button"
+        onClick={switchLocale}
+        boxSize={10}
+        align="center"
+        justify="center"
+        rounded="full"
+        fontSize="xs"
+        fontWeight="bold"
+        color={textColor}
+        _hover={{ bg: hoverBg, color: "brand.700" }}
+        transition="all 0.2s"
+      >
+        {locale === "vi" ? "EN" : "VI"}
+      </Flex>
     </Tooltip>
   );
 };
