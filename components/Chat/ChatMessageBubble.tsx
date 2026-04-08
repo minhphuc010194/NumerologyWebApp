@@ -85,26 +85,25 @@ function ChatMessageBubbleInner({ message, t }: ChatMessageBubbleProps) {
     <Box
       display="flex"
       justifyContent="flex-start"
-      mb={4}
+      mb={message.isStreaming ? 4 : 0}
       sx={{ animation: 'fadeIn 0.3s ease-in' }}
     >
-      <Box
-        w={{ base: '32px', md: '40px' }}
-        h={{ base: '32px', md: '40px' }}
-        mr={3}
-        flexShrink={0}
-      >
-        {message.isStreaming ? (
+      {message.isStreaming && (
+        <Box
+          w={{ base: '32px', md: '40px' }}
+          h={{ base: '32px', md: '40px' }}
+          mr={3}
+          flexShrink={0}
+        >
           <Box as={motion.div} layoutId="shared-pyra">
             <PyraMascot size={32} state="speaking" />
           </Box>
-        ) : (
-          <PyraMascot size={32} state="static" />
-        )}
-      </Box>
+        </Box>
+      )}
 
       <Box
-        maxW="calc(100% - 50px)"
+        maxW={message.isStreaming ? "calc(100% - 50px)" : "100%"}
+        w="100%"
         display="flex"
         flexDir="column"
         gap={2}
