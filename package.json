@@ -23,7 +23,7 @@
     "dayjs": "^1.11.13",
     "framer-motion": "^12.23.24",
     "idb-keyval": "^6.2.2",
-    "katex": "^0.16.44",
+    "katex": "^0.16.45",
     "lodash": "4.17.21",
     "next": "latest",
     "next-intl": "^4.9.0",
