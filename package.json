@@ -26,7 +26,7 @@
     "katex": "^0.16.44",
     "lodash": "4.17.21",
     "next": "latest",
-    "next-intl": "^4.9.0",
+    "next-intl": "^4.9.1",
     "nodemailer": "^7.0.10",
     "openai": "^6.7.0",
     "react": "^19.2.0",
