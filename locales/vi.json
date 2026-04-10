@@ -17,7 +17,9 @@
     "namePlaceholder": "Nhập họ tên đầy đủ, VD: 'Nguyễn Văn A'",
     "viewResult": "Xem kết quả",
     "processing": "Đang xử lý...",
-    "indexTitle": "Chỉ Số"
+    "indexTitle": "Chỉ Số",
+    "formulaTitle": "Công thức: {name}",
+    "formulaComingSoon": "Công thức sẽ sớm được cập nhật"
   },
   "InputDate": {
     "datePlaceholder": "Ngày sinh...",

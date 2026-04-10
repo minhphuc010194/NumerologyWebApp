@@ -17,7 +17,9 @@
     "namePlaceholder": "Your full name, ex: 'Nguyen Van A'",
     "viewResult": "View result",
     "processing": "Processing...",
-    "indexTitle": "Index"
+    "indexTitle": "Index",
+    "formulaTitle": "Formula: {name}",
+    "formulaComingSoon": "Formula will be updated soon"
   },
   "InputDate": {
     "datePlaceholder": "Date...",
