@@ -215,37 +215,51 @@ const NumerologyComponent: FC = () => {
         </VStack>
       </Box>
 
-      <Box
-        py={4}
-        px={2}
-        as="fieldset"
-        textAlign="center"
-        borderRadius={5}
-        border="1px solid"
-        borderColor={colorBorder}
-      >
-        <Box as="legend" fontSize={20} fontWeight={800} color="red.400">
-          {tNum('indexTitle')}
+      <Box mt={4}>
+        <Box display="flex" alignItems="center" justifyContent="center" gap={4} mb={6}>
+          <Box w={{ base: "40px", md: "80px" }} h="1px" bgGradient="linear(to-r, transparent, red.500)" opacity={0.8} />
+          <Box fontSize={20} fontWeight={800} color="red.400" whiteSpace="nowrap">
+            {tNum('indexTitle')}
+          </Box>
+          <Box w={{ base: "40px", md: "80px" }} h="1px" bgGradient="linear(to-l, transparent, red.500)" opacity={0.8} />
         </Box>
 
-        <SimpleGrid columns={{ base: 2, md: 3, xl: 5 }} spacing="12px" justifyItems="stretch" pb={2} pt={2}>
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap="12px">
           {data.map((item, index: number) => (
-            <RenderItem 
-              key={id + index} 
-              item={item} 
-              onClick={() => {
-                setSelectedItem(item);
-                onOpen();
+            <Box
+              key={id + index}
+              w={{
+                base: 'calc(50% - 6px)',
+                sm: 'calc(33.333% - 8px)',
+                md: 'calc(25% - 9px)',
+                xl: 'calc(20% - 9.6px)'
               }}
-            />
+            >
+              <RenderItem
+                item={item}
+                onClick={() => {
+                  setSelectedItem(item);
+                  onOpen();
+                }}
+              />
+            </Box>
           ))}
-        </SimpleGrid>
+        </Box>
 
-        <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="slideInBottom">
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          isCentered
+          motionPreset="slideInBottom"
+        >
           <ModalOverlay backdropFilter="blur(3px)" />
           <ModalContent mx={4}>
             <ModalHeader>
-              {selectedItem ? tNum('formulaTitle', { name: tMetrics(selectedItem.key as any) }) : ''}
+              {selectedItem
+                ? tNum('formulaTitle', {
+                    name: tMetrics(selectedItem.key as any)
+                  })
+                : ''}
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
