@@ -20,6 +20,8 @@
     "indexTitle": "Chỉ Số",
     "formulaTitle": "Công thức: {name}",
     "formulaComingSoon": "Công thức sẽ sớm được cập nhật",
+    "featureComingSoon": "Tính năng sẽ sớm ra mắt!",
+    "viewMeaning": "Xem ý nghĩa con số {metric} {value}",
     "ExplainFormula": {
       "walksOfLife": "**CÔNG THỨC TÍNH CON SỐ CHỦ ĐẠO (ĐƯỜNG ĐỜI)**\n\n*   **Bước 1:** Viết ra đầy đủ ngày, tháng, năm sinh Dương lịch của bạn.\n*   **Bước 2:** Cộng tất cả các chữ số đơn lẻ đó lại với nhau để được một con số tổng có hai chữ số. \n*   **Bước 3:** Tiếp tục cộng hai chữ số của số tổng đó lại cho đến khi kết quả cuối cùng nằm trong khoảng từ **2 đến 11**.\n\n**⚠️ 3 Quy tắc đặc biệt bắt buộc nhớ (Không được cộng tiếp):**\n*   Nếu tổng là **10**: Giữ nguyên là **10** (vì không có số chủ đạo 1).\n*   Nếu tổng là **11**: Giữ nguyên là **11**.\n*   Nếu tổng là **22**: Giữ nguyên và ghi là **22/4**.\n\n> 💡 **Ví dụ minh họa (Dương Văn Nghĩa, 11/06/1976):**\n> Chuỗi ngày sinh: 11061976.\n> Tổng: 1+1+0+6+1+9+7+6 = 31.\n> Rút gọn: 3+1 = 4. => **Đường đời: 4**.",
       "mission": "**Con số Tên riêng** (tương đương chỉ số Sứ mệnh) đại diện cho sức mạnh tổng hợp từ tên của bạn.\n\n**CÔNG THỨC:**\n*   **Bước 1:** Viết họ tên đầy đủ và quy đổi TẤT CẢ chữ cái (nguyên âm + phụ âm) thành số (từ 1 đến 9).\n*   **Bước 2:** Cộng dồn tất cả các con số vừa quy đổi lại thành một tổng.\n*   **Bước 3:** Rút gọn kết quả cuối cùng về 1 chữ số. Rơi vào 11, 22 thì giữ nguyên.\n*   *(Mẹo: Con số Tên riêng chính là kết quả của **Linh hồn + Nhân cách** cộng lại và rút gọn).*\n\n> 💡 **Ví dụ minh họa (DƯƠNG VĂN NGHĨA):**\n> Cộng dọc từng chữ: 4+3+6+5+7 + 4+1+5 + 5+7+8+9+1 = 65.\n> Rút gọn: 6+5 = 11. (Giữ nguyên Master).\n> => **Tên riêng: 11**.",

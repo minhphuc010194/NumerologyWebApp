@@ -13,6 +13,8 @@ import {
 } from 'react';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@chakra-ui/react';
 import {
   Box,
   Input,
@@ -40,6 +42,8 @@ const NumerologyComponent: FC = () => {
   const tNum = useTranslations('Numerology');
   const tVal = useTranslations('Validation');
   const tMetrics = useTranslations('NumerologyMetrics');
+  const router = useRouter();
+  const toast = useToast();
   const id = useId();
   const color = useColorModeValue('black', 'white');
   const refInputName = useRef<HTMLInputElement>(null);
@@ -54,6 +58,8 @@ const NumerologyComponent: FC = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [isMeaningLoading, setIsMeaningLoading] = useState<boolean>(false);
+  const [isComingSoon, setIsComingSoon] = useState<boolean>(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -138,6 +144,12 @@ const NumerologyComponent: FC = () => {
     },
     [localName, localBirth, formatBirthDate, validateBirthDate]
   );
+  const handleMeaningClick = useCallback(async () => {
+    setIsMeaningLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsMeaningLoading(false);
+    setIsComingSoon(true);
+  }, []);
   const contentFormula = useMemo(() => {
     if (!selectedItem?.key) return tNum('formulaComingSoon');
     return tNum(`ExplainFormula.${selectedItem?.key as any}`);
@@ -262,6 +274,7 @@ const NumerologyComponent: FC = () => {
                 item={item}
                 onClick={() => {
                   setSelectedItem(item);
+                  setIsComingSoon(false);
                   onOpen();
                 }}
               />
@@ -272,11 +285,12 @@ const NumerologyComponent: FC = () => {
         <Modal
           isOpen={isOpen}
           onClose={onClose}
-          isCentered
+          isCentered={{ base: false, md: true }}
           motionPreset="slideInBottom"
+          size="2xl"
         >
           <ModalOverlay backdropFilter="blur(3px)" />
-          <ModalContent mx={4}>
+          <ModalContent mx={4} rounded={20}>
             <ModalHeader>
               {selectedItem
                 ? tNum('formulaTitle', {
@@ -309,6 +323,41 @@ const NumerologyComponent: FC = () => {
               >
                 <ReactMarkdown>{contentFormula}</ReactMarkdown>
               </Box>
+
+              {selectedItem && selectedItem.value !== undefined && (
+                <Box mt={6} display="flex" justifyContent="center">
+                  <Button
+                    colorScheme="orange"
+                    borderRadius="full"
+                    w="full"
+                    px={8}
+                    py={{ base: 2, md: 3 }}
+                    height="auto"
+                    whiteSpace="normal"
+                    fontSize={{ base: 'sm', md: 'md' }}
+                    lineHeight="shorter"
+                    onClick={handleMeaningClick}
+                    isLoading={isMeaningLoading}
+                    isDisabled={isComingSoon}
+                    loadingText={tNum('processing')}
+                    _hover={{
+                      transform:
+                        isMeaningLoading || isComingSoon
+                          ? 'none'
+                          : 'translateY(-2px)',
+                      boxShadow: isMeaningLoading || isComingSoon ? 'md' : 'md'
+                    }}
+                    transition="all 0.2s"
+                  >
+                    {isComingSoon
+                      ? tNum('featureComingSoon')
+                      : tNum('viewMeaning', {
+                          metric: tMetrics(selectedItem.key as any),
+                          value: selectedItem.value
+                        })}
+                  </Button>
+                </Box>
+              )}
             </ModalBody>
           </ModalContent>
         </Modal>

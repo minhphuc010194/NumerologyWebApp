@@ -20,6 +20,8 @@
     "indexTitle": "Index",
     "formulaTitle": "Formula: {name}",
     "formulaComingSoon": "Formula will be updated soon",
+    "featureComingSoon": "Feature coming soon!",
+    "viewMeaning": "View meaning of {metric} {value}",
     "ExplainFormula": {
       "walksOfLife": "**FORMULA FOR CALCULATING LIFE PATH NUMBER**\n\n*   **Step 1:** Write down your full date of birth (Gregorian calendar).\n*   **Step 2:** Add all the individual digits together to get a two-digit total.\n*   **Step 3:** Continue adding the two digits of the total until the final result is between **2 and 11**.\n\n**⚠️ 3 Special Rules to Remember (Do not reduce further):**\n*   If the total is **10**: Keep it as **10** (because there is no Life Path 1).\n*   If the total is **11**: Keep it as **11**.\n*   If the total is **22**: Keep it as **22/4**.\n\n> 💡 **Example (Dương Văn Nghĩa, 11/06/1976):**\n> Date string: 11061976.\n> Sum: 1+1+0+6+1+9+7+6 = 31.\n> Reduce: 3+1 = 4. => **Life Path: 4**.",
       "mission": "**Name Number** (often referred to as Mission) represents the combined strength of your full name.\n\n**FORMULA:**\n*   **Step 1:** Write out your full name and convert ALL letters (vowels and consonants) into numbers.\n*   **Step 2:** Add all converted numbers together into one single sum.\n*   **Step 3:** Reduce the total down to a single digit (or keep Master Numbers 11, 22).\n*   *(Tip: Your Name Number is essentially your **Soul + Personality** numbers added and reduced).*\n\n> 💡 **Example (Duong Van Nghia):**\n> Sum all digits: 4+3+6+5+7 + 4+1+5 + 5+7+8+9+1 = 65.\n> Reduce: 6+5 = 11.\n> => **Name Number: 11**.",
