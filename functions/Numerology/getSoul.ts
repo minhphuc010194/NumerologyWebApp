@@ -21,5 +21,11 @@ export const getSoul = (fullName: string): number => {
          0
       );
    });
-   return sumAdjacent(soulNumber, 0, "soul");
+   let sumDate = soulNumber;
+   while (sumDate > 11) {
+      const strSumDate = String(sumDate).split("");
+      sumDate = strSumDate.reduce((a, b) => a + Number(b), 0);
+   }
+
+   return sumDate;
 };

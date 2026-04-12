@@ -1,4 +1,5 @@
 'use client';
+import ReactMarkdown from 'react-markdown';
 import {
   type FC,
   useId,
@@ -7,11 +8,13 @@ import {
   ChangeEvent,
   FormEvent,
   useCallback,
-  useEffect
+  useEffect,
+  useMemo
 } from 'react';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useTranslations } from 'next-intl';
 import {
   Box,
-  SimpleGrid,
   Input,
   VStack,
   InputDate,
@@ -25,24 +28,20 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Text
-} from 'components';
+  useDisclosure
+} from '@/components';
 import { RenderItem } from './RenderItem';
 import { useProcessNumerology } from 'hooks';
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useTranslations } from 'next-intl';
 
 dayjs.extend(customParseFormat);
 
 const NumerologyComponent: FC = () => {
   const tNum = useTranslations('Numerology');
   const tVal = useTranslations('Validation');
+  const tMetrics = useTranslations('NumerologyMetrics');
   const id = useId();
   const color = useColorModeValue('black', 'white');
-  const colorBorder = useColorModeValue('gray.200', 'gray.600');
-  const errorColor = useColorModeValue('red.500', 'red.400');
   const refInputName = useRef<HTMLInputElement>(null);
   const [localName, setLocalName] = useState<string>('Dương Văn Nghĩa');
   const [localBirth, setLocalBirth] = useState<string>('1976-06-11');
@@ -55,7 +54,6 @@ const NumerologyComponent: FC = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState<any>(null);
-  const tMetrics = useTranslations('NumerologyMetrics');
 
   useEffect(() => {
     setIsMounted(true);
@@ -140,6 +138,10 @@ const NumerologyComponent: FC = () => {
     },
     [localName, localBirth, formatBirthDate, validateBirthDate]
   );
+  const contentFormula = useMemo(() => {
+    if (!selectedItem?.key) return tNum('formulaComingSoon');
+    return tNum(`ExplainFormula.${selectedItem?.key as any}`);
+  }, [selectedItem?.key]);
   return (
     <Box>
       <Box as="form" onSubmit={handleSubmit}>
@@ -216,12 +218,33 @@ const NumerologyComponent: FC = () => {
       </Box>
 
       <Box mt={4}>
-        <Box display="flex" alignItems="center" justifyContent="center" gap={4} mb={6}>
-          <Box w={{ base: "40px", md: "80px" }} h="1px" bgGradient="linear(to-r, transparent, red.500)" opacity={0.8} />
-          <Box fontSize={20} fontWeight={800} color="red.400" whiteSpace="nowrap">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          gap={4}
+          mb={6}
+        >
+          <Box
+            w={{ base: '40px', md: '80px' }}
+            h="1px"
+            bgGradient="linear(to-r, transparent, red.500)"
+            opacity={0.8}
+          />
+          <Box
+            fontSize={20}
+            fontWeight={800}
+            color="red.400"
+            whiteSpace="nowrap"
+          >
             {tNum('indexTitle')}
           </Box>
-          <Box w={{ base: "40px", md: "80px" }} h="1px" bgGradient="linear(to-l, transparent, red.500)" opacity={0.8} />
+          <Box
+            w={{ base: '40px', md: '80px' }}
+            h="1px"
+            bgGradient="linear(to-l, transparent, red.500)"
+            opacity={0.8}
+          />
         </Box>
 
         <Box display="flex" flexWrap="wrap" justifyContent="center" gap="12px">
@@ -263,9 +286,29 @@ const NumerologyComponent: FC = () => {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-              <Text fontSize="lg" color="gray.500" textAlign="center" py={4}>
-                {tNum('formulaComingSoon')}
-              </Text>
+              <Box
+                fontSize="sm"
+                lineHeight="tall"
+                className="formula-markdown"
+                css={{
+                  '& strong, & b': {
+                    color: 'var(--chakra-colors-red-400)',
+                    fontWeight: 700
+                  },
+                  '& ul, & ol': {
+                    paddingLeft: '20px',
+                    marginBottom: '8px'
+                  },
+                  '& li': {
+                    marginBottom: '6px'
+                  },
+                  '& p': {
+                    marginBottom: '10px'
+                  }
+                }}
+              >
+                <ReactMarkdown>{contentFormula}</ReactMarkdown>
+              </Box>
             </ModalBody>
           </ModalContent>
         </Modal>
