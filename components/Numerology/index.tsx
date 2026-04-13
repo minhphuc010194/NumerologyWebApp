@@ -725,24 +725,32 @@ ${birthChartData.grid
 
         {isMounted && (
           <Collapse in={isBirthChartVisible} animateOpacity>
-            <BirthChart
-              birthDate={submittedBirth}
-              onCellClick={handleBirthChartCellClick}
-            />
-            {/* Action Analyze Birth Chart Button */}
-            <Box mt={4} textAlign="center">
-              <Button
-                variant="outline"
-                colorScheme="red"
-                size="sm"
-                borderRadius="full"
-                onClick={handleAnalyzeBirthChart}
-                leftIcon={<Icon as={MdArrowForward} />}
-                isLoading={isAnalysisLoading}
-                loadingText={tNum('processing')}
-              >
-                {tChart('analyzeChart') || 'Giải mã Biểu đồ'}
-              </Button>
+            <Box pb={4}>
+              <BirthChart
+                birthDate={submittedBirth}
+                onCellClick={handleBirthChartCellClick}
+              />
+              {/* Action Analyze Birth Chart Button */}
+              <Box mt={-4} textAlign="center" position="relative" zIndex={2}>
+                <Button
+                  variant="outline"
+                  bg={contentBg}
+                  _hover={{ bg: chartToggleHoverBg, transform: 'translateY(-2px)' }}
+                  _active={{ transform: 'translateY(0)' }}
+                  colorScheme="red"
+                  size="sm"
+                  borderRadius="full"
+                  boxShadow="md"
+                  px={6}
+                  transition="all 0.2s"
+                  onClick={handleAnalyzeBirthChart}
+                  leftIcon={<Icon as={MdArrowForward} />}
+                  isLoading={isAnalysisLoading}
+                  loadingText={tNum('processing')}
+                >
+                  {tChart('analyzeChart') || 'Giải mã Biểu đồ'}
+                </Button>
+              </Box>
             </Box>
           </Collapse>
         )}
