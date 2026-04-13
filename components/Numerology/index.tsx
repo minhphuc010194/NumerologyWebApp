@@ -564,6 +564,8 @@ ${birthChartData.grid
     (name: string, birthDate: string) => {
       setLocalName(name);
       setLocalBirth(birthDate);
+      setSubmittedName('');
+      setSubmittedBirth('');
     },
     []
   );
@@ -580,6 +582,15 @@ ${birthChartData.grid
     if (!selectedItem?.key) return tNum('formulaComingSoon');
     return tNum(`ExplainFormula.${selectedItem?.key as any}`);
   }, [selectedItem?.key]);
+
+  const isProfileAlreadySaved = useMemo(() => {
+    if (!localName.trim() || !localBirth) return false;
+    return profiles.some(
+      (p) =>
+        p.name.toLowerCase() === localName.trim().toLowerCase() &&
+        p.birthDate === localBirth
+    );
+  }, [profiles, localName, localBirth]);
 
   // Colors
   const cacheBadgeBg = useColorModeValue('blue.50', 'blue.900');
@@ -668,158 +679,154 @@ ${birthChartData.grid
                 {tNum('viewResult')}
               </Button>
 
-              <Tooltip label={tProfile('saveProfile')} hasArrow fontSize="xs">
-                <IconButton
-                  aria-label={tProfile('saveProfile')}
-                  icon={<Icon as={FaSave} />}
-                  colorScheme="orange"
-                  variant="outline"
-                  size="sm"
-                  borderRadius="full"
-                  onClick={handleSaveProfile}
-                  isDisabled={!localName.trim() || !localBirth}
-                  _hover={{
-                    transform: 'translateY(-2px)',
-                    boxShadow: 'md'
-                  }}
-                  transition="all 0.2s"
-                />
-              </Tooltip>
+              {!isProfileAlreadySaved && (
+                <Tooltip label={tProfile('saveProfile')} hasArrow fontSize="xs">
+                  <IconButton
+                    aria-label={tProfile('saveProfile')}
+                    icon={<Icon as={FaSave} />}
+                    colorScheme="orange"
+                    variant="outline"
+                    size="sm"
+                    borderRadius="full"
+                    onClick={handleSaveProfile}
+                    isDisabled={!localName.trim() || !localBirth}
+                    _hover={{
+                      transform: 'translateY(-2px)',
+                      boxShadow: 'md'
+                    }}
+                    transition="all 0.2s"
+                  />
+                </Tooltip>
+              )}
             </Box>
           </Box>
         </VStack>
       </Box>
 
       {/* Birth Chart — collapsible with localStorage toggle */}
-      <Box mt={6} mb={6} maxW="400px" mx="auto">
-        {/* Toggle Header */}
-        <HStack
-          spacing={2}
-          cursor="pointer"
-          onClick={toggleBirthChart}
-          justify="center"
-          mb={isBirthChartVisible ? 3 : 0}
-          px={3}
-          py={1.5}
-          borderRadius="full"
-          transition="all 0.2s"
-          _hover={{
-            bg: chartToggleHoverBg
-          }}
-          userSelect="none"
-        >
-          <Box
-            fontSize={{ base: 'sm', md: 'md' }}
-            fontWeight={700}
-            color={chartToggleColor}
+      {submittedBirth && (
+        <Box mt={6} mb={6} maxW="400px" mx="auto">
+          {/* Toggle Header */}
+          <HStack
+            spacing={2}
+            cursor="pointer"
+            onClick={toggleBirthChart}
+            justify="center"
+            mb={isBirthChartVisible ? 3 : 0}
+            px={3}
+            py={1.5}
+            borderRadius="full"
+            transition="all 0.2s"
+            _hover={{
+              bg: chartToggleHoverBg
+            }}
+            userSelect="none"
           >
-            {tChart('title')}
-          </Box>
-          <Icon
-            as={isBirthChartVisible ? MdExpandLess : MdExpandMore}
-            color={chartToggleColor}
-            boxSize={5}
-            transition="transform 0.2s"
-          />
-        </HStack>
-
-        {isMounted && (
-          <Collapse in={isBirthChartVisible} animateOpacity>
-            <Box pb={4}>
-              <BirthChart
-                birthDate={submittedBirth}
-                onCellClick={handleBirthChartCellClick}
-              />
-              {/* Action Analyze Birth Chart Button */}
-              <Box mt={-4} textAlign="center" position="relative" zIndex={2}>
-                <Button
-                  variant="outline"
-                  bg={contentBg}
-                  _hover={{ bg: chartToggleHoverBg, transform: 'translateY(-2px)' }}
-                  _active={{ transform: 'translateY(0)' }}
-                  colorScheme="red"
-                  size="sm"
-                  borderRadius="full"
-                  boxShadow="md"
-                  px={6}
-                  transition="all 0.2s"
-                  onClick={handleAnalyzeBirthChart}
-                  leftIcon={<Icon as={MdArrowForward} />}
-                  isLoading={isAnalysisLoading}
-                  loadingText={tNum('processing')}
-                >
-                  {tChart('analyzeChart') || 'Giải mã Biểu đồ'}
-                </Button>
-              </Box>
+            <Box
+              fontSize={{ base: 'sm', md: 'md' }}
+              fontWeight={700}
+              color={chartToggleColor}
+            >
+              {tChart('title')}
             </Box>
-          </Collapse>
-        )}
-      </Box>
+            <Icon
+              as={isBirthChartVisible ? MdExpandLess : MdExpandMore}
+              color={chartToggleColor}
+              boxSize={5}
+              transition="transform 0.2s"
+            />
+          </HStack>
+
+          {isMounted && (
+            <Collapse in={isBirthChartVisible} animateOpacity>
+              <Box pb={4}>
+                <BirthChart
+                  birthDate={submittedBirth}
+                  onCellClick={handleBirthChartCellClick}
+                />
+                {/* Action Analyze Birth Chart Button */}
+                <Box mt={-4} textAlign="center" position="relative" zIndex={2}>
+                  <Button
+                    variant="outline"
+                    bg={contentBg}
+                    _hover={{ bg: chartToggleHoverBg, transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'translateY(0)' }}
+                    colorScheme="red"
+                    size="sm"
+                    borderRadius="full"
+                    boxShadow="md"
+                    px={6}
+                    transition="all 0.2s"
+                    onClick={handleAnalyzeBirthChart}
+                    leftIcon={<Icon as={MdArrowForward} />}
+                    isLoading={isAnalysisLoading}
+                    loadingText={tNum('processing')}
+                  >
+                    {tChart('analyzeChart') || 'Giải mã Biểu đồ'}
+                  </Button>
+                </Box>
+              </Box>
+            </Collapse>
+          )}
+        </Box>
+      )}
 
       {/* Divider */}
-      <Box
-        h="1px"
-        bgGradient={`linear(to-r, transparent, ${dividerColor}, transparent)`}
-        mx="auto"
-        w="60%"
-        mb={6}
-      />
-
-      <Box mt={4}>
+      {submittedBirth && (
         <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          gap={4}
+          h="1px"
+          bgGradient={`linear(to-r, transparent, ${dividerColor}, transparent)`}
+          mx="auto"
+          w="60%"
           mb={6}
-        >
-          <Box
-            w={{ base: '40px', md: '80px' }}
-            h="1px"
-            bgGradient="linear(to-r, transparent, red.500)"
-            opacity={0.8}
-          />
-          <Box
-            fontSize={20}
-            fontWeight={800}
-            color="red.400"
-            whiteSpace="nowrap"
-          >
-            {tNum('indexTitle')}
-          </Box>
-          <Box
-            w={{ base: '40px', md: '80px' }}
-            h="1px"
-            bgGradient="linear(to-l, transparent, red.500)"
-            opacity={0.8}
-          />
-        </Box>
+        />
+      )}
 
-        <Box display="flex" flexWrap="wrap" justifyContent="center" gap="12px">
-          {data.map((item, index: number) => (
+      {!!submittedBirth && (
+        <Box mt={4}>
+          {data && data.length > 0 && (
             <Box
-              key={id + index}
-              w={{
-                base: 'calc(50% - 6px)',
-                sm: 'calc(33.333% - 8px)',
-                md: 'calc(25% - 9px)',
-                xl: 'calc(20% - 9.6px)'
-              }}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap={4}
+              mb={6}
             >
-              <RenderItem
-                item={item}
-                onClick={() => {
-                  setSelectedItem(item);
-                  setMeaningContent('');
-                  setIsMeaningFromCache(false);
-                  setMeaningError(false);
-                  trackFormulaView(item.key);
-                  onOpen();
-                }}
-              />
+              <Box w={{ base: '40px', md: '80px' }} h="1px" bgGradient="linear(to-r, transparent, red.500)" opacity={0.8} />
+              <Box fontSize={20} fontWeight={800} color="red.400" whiteSpace="nowrap">
+                {tNum('indexTitle')}
+              </Box>
+              <Box w={{ base: '40px', md: '80px' }} h="1px" bgGradient="linear(to-l, transparent, red.500)" opacity={0.8} />
             </Box>
-          ))}
+          )}
+
+          <Box display="flex" flexWrap="wrap" justifyContent="center" gap="12px">
+            {data.map((item: any, index: number) => (
+              <Box
+                key={id + index}
+                w={{
+                  base: 'calc(50% - 6px)',
+                  sm: 'calc(33.333% - 8px)',
+                  md: 'calc(25% - 9px)',
+                  xl: 'calc(20% - 9.6px)'
+                }}
+              >
+                <RenderItem
+                  item={item}
+                  onClick={() => {
+                    setSelectedItem(item);
+                    setMeaningContent('');
+                    setIsMeaningFromCache(false);
+                    setMeaningError(false);
+                    trackFormulaView(item.key);
+                    onOpen();
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
         </Box>
+      )}
 
         <Modal
           isOpen={isOpen}
@@ -1057,7 +1064,6 @@ ${birthChartData.grid
           </ModalContent>
         </Modal>
       </Box>
-    </Box>
   );
 };
 
