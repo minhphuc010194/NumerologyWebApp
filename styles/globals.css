@@ -137,3 +137,36 @@ a {
     transform: scale(1.05);
   }
 }
+
+/* Birth Chart Animations */
+@keyframes cellPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(221, 107, 32, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(221, 107, 32, 0.15);
+  }
+}
+
+@keyframes fadeInCell {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes drawArrow {
+  from {
+    stroke-dashoffset: 500;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

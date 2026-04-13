@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { type FC, useRef, useState, useEffect, type ChangeEvent } from "react";
+import { type FC, useRef, useState, useEffect, useCallback, type ChangeEvent } from "react";
 import { Input, InputGroup, useToast } from "./";
 import { InputProps } from "../utils/types";
 
@@ -38,28 +38,41 @@ export const InputDate: FC<PropTypes> = (props) => {
    const [month, setMonth] = useState<string>(initialValues.month);
    const [year, setYear] = useState<string>(initialValues.year);
 
+   // Stable ref for getValue to avoid inline function issues
+   const getValueRef = useRef(getValue);
+   getValueRef.current = getValue;
+
+   // Notify parent with composed date string
+   const notifyParent = useCallback((d: string, m: string, y: string) => {
+      const currentDate = y + "-" + m + "-" + d;
+      if (typeof getValueRef.current === "function") {
+         getValueRef.current(currentDate);
+      }
+   }, []);
+
+   // Sync from parent's defaultValue (e.g., profile switch)
+   // Only fires on external change, does NOT call getValue back
+   const prevDefaultValueRef = useRef(defaultValue);
    useEffect(() => {
-      if (defaultValue) {
+      if (defaultValue && defaultValue !== prevDefaultValueRef.current) {
+         prevDefaultValueRef.current = defaultValue;
          const parsed = parseDefaultValue(defaultValue);
          setDate(parsed.date);
          setMonth(parsed.month);
          setYear(parsed.year);
+         // NOT calling notifyParent here — parent already knows this value
       }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [defaultValue]);
-
-   useEffect(() => {
-      const currentDate = year + "-" + month + "-" + date;
-      if (typeof getValue === "function") {
-         getValue(currentDate);
-      }
-   }, [date, month, year, getValue]);
 
    return (
       <InputGroup>
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
-               setDate(value || "01");
+               const newDate = value || "01";
+               setDate(newDate);
+               notifyParent(newDate, month, year);
                // auto select to month
                if (value.length >= 2) {
                   refMonth.current?.select();
@@ -78,7 +91,9 @@ export const InputDate: FC<PropTypes> = (props) => {
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
-               setMonth(value || "01");
+               const newMonth = value || "01";
+               setMonth(newMonth);
+               notifyParent(date, newMonth, year);
                // auto select to year
                if (value.length >= 2) {
                   refYear.current?.select();
@@ -97,7 +112,9 @@ export const InputDate: FC<PropTypes> = (props) => {
          <Input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                const value = e.target.value;
-               setYear(value || "1982");
+               const newYear = value || "1982";
+               setYear(newYear);
+               notifyParent(date, month, newYear);
             }}
             onFocus={(e) => e.target.select()}
             ref={refYear}

@@ -37,6 +37,12 @@ interface UserProviderConfig {
 interface ChatRequestBody {
   messages: IncomingMessage[];
   providerConfig?: UserProviderConfig;
+  /** Skip query expansion step in RAG pipeline */
+  skipExpansion?: boolean;
+  /** Explicit language for RAG (e.g. "Vietnamese", "English") */
+  language?: string;
+  /** Override system prompt — for direct LLM calls */
+  systemPrompt?: string;
 }
 
 export async function POST(req: NextRequest) {
@@ -69,7 +75,7 @@ export async function POST(req: NextRequest) {
     // ------------------------
 
     const body: ChatRequestBody = await req.json();
-    const { messages, providerConfig } = body;
+    const { messages, providerConfig, skipExpansion, language, systemPrompt: customSystemPrompt } = body;
 
     if (!messages?.length) {
       return new Response('Messages array is required', { status: 400 });
@@ -87,26 +93,29 @@ export async function POST(req: NextRequest) {
     const userQuery = latestUserMessage.content.trim();
 
     // Build base persona prompt (without RAG context — that comes after retrieval)
-    const baseSystemPrompt = buildSystemPrompt();
+    const baseSystemPrompt = customSystemPrompt || buildSystemPrompt();
 
+    let systemPrompt = baseSystemPrompt;
+    let sources: RetrievalSource[] = [];
+
+    // --- RAG Pipeline ---
     // Recent history for query expansion context (last 4 messages)
     const recentHistoryForExpansion = messages.slice(-4).map((message) => ({
       role: message.role,
       content: message.content
     }));
 
-    // --- RAG Pipeline ---
     console.time('[Perf] Total RAG Retrieval');
     let ragContext = '';
-    let sources: RetrievalSource[] = [];
-    let detectedLanguage = 'Vietnamese'; // default fallback
+    let detectedLanguage = language || 'Vietnamese'; // default fallback
 
     try {
       const retrievalResult = await retrieveContext(
         userQuery,
         baseSystemPrompt,
         recentHistoryForExpansion,
-        providerConfig
+        providerConfig,
+        { skipExpansion, language }
       );
       console.timeEnd('[Perf] Total RAG Retrieval');
       console.log(
@@ -133,7 +142,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Build system prompt with RAG context + language directive
-    const systemPrompt = buildSystemPrompt(ragContext, detectedLanguage);
+    systemPrompt = buildSystemPrompt(ragContext, detectedLanguage);
 
     // Prepare conversation history (limit to last 15 messages to control token usage)
     const conversationHistory = messages.slice(-15).map((message) => ({
