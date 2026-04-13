@@ -39,6 +39,8 @@ const BirthChartComponent: FC<BirthChartProps> = ({ birthDate, onCellClick }) =>
     const updateSize = () => {
       if (gridRef.current) {
         const containerWidth = gridRef.current.offsetWidth;
+        if (containerWidth === 0) return; // Skip calculation if container is hidden/collapsed
+        
         // 3 cells + 2 gaps, minus plane label space
         const availableWidth = Math.min(containerWidth - 60, 300);
         const computed = Math.floor((availableWidth - gap * 2) / 3);
@@ -47,8 +49,14 @@ const BirthChartComponent: FC<BirthChartProps> = ({ birthDate, onCellClick }) =>
     };
 
     updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
+
+    if (!gridRef.current) return;
+    const observer = new ResizeObserver(() => {
+      updateSize();
+    });
+    observer.observe(gridRef.current);
+
+    return () => observer.disconnect();
   }, []);
 
   // Colors
