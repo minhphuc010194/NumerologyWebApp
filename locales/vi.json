@@ -164,6 +164,44 @@
     "monthIndividual": "Tháng cá nhân",
     "linkPersonalityAndSoul": "Liên kết nhân cách và linh hồn"
   },
+  "BirthChart": {
+    "title": "Biểu Đồ Ngày Sinh",
+    "analyzeChart": "Giải mã Biểu đồ",
+    "isolatedNumber": "Bị cô lập",
+    "physicalPlane": "Thể chất",
+    "emotionalPlane": "Cảm xúc",
+    "mentalPlane": "Trí tuệ",
+    "strengthArrow": "Mũi tên sức mạnh",
+    "emptyArrow": "Mũi tên trống",
+    "frequency": "Xuất hiện {count} lần",
+    "absent": "Vắng mặt",
+    "clickToExplore": "Nhấn vào ô để xem chi tiết",
+    "cellLabel": "Ô số {number}",
+    "arrowPhysical": "Thể chất (1-4-7)",
+    "arrowEmotional": "Cảm xúc (2-5-8)",
+    "arrowMental": "Trí tuệ (3-6-9)",
+    "arrowMind": "Tư duy (1-2-3)",
+    "arrowWill": "Ý chí (4-5-6)",
+    "arrowAction": "Hành động (7-8-9)",
+    "arrowDetermination": "Quyết tâm (1-5-9)",
+    "arrowSpirituality": "Tâm linh (3-5-7)"
+  },
+  "Profile": {
+    "savedProfiles": "Hồ sơ",
+    "saveProfile": "Lưu hồ sơ",
+    "deleteProfile": "Xoá hồ sơ",
+    "selectProfile": "Chọn hồ sơ...",
+    "profileSaved": "Đã lưu hồ sơ thành công",
+    "profileDeleted": "Đã xoá hồ sơ",
+    "maxProfilesReached": "Đã đạt tối đa {max} hồ sơ"
+  },
+  "Meaning": {
+    "loading": "Đang phân tích ý nghĩa...",
+    "error": "Không thể tải ý nghĩa. Vui lòng thử lại.",
+    "retry": "Thử lại",
+    "cachedBadge": "Từ bộ nhớ cache",
+    "cachedTooltip": "Kết quả được lưu trong 7 ngày"
+  },
   "Admin": {
     "pageTitle": "Admin: Nhập dữ liệu Milvus",
     "pageSubtitle": "Tự động tạo Embedding (Gemini) và thêm dữ liệu vào MilvusDB",

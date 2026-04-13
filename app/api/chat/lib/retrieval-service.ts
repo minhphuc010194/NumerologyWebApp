@@ -56,36 +56,46 @@ export async function retrieveContext(
   query: string,
   systemPrompt: string,
   conversationHistory: Array<{ role: string; content: string }>,
-  userProviderConfig?: UserProviderConfig
+  userProviderConfig?: UserProviderConfig,
+  options?: { skipExpansion?: boolean; language?: string }
 ): Promise<RetrievalResult> {
+  let searchQuery = query;
+  let detectedLanguage = options?.language || 'Vietnamese';
+
   // Step 1: Expand short queries with context-aware keywords + detect language
-  const { expandedQuery, detectedLanguage } = await expandQueryForRetrieval({
-    originalQuery: query,
-    systemPrompt,
-    recentHistory: conversationHistory
-  }, userProviderConfig);
+  if (!options?.skipExpansion) {
+    const expansion = await expandQueryForRetrieval({
+      originalQuery: query,
+      systemPrompt,
+      recentHistory: conversationHistory
+    }, userProviderConfig);
+    searchQuery = expansion.expandedQuery;
+    detectedLanguage = expansion.detectedLanguage;
+  } else {
+    console.log('[Retrieval] skipExpansion=true — using raw query for search');
+  }
   // Step 2: Generate embedding from expanded query
   console.time('[Perf] Embedding Generation');
-  const queryEmbedding = await generateEmbedding(expandedQuery);
+  const queryEmbedding = await generateEmbedding(searchQuery);
   console.timeEnd('[Perf] Embedding Generation');
 
   // Step 3: Parallel hybrid search using expanded query
   const [chunkResults, summaryResults, qaResults] = await Promise.allSettled([
     searchCollection(
       COLLECTION_CHUNK,
-      expandedQuery,
+      searchQuery,
       queryEmbedding,
       SEARCH_LIMITS.chunk
     ),
     searchCollection(
       COLLECTION_SUMMARY,
-      expandedQuery,
+      searchQuery,
       queryEmbedding,
       SEARCH_LIMITS.summary
     ),
     searchCollection(
       COLLECTION_QA,
-      expandedQuery,
+      searchQuery,
       queryEmbedding,
       SEARCH_LIMITS.qa
     )

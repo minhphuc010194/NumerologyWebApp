@@ -164,6 +164,44 @@
     "monthIndividual": "Individual Month",
     "linkPersonalityAndSoul": "Link Personality And Soul"
   },
+  "BirthChart": {
+    "title": "Birth Date Chart",
+    "analyzeChart": "Analyze Birth Chart",
+    "isolatedNumber": "Isolated",
+    "physicalPlane": "Physical",
+    "emotionalPlane": "Emotional",
+    "mentalPlane": "Mental",
+    "strengthArrow": "Strength arrows",
+    "emptyArrow": "Empty arrows",
+    "frequency": "Appears {count} times",
+    "absent": "Absent",
+    "clickToExplore": "Click a cell to explore details",
+    "cellLabel": "Cell number {number}",
+    "arrowPhysical": "Physical (1-4-7)",
+    "arrowEmotional": "Emotional (2-5-8)",
+    "arrowMental": "Mental (3-6-9)",
+    "arrowMind": "Mind (1-2-3)",
+    "arrowWill": "Will (4-5-6)",
+    "arrowAction": "Action (7-8-9)",
+    "arrowDetermination": "Determination (1-5-9)",
+    "arrowSpirituality": "Spirituality (3-5-7)"
+  },
+  "Profile": {
+    "savedProfiles": "Profiles",
+    "saveProfile": "Save profile",
+    "deleteProfile": "Delete profile",
+    "selectProfile": "Select profile...",
+    "profileSaved": "Profile saved successfully",
+    "profileDeleted": "Profile deleted",
+    "maxProfilesReached": "Maximum of {max} profiles reached"
+  },
+  "Meaning": {
+    "loading": "Analyzing meaning...",
+    "error": "Unable to load meaning. Please try again.",
+    "retry": "Retry",
+    "cachedBadge": "From cache",
+    "cachedTooltip": "Results cached for 7 days"
+  },
   "Admin": {
     "pageTitle": "Admin: Milvus Ingestion",
     "pageSubtitle": "Auto-generate Embeddings (Gemini) and insert into MilvusDB",
