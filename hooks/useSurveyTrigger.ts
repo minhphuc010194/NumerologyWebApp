@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 
 // --- Custom Event ---
 const SURVEY_OPEN_EVENT = 'open-survey';
+const SURVEY_USAGE_EVENT = 'survey-usage-updated';
 
 /** Dispatch this from anywhere to force-open the survey banner */
 export function openSurveyManually(): void {
@@ -12,13 +13,21 @@ export function openSurveyManually(): void {
   }
 }
 
+/** Increment survey usage globally across all components */
+export function incrementSurveyUsageGlobally(): void {
+  if (typeof window === 'undefined') return;
+  const current = parseInt(localStorage.getItem('survey-usage-count') || '0', 10);
+  localStorage.setItem('survey-usage-count', String(current + 1));
+  window.dispatchEvent(new CustomEvent(SURVEY_USAGE_EVENT));
+}
+
 // --- Constants ---
 const STORAGE_KEY_USAGE_COUNT = 'survey-usage-count';
 const STORAGE_KEY_COMPLETED = 'survey-completed';
 const STORAGE_KEY_DISMISSED_AT = 'survey-dismissed-at';
 
 /** Minimum usage actions before showing survey */
-const USAGE_THRESHOLD = 2;
+const USAGE_THRESHOLD = 1;
 /** Cooldown period after dismiss (days) */
 const DISMISS_COOLDOWN_DAYS = 1;
 /** Delay before showing banner after threshold met (ms) */
@@ -72,7 +81,7 @@ export function useSurveyTrigger(): UseSurveyTriggerReturn {
   const [isReady, setIsReady] = useState(false);
   const [isManualOpen, setIsManualOpen] = useState(false);
 
-  // Initialize from localStorage + listen for manual open event
+  // Initialize from localStorage + listen for events
   useEffect(() => {
     const count = getStorageNumber(STORAGE_KEY_USAGE_COUNT);
     setUsageCount(count);
@@ -83,9 +92,16 @@ export function useSurveyTrigger(): UseSurveyTriggerReturn {
       setIsVisible(true);
     };
 
+    const handleUsageUpdate = () => {
+      const newCount = getStorageNumber(STORAGE_KEY_USAGE_COUNT);
+      setUsageCount(newCount);
+    };
+
     window.addEventListener(SURVEY_OPEN_EVENT, handleManualOpen);
+    window.addEventListener(SURVEY_USAGE_EVENT, handleUsageUpdate);
     return () => {
       window.removeEventListener(SURVEY_OPEN_EVENT, handleManualOpen);
+      window.removeEventListener(SURVEY_USAGE_EVENT, handleUsageUpdate);
     };
   }, []);
 
@@ -106,11 +122,7 @@ export function useSurveyTrigger(): UseSurveyTriggerReturn {
   }, [usageCount, isReady, isManualOpen]);
 
   const incrementUsage = useCallback(() => {
-    setUsageCount((prev) => {
-      const next = prev + 1;
-      localStorage.setItem(STORAGE_KEY_USAGE_COUNT, String(next));
-      return next;
-    });
+    incrementSurveyUsageGlobally();
   }, []);
 
   const markCompleted = useCallback(() => {
