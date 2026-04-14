@@ -16,3 +16,4 @@ export type {
   ProviderRequestConfig,
 } from "./provider-types";
 export { PROVIDER_PRESETS, toProviderRequestConfig } from "./provider-types";
+export { useSurveyTrigger, openSurveyManually } from "./useSurveyTrigger";

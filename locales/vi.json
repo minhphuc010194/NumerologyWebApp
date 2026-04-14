@@ -63,7 +63,7 @@
     "copySuccess": "Sao chép thành công địa chỉ {name}"
   },
   "Feedback": {
-    "tooltip": "Gửi phản hồi qua: {email}"
+    "tooltip": "Góp ý & Khảo sát (Email: {email})"
   },
   "Chat": {
     "title": "🔮 Trợ Lý Nhân Số Học AI",
@@ -248,5 +248,37 @@
     "toastErrorInvalidJson": "File JSON phải là một mảng object!",
     "itemLabel": "Bản ghi {index}: ",
     "toastSuccessBulkInsert": "Import xong {count} bản ghi!"
+  },
+  "Survey": {
+    "step1Title": "Bạn đánh giá trải nghiệm sử dụng ứng dụng thế nào?",
+    "ratingLove": "Rất thích",
+    "ratingGood": "Tốt",
+    "ratingNeutral": "Bình thường",
+    "ratingNeedsImprovement": "Cần cải thiện",
+    "step2Title": "Bạn có sẵn sàng trả phí để sử dụng dịch vụ ổn định & không giới hạn?",
+    "willingnessYes": "Có, tôi quan tâm",
+    "willingnessMaybe": "Cần suy nghĩ thêm",
+    "willingnessNo": "Không, cảm ơn",
+    "pricingModelTitle": "Bạn thích hình thức thanh toán nào?",
+    "pricingMonthly": "Theo tháng",
+    "pricingYearly": "Theo năm",
+    "pricingLifetime": "Trọn đời",
+    "priceTitle": "Mức giá bạn cảm thấy hợp lý?",
+    "priceMonthly29k": "~29k/tháng",
+    "priceMonthly49k": "~49k/tháng",
+    "priceMonthly79k": "~79k/tháng",
+    "priceYearly199k": "~199k/năm",
+    "priceYearly349k": "~349k/năm",
+    "priceYearly499k": "~499k/năm",
+    "priceLifetime299k": "~299k",
+    "priceLifetime499k": "~499k",
+    "priceLifetime799k": "~799k",
+    "step3Title": "Bạn mong muốn tính năng nào hoặc có góp ý gì cho chúng tôi?",
+    "feedbackPlaceholder": "VD: Thêm tính năng so sánh tương hợp, xem vận mệnh chi tiết hơn...",
+    "submitButton": "Gửi phản hồi",
+    "skipButton": "Bỏ qua",
+    "thankYouTitle": "Cảm ơn bạn!",
+    "thankYouMessage": "Phản hồi của bạn rất có giá trị giúp chúng tôi cải thiện ứng dụng.",
+    "dismissTooltip": "Đóng khảo sát"
   }
 }

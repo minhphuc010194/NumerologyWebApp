@@ -7,6 +7,7 @@ import {
   Heading,
   Layout,
   Numerology,
+  SurveyBanner,
   Text,
   VStack,
   HStack,
@@ -22,6 +23,7 @@ import {
 import '@/styles/globals.css';
 import { useTranslations, useLocale } from 'next-intl';
 import { PyraMascot } from '@/components/Chat/PyraMascot';
+import { useSurveyTrigger } from '@/hooks/useSurveyTrigger';
 
 const Link = NextLink as any;
 
@@ -32,6 +34,7 @@ export default function HomePage() {
   const locale = useLocale();
   const [isVideoVisible, setIsVideoVisible] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const { incrementUsage: incrementSurveyUsage } = useSurveyTrigger();
 
   useEffect(() => {
     const stored = localStorage.getItem(VIDEO_VISIBILITY_KEY);
@@ -309,9 +312,12 @@ export default function HomePage() {
 
         {/* Main Content */}
         <Box as="main">
-          <Numerology />
+          <Numerology onCalculate={incrementSurveyUsage} />
         </Box>
       </VStack>
+
+      {/* Survey Banner */}
+      <SurveyBanner page="home" />
     </Layout>
   );
 }

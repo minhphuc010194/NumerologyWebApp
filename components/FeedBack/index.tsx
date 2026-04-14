@@ -7,6 +7,7 @@ import {
   useColorModeValue
 } from 'components';
 import { useTranslations } from 'next-intl';
+import { openSurveyManually } from '@/hooks/useSurveyTrigger';
 
 export const Feeacback = ({ isHeader = false }: { isHeader?: boolean }) => {
   const t = useTranslations('Feedback');
@@ -17,8 +18,8 @@ export const Feeacback = ({ isHeader = false }: { isHeader?: boolean }) => {
     <Box>
       <Tooltip label={t('tooltip', { email: 'bumlowkey@proton.me' })} hasArrow>
         <Flex
-          as="a"
-          href="mailto:chauminhphuc1994it@gmail.com"
+          as="button"
+          onClick={openSurveyManually}
           boxSize={10}
           align="center"
           justify="center"
@@ -26,6 +27,7 @@ export const Feeacback = ({ isHeader = false }: { isHeader?: boolean }) => {
           color={textColor}
           _hover={{ bg: hoverBg }}
           transition="all 0.2s"
+          aria-label={t('tooltip', { email: 'bumlowkey@proton.me' })}
         >
           <Icon as={MdOutlineFeedback} boxSize={5} />
         </Flex>
