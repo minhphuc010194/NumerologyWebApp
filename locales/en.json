@@ -273,6 +273,8 @@
     "priceLifetime299k": "~299k",
     "priceLifetime499k": "~499k",
     "priceLifetime799k": "~799k",
+    "priceOther": "Other",
+    "priceCustomPlaceholder": "E.g. 39k, 150k/year...",
     "step3Title": "Any feature wishes or feedback for us?",
     "feedbackPlaceholder": "E.g. Add compatibility analysis, more detailed fortune reading...",
     "submitButton": "Send Feedback",

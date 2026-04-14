@@ -273,6 +273,8 @@
     "priceLifetime299k": "~299k",
     "priceLifetime499k": "~499k",
     "priceLifetime799k": "~799k",
+    "priceOther": "Khác",
+    "priceCustomPlaceholder": "VD: 39k, 150k/năm...",
     "step3Title": "Bạn mong muốn tính năng nào hoặc có góp ý gì cho chúng tôi?",
     "feedbackPlaceholder": "VD: Thêm tính năng so sánh tương hợp, xem vận mệnh chi tiết hơn...",
     "submitButton": "Gửi phản hồi",

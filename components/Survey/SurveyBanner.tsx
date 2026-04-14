@@ -10,6 +10,7 @@ import {
   Button,
   IconButton,
   Textarea,
+  Input,
   Icon,
   Tooltip,
   useColorModeValue,
@@ -97,6 +98,8 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
         priceRange: null,
         feedback: ''
       });
+      setShowCustomPrice(false);
+      setCustomPriceValue('');
     }
   }, [isManualOpen, shouldShowSurvey]);
 
@@ -143,15 +146,25 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
     setSurveyData((prev) => ({
       ...prev,
       pricingModel: model,
-      priceRange: null // Reset price when model changes
+      priceRange: null
     }));
+    setShowCustomPrice(false);
   }, []);
+
+  const [showCustomPrice, setShowCustomPrice] = useState(false);
+  const [customPriceValue, setCustomPriceValue] = useState('');
 
   const handlePriceSelect = useCallback((price: string) => {
     setSurveyData((prev) => ({ ...prev, priceRange: price }));
-    // Auto advance to feedback
+    setShowCustomPrice(false);
     setTimeout(() => setCurrentStep(3), 300);
   }, []);
+
+  const handleCustomPriceSubmit = useCallback(() => {
+    const trimmed = customPriceValue.trim();
+    if (!trimmed) return;
+    handlePriceSelect(`custom:${trimmed}`);
+  }, [customPriceValue, handlePriceSelect]);
 
   const handleFeedbackChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -492,7 +505,7 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
                   >
                     {t('priceTitle')}
                   </Text>
-                  <HStack spacing={2} w="100%" justify="center">
+                  <HStack spacing={2} w="100%" justify="center" flexWrap="wrap">
                     {PRICE_OPTIONS[surveyData.pricingModel].map((option) => (
                       <Button
                         key={option.key}
@@ -522,7 +535,61 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
                         {t(option.key as any)}
                       </Button>
                     ))}
+                    <Button
+                      size="sm"
+                      variant={showCustomPrice ? 'solid' : 'outline'}
+                      colorScheme={showCustomPrice ? 'orange' : undefined}
+                      borderRadius="full"
+                      fontWeight={600}
+                      borderColor={optionBorder}
+                      onClick={() => setShowCustomPrice((p) => !p)}
+                      _hover={{
+                        borderColor: 'brand.400',
+                        bg: emojiHoverBg,
+                        transform: 'translateY(-1px)'
+                      }}
+                      transition="all 0.2s"
+                      minW="fit-content"
+                    >
+                      ✏️ {t('priceOther')}
+                    </Button>
                   </HStack>
+                  {showCustomPrice && (
+                    <HStack
+                      spacing={2}
+                      w="100%"
+                      sx={{ animation: 'fadeIn 0.2s ease' }}
+                    >
+                      <Input
+                        size="sm"
+                        borderRadius="full"
+                        placeholder={t('priceCustomPlaceholder')}
+                        value={customPriceValue}
+                        onChange={(e) => setCustomPriceValue(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleCustomPriceSubmit();
+                        }}
+                        bg={textareaBg}
+                        fontSize="sm"
+                        autoFocus
+                        _focus={{
+                          borderColor: 'brand.400',
+                          boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)'
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        colorScheme="orange"
+                        borderRadius="full"
+                        fontWeight={700}
+                        onClick={handleCustomPriceSubmit}
+                        isDisabled={!customPriceValue.trim()}
+                        px={4}
+                      >
+                        OK
+                      </Button>
+                    </HStack>
+                  )}
                 </>
               )}
             </VStack>

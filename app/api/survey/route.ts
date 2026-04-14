@@ -35,9 +35,9 @@ function recordSubmission(identifier: string): void {
   // Cleanup old entries periodically
   if (recentSubmissions.size > 10000) {
     const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS;
-    for (const [key, time] of recentSubmissions.entries()) {
+    recentSubmissions.forEach((time, key) => {
       if (time < cutoff) recentSubmissions.delete(key);
-    }
+    });
   }
 }
 
