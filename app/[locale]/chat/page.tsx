@@ -21,7 +21,8 @@ import {
   Donate,
   Tooltip,
   SunIcon,
-  MoonIcon
+  MoonIcon,
+  SurveyBanner
 } from '@/components';
 import {
   IconButton,
@@ -65,6 +66,7 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useChatRAG } from '@/hooks/use-chat-rag';
 import { useProviderSettings } from '@/hooks/use-provider-settings';
+import { useSurveyTrigger } from '@/hooks/useSurveyTrigger';
 
 export default function Chat() {
   const t = useTranslations('Chat');
@@ -94,6 +96,7 @@ export default function Chat() {
 
   const { toggleColorMode, colorMode } = useColorMode();
   const toast = useToast();
+  const { incrementUsage: incrementSurveyUsage } = useSurveyTrigger();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isGuideOpen,
@@ -641,7 +644,10 @@ export default function Chat() {
       <Box w="100%" flexShrink={0} bg="transparent">
         <Container maxW="container.lg" px={4}>
           <ChatInput
-            onSend={sendMessage}
+            onSend={(msg) => {
+              sendMessage(msg);
+              incrementSurveyUsage();
+            }}
             isDisabled={isStreaming}
             placeholder={`${t('inputPlaceholder')} - ${t('tip')}`}
           />
@@ -755,6 +761,9 @@ export default function Chat() {
 
       {/* Guide Modal Component */}
       <ChatGuideModal isOpen={isGuideOpen} onClose={onGuideClose} t={t} />
+
+      {/* Survey Banner */}
+      <SurveyBanner page="chat" />
     </Box>
   );
 }

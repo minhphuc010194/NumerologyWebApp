@@ -111,7 +111,12 @@ function setCachedMeaning(
 
 // --- Main Component ---
 
-const NumerologyComponent: FC = () => {
+interface NumerologyComponentProps {
+  /** Callback invoked after each successful numerology calculation */
+  onCalculate?: () => void;
+}
+
+const NumerologyComponent: FC<NumerologyComponentProps> = ({ onCalculate }) => {
   const tNum = useTranslations('Numerology');
   const tVal = useTranslations('Validation');
   const tMetrics = useTranslations('NumerologyMetrics');
@@ -272,6 +277,7 @@ const NumerologyComponent: FC = () => {
         setSubmittedName(localName.trim());
         setSubmittedBirth(formattedBirth);
         trackNumerologyCalculate(localName.trim(), formattedBirth);
+        onCalculate?.();
       } finally {
         setIsLoading(false);
       }
@@ -281,7 +287,8 @@ const NumerologyComponent: FC = () => {
       localBirth,
       formatBirthDate,
       validateBirthDate,
-      trackNumerologyCalculate
+      trackNumerologyCalculate,
+      onCalculate
     ]
   );
 
