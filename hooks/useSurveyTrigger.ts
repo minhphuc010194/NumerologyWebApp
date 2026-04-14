@@ -20,7 +20,7 @@ const STORAGE_KEY_DISMISSED_AT = 'survey-dismissed-at';
 /** Minimum usage actions before showing survey */
 const USAGE_THRESHOLD = 2;
 /** Cooldown period after dismiss (days) */
-const DISMISS_COOLDOWN_DAYS = 7;
+const DISMISS_COOLDOWN_DAYS = 1;
 /** Delay before showing banner after threshold met (ms) */
 export const SURVEY_SHOW_DELAY_MS = 3000;
 
