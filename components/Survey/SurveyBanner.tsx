@@ -24,13 +24,15 @@ import { useSurveyTrigger } from '@/hooks/useSurveyTrigger';
 type ExperienceRating = 'love' | 'good' | 'neutral' | 'needsImprovement';
 type Willingness = 'yes' | 'maybe' | 'no';
 type PricingModel = 'monthly' | 'yearly' | 'lifetime';
-type SurveyStep = 1 | 2 | 3 | 'thank-you';
+type SurveyStep = 1 | 2 | 3 | 4 | 'thank-you';
 
 interface SurveyData {
   experienceRating: ExperienceRating | null;
   willingness: Willingness | null;
   pricingModel: PricingModel | null;
   priceRange: string | null;
+  desiredFeatures: string[];
+  customFeature: string;
   feedback: string;
 }
 
@@ -63,6 +65,19 @@ const RATING_OPTIONS: { value: ExperienceRating; emoji: string; key: string }[] 
   { value: 'needsImprovement', emoji: '😕', key: 'ratingNeedsImprovement' }
 ];
 
+// --- Feature Options ---
+
+const FEATURE_OPTIONS: { key: string; descKey: string; emoji: string; value: string }[] = [
+  { key: 'featureSync', descKey: 'featureSyncDesc', emoji: '🔄', value: 'Tài khoản & Đồng bộ hồ sơ' },
+  { key: 'featureUnlimitedChat', descKey: 'featureUnlimitedChatDesc', emoji: '💬', value: 'Chat AI không giới hạn' },
+  { key: 'featureDeepAnalysis', descKey: 'featureDeepAnalysisDesc', emoji: '🔮', value: 'Phân tích AI chuyên sâu' },
+  { key: 'featurePdfReport', descKey: 'featurePdfReportDesc', emoji: '📊', value: 'Báo cáo PDF chuyên nghiệp' },
+  { key: 'featureCompatibility', descKey: 'featureCompatibilityDesc', emoji: '🤝', value: 'Tương hợp cặp đôi' }
+];
+
+// --- Total steps ---
+const TOTAL_STEPS = 4;
+
 // --- Component ---
 
 interface SurveyBannerProps {
@@ -84,6 +99,8 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
     willingness: null,
     pricingModel: null,
     priceRange: null,
+    desiredFeatures: [],
+    customFeature: '',
     feedback: ''
   });
 
@@ -96,10 +113,13 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
         willingness: null,
         pricingModel: null,
         priceRange: null,
+        desiredFeatures: [],
+        customFeature: '',
         feedback: ''
       });
       setShowCustomPrice(false);
       setCustomPriceValue('');
+      setShowCustomFeature(false);
     }
   }, [isManualOpen, shouldShowSurvey]);
 
@@ -121,8 +141,8 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
   const emojiSelectedBg = useColorModeValue('brand.100', 'brand.900');
   const optionBorder = useColorModeValue('gray.200', 'gray.600');
   const optionSelectedBorder = useColorModeValue('brand.400', 'brand.400');
-  const thankYouBg = useColorModeValue('green.50', 'green.900');
   const textareaBg = useColorModeValue('gray.50', 'whiteAlpha.50');
+  const costSubtitleColor = useColorModeValue('orange.600', 'orange.300');
 
   // --- Handlers ---
 
@@ -137,7 +157,7 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
     if (willingness === 'yes') {
       // Stay on step 2 to show pricing sub-section
     } else {
-      // Skip to feedback
+      // Skip to features step
       setCurrentStep(3);
     }
   }, []);
@@ -153,6 +173,7 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
 
   const [showCustomPrice, setShowCustomPrice] = useState(false);
   const [customPriceValue, setCustomPriceValue] = useState('');
+  const [showCustomFeature, setShowCustomFeature] = useState(false);
 
   const handlePriceSelect = useCallback((price: string) => {
     setSurveyData((prev) => ({ ...prev, priceRange: price }));
@@ -165,6 +186,25 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
     if (!trimmed) return;
     handlePriceSelect(`custom:${trimmed}`);
   }, [customPriceValue, handlePriceSelect]);
+
+  const handleFeatureToggle = useCallback((featureValue: string) => {
+    setSurveyData((prev) => {
+      const isSelected = prev.desiredFeatures.includes(featureValue);
+      return {
+        ...prev,
+        desiredFeatures: isSelected
+          ? prev.desiredFeatures.filter((f) => f !== featureValue)
+          : [...prev.desiredFeatures, featureValue]
+      };
+    });
+  }, []);
+
+  const handleCustomFeatureChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSurveyData((prev) => ({ ...prev, customFeature: e.target.value }));
+    },
+    []
+  );
 
   const handleFeedbackChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -183,6 +223,8 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
         willingness: surveyData.willingness,
         pricingModel: surveyData.pricingModel,
         priceRange: surveyData.priceRange,
+        desiredFeatures: surveyData.desiredFeatures.length > 0 ? surveyData.desiredFeatures : null,
+        customFeature: surveyData.customFeature.trim() || null,
         feedback: surveyData.feedback.trim() || null,
         usageCount
       };
@@ -229,13 +271,12 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
   }, [markDismissed]);
 
   // --- Progress dots ---
-  const totalSteps = 3;
-  const currentStepNum = typeof currentStep === 'number' ? currentStep : totalSteps;
+  const currentStepNum = typeof currentStep === 'number' ? currentStep : TOTAL_STEPS;
 
   const progressDots = useMemo(
     () => (
       <HStack spacing={1.5} justify="center" mb={3}>
-        {[1, 2, 3].map((step) => (
+        {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((step) => (
           <Box
             key={step}
             w={currentStepNum === step ? '18px' : '6px'}
@@ -406,6 +447,16 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
                 lineHeight="short"
               >
                 {t('step2Title')}
+              </Text>
+              {/* Cost transparency subtitle */}
+              <Text
+                fontSize={{ base: '2xs', md: 'xs' }}
+                color={costSubtitleColor}
+                textAlign="center"
+                lineHeight="tall"
+                px={1}
+              >
+                {t('step2Subtitle')}
               </Text>
               <VStack spacing={2} w="100%">
                 <Button
@@ -597,7 +648,7 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
         </VStack>
       )}
 
-      {/* Step 3: Feedback */}
+      {/* Step 3: Desired Features (NEW) */}
       {currentStep === 3 && (
         <VStack spacing={3} sx={{ animation: 'fadeIn 0.3s ease' }}>
           {progressDots}
@@ -609,6 +660,179 @@ export const SurveyBanner: FC<SurveyBannerProps> = ({ page }) => {
             lineHeight="short"
           >
             {t('step3Title')}
+          </Text>
+          <Text
+            fontSize="2xs"
+            color={subtitleColor}
+            textAlign="center"
+          >
+            {t('step3Subtitle')}
+          </Text>
+
+          {/* Feature checkboxes */}
+          <VStack spacing={1.5} w="100%">
+            {FEATURE_OPTIONS.map((feature) => {
+              const isSelected = surveyData.desiredFeatures.includes(feature.value);
+              return (
+                <HStack
+                  key={feature.value}
+                  w="100%"
+                  px={3}
+                  py={2}
+                  borderRadius="xl"
+                  borderWidth="1px"
+                  borderColor={isSelected ? optionSelectedBorder : optionBorder}
+                  bg={isSelected ? emojiSelectedBg : 'transparent'}
+                  cursor="pointer"
+                  transition="all 0.2s"
+                  _hover={{
+                    bg: emojiHoverBg,
+                    transform: 'translateY(-1px)',
+                    shadow: 'sm'
+                  }}
+                  _active={{ transform: 'translateY(0)' }}
+                  onClick={() => handleFeatureToggle(feature.value)}
+                  role="checkbox"
+                  aria-checked={isSelected}
+                  spacing={2.5}
+                >
+                  <Text fontSize="lg" flexShrink={0}>{feature.emoji}</Text>
+                  <VStack spacing={0} align="start" flex={1}>
+                    <Text
+                      fontSize={{ base: 'xs', md: 'sm' }}
+                      fontWeight={600}
+                      color={titleColor}
+                      lineHeight="short"
+                    >
+                      {t(feature.key as any)}
+                    </Text>
+                    <Text
+                      fontSize="2xs"
+                      color={subtitleColor}
+                      lineHeight="short"
+                    >
+                      {t(feature.descKey as any)}
+                    </Text>
+                  </VStack>
+                  {/* Checkmark indicator */}
+                  <Box
+                    w="18px"
+                    h="18px"
+                    borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={isSelected ? 'brand.400' : optionBorder}
+                    bg={isSelected ? 'brand.400' : 'transparent'}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    flexShrink={0}
+                    transition="all 0.2s"
+                  >
+                    {isSelected && (
+                      <Text fontSize="xs" color="white" lineHeight={1}>✓</Text>
+                    )}
+                  </Box>
+                </HStack>
+              );
+            })}
+
+            {/* "Other" feature option */}
+            <HStack
+              w="100%"
+              px={3}
+              py={2}
+              borderRadius="xl"
+              borderWidth="1px"
+              borderColor={showCustomFeature ? optionSelectedBorder : optionBorder}
+              bg={showCustomFeature ? emojiSelectedBg : 'transparent'}
+              cursor="pointer"
+              transition="all 0.2s"
+              _hover={{
+                bg: emojiHoverBg,
+                transform: 'translateY(-1px)',
+                shadow: 'sm'
+              }}
+              onClick={() => setShowCustomFeature((p) => !p)}
+              role="checkbox"
+              aria-checked={showCustomFeature}
+              spacing={2.5}
+            >
+              <Text fontSize="lg" flexShrink={0}>✏️</Text>
+              <Text
+                fontSize={{ base: 'xs', md: 'sm' }}
+                fontWeight={600}
+                color={titleColor}
+                flex={1}
+              >
+                {t('featureOther')}
+              </Text>
+              <Box
+                w="18px"
+                h="18px"
+                borderRadius="md"
+                borderWidth="2px"
+                borderColor={showCustomFeature ? 'brand.400' : optionBorder}
+                bg={showCustomFeature ? 'brand.400' : 'transparent'}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                flexShrink={0}
+                transition="all 0.2s"
+              >
+                {showCustomFeature && (
+                  <Text fontSize="xs" color="white" lineHeight={1}>✓</Text>
+                )}
+              </Box>
+            </HStack>
+
+            {/* Custom feature input */}
+            {showCustomFeature && (
+              <Input
+                size="sm"
+                borderRadius="xl"
+                placeholder={t('featureOtherPlaceholder')}
+                value={surveyData.customFeature}
+                onChange={handleCustomFeatureChange}
+                bg={textareaBg}
+                fontSize="sm"
+                autoFocus
+                _focus={{
+                  borderColor: 'brand.400',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)'
+                }}
+                sx={{ animation: 'fadeIn 0.2s ease' }}
+              />
+            )}
+          </VStack>
+
+          {/* Next button */}
+          <Button
+            w="100%"
+            size="sm"
+            colorScheme="orange"
+            borderRadius="full"
+            fontWeight={700}
+            onClick={() => setCurrentStep(4)}
+            _hover={{ transform: 'translateY(-1px)', shadow: 'md' }}
+            transition="all 0.2s"
+          >
+            {t('submitButton')} →
+          </Button>
+        </VStack>
+      )}
+
+      {/* Step 4: Feedback (previously Step 3) */}
+      {currentStep === 4 && (
+        <VStack spacing={3} sx={{ animation: 'fadeIn 0.3s ease' }}>
+          {progressDots}
+          <Text
+            fontSize={{ base: 'sm', md: 'md' }}
+            fontWeight={700}
+            color={titleColor}
+            textAlign="center"
+            lineHeight="short"
+          >
+            {t('step4Title')}
           </Text>
           <Textarea
             value={surveyData.feedback}

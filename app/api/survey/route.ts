@@ -12,6 +12,8 @@ const surveyPayloadSchema = z.object({
   willingness: z.enum(['yes', 'maybe', 'no']).nullable(),
   pricingModel: z.enum(['monthly', 'yearly', 'lifetime']).nullable(),
   priceRange: z.string().nullable(),
+  desiredFeatures: z.array(z.string()).nullable(),
+  customFeature: z.string().max(200).nullable(),
   feedback: z.string().max(1000).nullable(),
   usageCount: z.number().int().min(0)
 });
@@ -97,6 +99,8 @@ export async function POST(request: NextRequest) {
       willingness: payload.willingness || '',
       pricingModel: payload.pricingModel || '',
       priceRange: payload.priceRange || '',
+      desiredFeatures: payload.desiredFeatures?.join(', ') || '',
+      customFeature: payload.customFeature || '',
       feedback: payload.feedback || '',
       usageCount: payload.usageCount,
       userAgent: request.headers.get('user-agent') || ''
