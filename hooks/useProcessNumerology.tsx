@@ -102,7 +102,6 @@ export const useProcessNumerology = (
     const monthIndividual = reduceToSingleDigit(
       yearIndividual + reduceToSingleDigit(currentMonth)
     );
-    const linkPersonalityAndSoul = substractAdjacent(personality, soul);
     const dateOfBirth = sumAdjacent(date, 0);
     return [
       {
@@ -191,12 +190,6 @@ export const useProcessNumerology = (
         name: 'Tháng cá nhân',
         name_en: 'Individual Month'
       },
-      {
-        key: 'linkPersonalityAndSoul',
-        value: linkPersonalityAndSoul,
-        name: 'Liên kết nhân cách và linh hồn',
-        name_en: 'Link Personality And Soul'
-      }
     ];
   }, [fullName, birthDay]);
   return data;
