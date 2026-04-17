@@ -609,32 +609,21 @@ ${birthChartData.grid
 
   return (
     <Box>
-      <Box mt={8}>
-        <ProfileManager
-          currentName={localName}
-          currentBirthDate={localBirth}
-          profiles={profiles}
-          isLoaded={profilesLoaded}
-          onSelectProfile={handleSelectProfile}
-          onDeleteProfile={deleteProfile}
-        />
-      </Box>
-
-      <Box as="form" onSubmit={handleSubmit}>
+      <Box as="form" onSubmit={handleSubmit} mt={8}>
         <VStack spacing={3} align="stretch">
-          <Box h="40px">
-            <Input
-              rounded={50}
-              onClick={() => refInputName.current?.select()}
-              ref={refInputName}
-              value={localName}
-              placeholder={tNum('namePlaceholder')}
-              w={{ md: '50%', xs: '100%' }}
-              textAlign="center"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setLocalName(e.target.value)
-              }
-              color={color}
+          <Box h="40px" w={{ md: '50%', xs: '100%' }}>
+            <ProfileManager
+              currentName={localName}
+              currentBirthDate={localBirth}
+              profiles={profiles}
+              isLoaded={profilesLoaded}
+              onSelectProfile={handleSelectProfile}
+              onDeleteProfile={deleteProfile}
+              nameInputRef={refInputName}
+              nameValue={localName}
+              onNameChange={setLocalName}
+              namePlaceholder={tNum('namePlaceholder')}
+              inputColor={color}
             />
           </Box>
 
