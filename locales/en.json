@@ -191,7 +191,9 @@
     "selectProfile": "Select profile...",
     "profileSaved": "Profile saved successfully",
     "profileDeleted": "Profile deleted",
-    "maxProfilesReached": "Maximum of {max} profiles reached"
+    "maxProfilesReached": "Maximum of {max} profiles reached",
+    "searchPlaceholder": "Search profiles...",
+    "noSearchResults": "No matching profiles found"
   },
   "Meaning": {
     "loading": "Analyzing meaning...",

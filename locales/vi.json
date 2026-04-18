@@ -191,7 +191,9 @@
     "selectProfile": "Chọn hồ sơ...",
     "profileSaved": "Đã lưu hồ sơ thành công",
     "profileDeleted": "Đã xoá hồ sơ",
-    "maxProfilesReached": "Đã đạt tối đa {max} hồ sơ"
+    "maxProfilesReached": "Đã đạt tối đa {max} hồ sơ",
+    "searchPlaceholder": "Tìm hồ sơ...",
+    "noSearchResults": "Không tìm thấy hồ sơ phù hợp"
   },
   "Meaning": {
     "loading": "Đang phân tích ý nghĩa...",
