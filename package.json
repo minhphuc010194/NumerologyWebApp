@@ -19,7 +19,7 @@
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@zilliz/milvus2-sdk-node": "^2.6.13",
-    "ai": "^4.2.5",
+    "ai": "^6.0.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.23.24",
     "idb-keyval": "^6.2.2",
