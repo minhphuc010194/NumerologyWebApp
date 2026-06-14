@@ -27,7 +27,7 @@
     "lodash": "4.17.21",
     "next": "latest",
     "next-intl": "^4.9.0",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^8.0.5",
     "openai": "^6.7.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/lodash": "4.17.20",
     "@types/node": "^24.9.2",
-    "@types/nodemailer": "7.0.3",
+    "@types/nodemailer": "8.0.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "8.58.2",
