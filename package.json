@@ -21,7 +21,7 @@
     "@zilliz/milvus2-sdk-node": "^2.6.13",
     "ai": "^4.2.5",
     "dayjs": "^1.11.13",
-    "framer-motion": "^12.23.24",
+    "motion": "^12.23.24",
     "idb-keyval": "^6.2.2",
     "katex": "^0.16.44",
     "lodash": "4.17.21",
